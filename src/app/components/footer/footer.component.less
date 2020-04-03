@@ -1,0 +1,17 @@
+.footer {
+    display: flex;
+    justify-content: space-between;
+    color: #c1c1c1;
+
+    & > * {
+        flex-basis: 30%;
+
+        &:not(:first-child) {
+            margin-left: 0.5em; // 8px / 16px
+        }
+    }
+
+    a {
+        color: #c1c1c1;
+    }
+}

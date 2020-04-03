@@ -1,0 +1,35 @@
+header {
+    background-color: whitesmoke;
+    min-height: 2em; // 32px / 16px
+    padding: 0.25em 0; // 4px / 16px
+    border-bottom: darken(whitesmoke, 5%) solid 0.05em; // 1px / 16px
+    box-shadow: 0 0 0.2em rgba(0, 0, 0, 0.1); // 3.2px / 16px
+
+    & > .container {
+        display: flex;
+
+        & > * {
+            &:not(:first-child) {
+                flex-basis: 100%;
+                margin-left: 1em; // 16px / 16px
+            }
+        }
+    }
+}
+
+main {
+    display: table;
+    width: 100%;
+    min-height: 10em;
+}
+
+footer {
+    background-color: #353535;
+    padding: 0.5em 0; // 8px / 16px
+}
+
+.container {
+    max-width: 60em; // 960px / 16px
+    width: 100%;
+    margin: 0 auto;
+}
