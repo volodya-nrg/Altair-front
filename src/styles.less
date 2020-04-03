@@ -6,41 +6,11 @@
 body {
     margin: 0;
     font-family: Arial, Tahoma, Helvetica, sans-serif;
-    font-size: @sizeFontMd;
-    color: @colorBasicText;
     -webkit-font-smoothing: antialiased;
     background-color: white;
+    font-size: 100%;
+    // тело документа делать в процентах, остальное в em
 }
 
 @import "./css_typography";
 @import "./css_form";
-
-.hidden {
-    display: none !important; // для перекрытия искусственно даем важность, более не делаем
-}
-
-.container {
-    position: relative;
-    margin: 0 10px;
-}
-
-.text-mute {
-    color: @colorTextMute;
-}
-
-.text-eclipse {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.hr {
-    height: 1px;
-    margin: 10px 0;
-    border: 0;
-    background-color: @colorBorderLightgray;
-
-    &.sx-primary-light {
-        background-color: @colorPrimaryLight;
-    }
-}
