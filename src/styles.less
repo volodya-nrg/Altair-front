@@ -8,9 +8,22 @@ body {
     margin: 0;
     font-family: Arial, Tahoma, Helvetica, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-color: white;
     font-size: 100%;
+    background-color: @color_dark;
+    color: @color_dark_light;
 }
 
 @import "./css_typography";
 @import "./css_form";
+
+a {
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.text-eclipse {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

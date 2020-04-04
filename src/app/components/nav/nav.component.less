@@ -1,5 +1,78 @@
+@import "../../../css_variables";
+
 .nav {
-    width: 2em; // 32px / 16px
-    height: 2em; // 32px / 16px
-    background-color: gold;
+    position: relative;
+
+    &.sx-active {
+        .nav_tree {
+            display: block;
+        }
+    }
+
+    &_emblem {
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2em; // 32px / 16px
+        height: 2em; // 32px / 16px
+        border-radius: 0.2em; // 2px / 16px
+        cursor: pointer;
+        border: @color_gray solid 0.05em;
+        background: white url("@{imgPath}/cat.svg") center center no-repeat;
+    }
+
+    @width: 12em; // 240px / 16px
+    @padding: 0.5em; // 8px / 16px
+    @box_shadow: 0.4em;
+
+    ul {
+        display: none;
+        box-sizing: border-box;
+        width: @width;
+        margin: 0;
+        padding: @padding;
+        list-style: none;
+        border: @color_gray solid 0.05em;
+        background-color: white;
+        box-shadow: @box_shadow @box_shadow @box_shadow rgba(0, 0, 0, 0.1);
+
+        & > li {
+            position: relative;
+
+            & + li {
+                margin-top: 0.5em;
+            }
+
+            & > a {
+                display: block;
+
+                &.sx-has-childs {
+                    &:after {
+                        position: absolute;
+                        content: '>';
+                        right: 0;
+                        font-weight: bold;
+                        font-family: monospace;
+                    }
+                }
+            }
+
+            & > a.sx-active + ul {
+                display: block;
+            }
+
+            & > ul {
+                position: absolute;
+                top: 0;
+                right: calc(~"-1 * (@{width} + @{padding})");
+            }
+        }
+    }
+
+    &_tree {
+        position: absolute;
+        top: 2em;
+        left: 0;
+    }
 }
