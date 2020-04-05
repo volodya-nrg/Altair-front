@@ -1,4 +1,4 @@
-<div #nav class="nav" [class.sx-active]="isActive">
+<nav #nav class="nav" [class.sx-active]="isActive">
     <div #button (click)="toggleMenu()" class="nav_emblem"></div>
     <ul *ngIf="catTree" class="nav_tree">
         <li *ngFor="let child1 of catTree.childes">
@@ -26,4 +26,4 @@
             </ul>
         </li>
     </ul>
-</div>
+</nav>

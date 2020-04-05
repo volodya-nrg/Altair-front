@@ -16,15 +16,15 @@
         justify-content: center;
         width: 2em; // 32px / 16px
         height: 2em; // 32px / 16px
-        border-radius: 0.2em; // 2px / 16px
+        border-radius: 0.125em; // 2px / 16px
         cursor: pointer;
-        border: @color_gray solid 0.05em;
+        border: @color_gray solid 0.0625em; // 1px / 16px
         background: white url("@{imgPath}/cat.svg") center center no-repeat;
     }
 
     @width: 12em; // 240px / 16px
     @padding: 0.5em; // 8px / 16px
-    @box_shadow: 0.4em;
+    @box_shadow: 0.4em; // 6px / 16px
 
     ul {
         display: none;
@@ -33,7 +33,7 @@
         margin: 0;
         padding: @padding;
         list-style: none;
-        border: @color_gray solid 0.05em;
+        border: @color_gray solid 0.0625em; // 1px / 16px
         background-color: white;
         box-shadow: @box_shadow @box_shadow @box_shadow rgba(0, 0, 0, 0.1);
 
@@ -54,7 +54,7 @@
 
             & > a {
                 display: block;
-                padding: 0.25em 0;
+                padding: 0.25em 0; // 4px / 16px
 
                 &.sx-has-childs {
                     &:after {
@@ -81,7 +81,7 @@
 
     &_tree {
         position: absolute;
-        top: 2em;
+        top: 2em; // 32px / 16px
         left: 0;
     }
 }

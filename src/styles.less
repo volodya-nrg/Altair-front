@@ -6,7 +6,7 @@
 // тело документа делать в процентах, остальное в em
 body {
     margin: 0;
-    font-family: Arial, Tahoma, Helvetica, sans-serif;
+    font-family: @font_family;
     -webkit-font-smoothing: antialiased;
     font-size: 100%;
     background-color: @color_dark;
@@ -26,4 +26,10 @@ a {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.container {
+    max-width: 60em; // 960px / 16px
+    width: 100%;
+    margin: 0 auto;
 }

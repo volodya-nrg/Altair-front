@@ -1,8 +1,22 @@
-<div class="header">
-    <div>
-        <a class="header_logo" routerLink="/main"><img src="/assets/images/logo.png"/></a>
+<header>
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="header_left">
+                    <div>
+                        <app-nav></app-nav>
+                    </div>
+                    <div>
+                        <a class="header_logo" routerLink="/main"><img src="/assets/images/logo.png"/></a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <app-search></app-search>
+            </div>
+            <div>
+                <button routerLink="/add">Добавить</button>
+            </div>
+        </div>
     </div>
-    <div>
-        <button routerLink="/add">Добавить</button>
-    </div>
-</div>
+</header>
