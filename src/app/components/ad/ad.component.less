@@ -1,0 +1,65 @@
+@import "../../../css_variables";
+
+.ad {
+    position: relative;
+    display: inline-block;
+    width: 14em; // 224px / 16px
+    margin: 0.5em 0.5em 2em 0.5em; // 8px 8px 32px 8px / 16px
+
+    &.sx-horiz {
+        display: flex;
+        width: 100%;
+        margin: 0.5em 0 1em 0; // 8px 16px / 16px 16px
+
+        .ad_cover {
+            flex: 0 0 14em; // 224px / 16px
+            width: auto;
+        }
+
+        .ad_data {
+            margin-left: 1em; // 16px / 16px
+            margin-top: 0;
+        }
+
+        .ad_title {
+            height: auto;
+            overflow: auto;
+        }
+    }
+
+    &_cover {
+        display: block;
+        width: 14em; // 224px / 16px
+        height: 10em; // 160px / 16px
+        overflow: hidden;
+        background-color: whitesmoke;
+    }
+
+    &_data {
+        margin-top: 0.5em; // 8px / 16px
+    }
+
+    &_title {
+        display: block;
+        width: 100%;
+        height: 2.4em; // 38.4px / 16px
+        overflow: hidden;
+        font-weight: bold;
+    }
+
+    &_price {
+        font-weight: bold;
+        margin-top: 0.5em; // 8px / 16px
+    }
+
+    &_city {
+        display: block;
+        margin-top: 0.5em; // 8px / 16px
+        color: gray;
+    }
+
+    &_created {
+        display: block;
+        color: gray;
+    }
+}

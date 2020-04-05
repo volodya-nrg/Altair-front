@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
     selector: 'app-page-main',
@@ -6,6 +6,7 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
     styleUrls: ['./page-main.component.less'],
 })
 export class PageMainComponent implements OnInit {
+    aAds = [1, 1, 1, 1, 1];
 
     constructor() {
     }
