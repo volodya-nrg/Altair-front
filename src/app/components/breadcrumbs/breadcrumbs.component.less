@@ -1,0 +1,22 @@
+@import "../../../css_variables";
+
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 2.5em; // 40px / 16px
+
+    li {
+        max-width: 10em;
+
+        &:not(:first-child) {
+            &:before {
+                content: '/';
+                margin: 0 0.5em;
+                color: @color_text_mute;
+            }
+        }
+    }
+}

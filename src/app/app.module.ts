@@ -8,13 +8,14 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {PageMainComponent} from './components/page-main/page-main.component';
 import {PageCatComponent} from './components/page-cat/page-cat.component';
 import {PageAddComponent} from './components/page-add/page-add.component';
-import {PageAdSlugComponent} from './components/page-ad-slug/page-ad-slug.component';
+import {PageAdComponent} from './components/page-ad/page-ad.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
 import {NavComponent} from './components/nav/nav.component';
 import {SearchComponent} from './components/search/search.component';
 import {AdComponent} from './components/ad/ad.component';
-import { SafeHtmlPipe } from './pipes/safe-html.pipe';
+import {SafeHtmlPipe} from './pipes/safe-html.pipe';
+import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 
 @NgModule({
     declarations: [
@@ -23,13 +24,14 @@ import { SafeHtmlPipe } from './pipes/safe-html.pipe';
         PageMainComponent,
         PageCatComponent,
         PageAddComponent,
-        PageAdSlugComponent,
+        PageAdComponent,
         FooterComponent,
         HeaderComponent,
         NavComponent,
         SearchComponent,
         AdComponent,
         SafeHtmlPipe,
+        BreadcrumbsComponent,
     ],
     imports: [
         BrowserModule,

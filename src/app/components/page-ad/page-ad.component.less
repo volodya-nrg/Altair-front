@@ -1,0 +1,31 @@
+.ad {
+    &_photo-and-info {
+        display: flex;
+        align-items: flex-start;
+
+        & > * {
+            &:not(:first-child) {
+                margin-left: 1em;
+            }
+        }
+
+        &_photo {
+            flex: 0 0 20em; // 320px / 16px
+            height: 20em; // 320px / 16px
+            overflow: hidden;
+            background-color: whitesmoke;
+
+            img {
+                max-width: 100%;
+            }
+        }
+
+        &_info {
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+        }
+    }
+}
