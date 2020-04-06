@@ -1,29 +1,4 @@
 <nav #nav class="nav" [class.sx-active]="isActive">
     <div #button (click)="toggleMenu()" class="nav_emblem"></div>
-    <ul *ngIf="catTree" class="nav_tree">
-        <li *ngFor="let child1 of catTree.childes">
-            <a *ngIf="child1.childes"
-               class="text-eclipse sx-has-childs">{{ child1.name }}</a>
-            <a *ngIf="!child1.childes" class="text-eclipse"
-               [routerLink]=" '/cat/' + child1.slug">{{ child1.name }}</a>
-
-            <ul *ngIf="child1.childes">
-                <li *ngFor="let child2 of child1.childes">
-                    <a *ngIf="child2.childes"
-                       class="text-eclipse sx-has-childs">{{ child2.name }}</a>
-                    <a *ngIf="!child2.childes" class="text-eclipse"
-                       [routerLink]=" '/cat/' + child1.slug + '/' + child2.slug">{{ child2.name }}</a>
-
-                    <ul *ngIf="child2.childes">
-                        <li *ngFor="let child3 of child2.childes">
-                            <a *ngIf="child3.childes"
-                               class="text-eclipse sx-has-childs">{{ child3.name }}</a>
-                            <a *ngIf="!child3.childes" class="text-eclipse"
-                               [routerLink]=" '/cat/' + child1.slug + '/' + child2.slug + '/' + child3.slug">{{ child3.name }}</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-    </ul>
+    <div class="nav_tree" [innerHTML]="catTreeHTML | safeHtml"></div>
 </nav>

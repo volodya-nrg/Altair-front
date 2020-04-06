@@ -1,15 +1,15 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-nav',
     templateUrl: './nav.component.html',
-    styleUrls: ['./nav.component.less']
+    styleUrls: ['./nav.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
-    private links = [];
-    isActive = false;
-    detachClick: () => void;
-    catTree = {
+    private links: Array<HTMLBaseElement> = [];
+    private catTree = {
         'childes': [
             {
                 'catId': 51,
@@ -135,18 +135,20 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         ]
     };
-
+    private detachClick: () => void;
+    isActive: boolean = false;
+    catTreeHTML: string = '';
     @ViewChild('nav', {static: true}) nav: ElementRef;
     @ViewChild('button', {static: true}) button: ElementRef;
 
     constructor(
         private renderer: Renderer2,
+        private router: Router,
     ) {
-
     }
 
     ngOnInit(): void {
-
+        this.catTreeHTML = this.walkOnCats(this.catTree.childes, '/cat');
     }
 
     ngOnDestroy(): void {
@@ -182,7 +184,10 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
         var brothers = target.parentNode.querySelector(':scope > ul');
 
         if (!brothers) {
-            this.hideMenu();
+            const url = target.getAttribute('routerLink');
+            this.router.navigate([url]).then((ok) => {
+                ok ? this.hideMenu() : alert('Error in route navigate');
+            });
             return;
         }
 
@@ -216,5 +221,28 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
         for (let i = 0; i < this.links.length; i++) {
             this.links[i].classList.remove('sx-active');
         }
+    }
+
+    walkOnCats(aCats, url): string {
+        let result = '<ul>';
+
+        for (let cat of aCats) {
+            const urlNew = url + '/' + cat.slug;
+            const hasChildes = cat.childes && cat.childes.length;
+            const sxHasChilds = hasChildes ? ' sx-has-childes' : '';
+            const routerLink = !hasChildes ? ' routerLink="' + urlNew + '"' : '';
+
+            result += '<li><a class="text-eclipse' + sxHasChilds + '"' + routerLink + '>' + cat.name + '</a>';
+
+            if (hasChildes) {
+                result += this.walkOnCats(cat.childes, urlNew);
+            }
+
+            result += '</li>';
+        }
+
+        result += '</ul>';
+
+        return result;
     }
 }

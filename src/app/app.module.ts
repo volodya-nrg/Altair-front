@@ -14,6 +14,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {NavComponent} from './components/nav/nav.component';
 import {SearchComponent} from './components/search/search.component';
 import {AdComponent} from './components/ad/ad.component';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,7 @@ import {AdComponent} from './components/ad/ad.component';
         NavComponent,
         SearchComponent,
         AdComponent,
+        SafeHtmlPipe,
     ],
     imports: [
         BrowserModule,
