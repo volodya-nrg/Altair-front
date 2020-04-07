@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-search',
@@ -11,6 +12,7 @@ export class SearchComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
+        private router: Router,
     ) {
     }
 
@@ -25,13 +27,13 @@ export class SearchComponent implements OnInit {
             alert('Error: not valid form');
             return;
         }
-        // const submit = target.querySelector('[type="submit"]');
-        // submit.disabled = true;
-        // this.subscription2 = this.authService.login(this.form.value).subscribe(
-        //     _ => this.router.navigate([this.returnUrl]),
-        //     err => submit.disabled = false,
-        //     () => submit.disabled = false
-        // );
-        // this.subscriptions.push(this.subscription2);
+
+        this.router.navigate(['/search'], {
+            queryParams: this.form.value
+        }).then(ok => {
+            if (ok) {
+                // this.form.reset();
+            }
+        });
     }
 }

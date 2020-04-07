@@ -15,7 +15,8 @@ import {NavComponent} from './components/nav/nav.component';
 import {SearchComponent} from './components/search/search.component';
 import {AdComponent} from './components/ad/ad.component';
 import {SafeHtmlPipe} from './pipes/safe-html.pipe';
-import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
+import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
+import { PageSearchComponent } from './components/page-search/page-search.component';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.compo
         AdComponent,
         SafeHtmlPipe,
         BreadcrumbsComponent,
+        PageSearchComponent,
     ],
     imports: [
         BrowserModule,
