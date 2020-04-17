@@ -48,7 +48,6 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     toggleEventOnLink(isAdd: boolean): void {
         if (!this.links.length) {
             const elements = this.nav.nativeElement.querySelectorAll('a');
-            console.log(elements);
             for (let element of elements) {
                 this.links.push(element);
             }
