@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {CatInterface, CatTreeInterface} from '../interfaces/response/cat';
+import {CatTreeInterface} from '../interfaces/response/cat';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -15,21 +15,29 @@ export class CatService {
     ) {
     }
 
-    getList(isFillPropertiesFull: any): Observable<CatInterface> {
-        return this.http.get<CatInterface>(`${this.url}/api/v1/cats`, {
+    getTree(): Observable<CatTreeInterface> {
+        return this.http.get<CatTreeInterface>(`${this.url}/api/v1/cats`, {
             params: {
-                asTree: 'false',
-                isFillPropertiesFull: isFillPropertiesFull,
+                asTree: 'true',
+                isFillPropertiesFull: 'false',
             }
         });
     }
 
-    getTree(isFillPropertiesFull: any): Observable<CatTreeInterface> {
-        return this.http.get<CatTreeInterface>(`${this.url}/api/v1/cats`, {
-            params: {
-                asTree: 'true',
-                isFillPropertiesFull: isFillPropertiesFull,
-            }
-        });
-    }
+    // getList(): Observable<CatInterface> {
+    //     return this.http.get<CatInterface>(`${this.url}/api/v1/cats`, {
+    //         params: {
+    //             asTree: 'false',
+    //             isFillPropertiesFull: 'false',
+    //         }
+    //     });
+    // }
+    // getTreeFull(): Observable<CatTreeFullInterface> {
+    //     return this.http.get<CatTreeFullInterface>(`${this.url}/api/v1/cats`, {
+    //         params: {
+    //             asTree: 'true',
+    //             isFillPropertiesFull: 'true',
+    //         }
+    //     });
+    // }
 }

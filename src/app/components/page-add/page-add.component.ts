@@ -11,7 +11,7 @@ import {Subscription} from 'rxjs';
 export class PageAddComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     private subscriptions: Subscription[] = [];
-    private catTree: CatTreeInterface; // основа
+    private catTree: CatTreeInterface; // деревом со св-вами
     aCols: CatTreeInterface[] = []; // динамическая переменная
 
     constructor(
@@ -20,7 +20,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.subscription = this.catService.getTree(false).subscribe(x => {
+        this.subscription = this.catService.getTree().subscribe(x => {
             this.catTree = x;
             this.aCols.push(x);
         });

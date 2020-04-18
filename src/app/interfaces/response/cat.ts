@@ -1,3 +1,5 @@
+import {PropertyFullInterface} from './property';
+
 export interface CatInterface {
     catId: number;
     name: string;
@@ -12,9 +14,23 @@ export interface CatInterface {
     isAutogenerateTitle: boolean;
 }
 
+export interface CatTreeInterface extends CatInterface, ChildesInterface {
+}
+
+export interface CatFullInterface extends CatInterface, PropsFullInterface {
+}
+
+export interface CatTreeFullInterface extends CatFullInterface, ChildesFullInterface {
+}
+
 interface ChildesInterface {
     childes: CatTreeInterface[];
 }
 
-export interface CatTreeInterface extends CatInterface, ChildesInterface {
+interface ChildesFullInterface {
+    childes: CatTreeFullInterface[];
+}
+
+interface PropsFullInterface {
+    properties: PropertyFullInterface[];
 }

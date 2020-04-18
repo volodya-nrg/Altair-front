@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, View
 import {Router} from '@angular/router';
 import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
-import {CatTreeInterface} from '../../interfaces/response/cat';
 
 @Component({
     selector: 'app-nav',
@@ -14,7 +13,6 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscription: Subscription;
     private subscriptions: Subscription[] = [];
     private links: Array<HTMLBaseElement> = [];
-    private catTree: CatTreeInterface;
     private detachClick: () => void;
     isActive: boolean = false;
     catTreeHTML: string = '';
@@ -37,9 +35,8 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        this.subscription = this.catService.getTree(false).subscribe(x => {
-            this.catTree = x;
-            this.catTreeHTML = this.walkOnCats(this.catTree.childes, '/cat');
+        this.subscription = this.catService.getTree().subscribe(x => {
+            this.catTreeHTML = this.walkOnCats(x.childes, '/cat');
             setTimeout(() => this.toggleEventOnLink(true), 0);
         });
         this.subscriptions.push(this.subscription);
@@ -78,7 +75,7 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         var grandFather = target.closest('ul');
-        var matches = grandFather.querySelectorAll(':scope > li > a');
+        var matches = grandFather.querySelectorAll(':scope > li > a.sx-active');
         for (let elem of matches) {
             elem.classList.remove('sx-active');
         }
