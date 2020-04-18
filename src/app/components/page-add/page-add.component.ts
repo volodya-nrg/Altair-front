@@ -76,7 +76,6 @@ export class PageAddComponent implements OnInit, OnDestroy {
 
             // подтягиваем доп. параметры
             this.subscription2 = this.propertyService.getPropertiesFullForCat(cat.catId).subscribe(x => {
-                this.aDynamicPropsFull = x;
                 let newFormGroup = this.fb.group({});
 
                 for (let i = 0; i < x.length; i++) {
@@ -133,6 +132,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
                 }
 
                 this.form = newFormGroup;
+                this.aDynamicPropsFull = x;
             });
             this.subscriptions.push(this.subscription2);
         }
