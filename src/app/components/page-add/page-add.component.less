@@ -1,6 +1,8 @@
 @import "../../../css_variables";
 
 .page-add {
+    margin-bottom: 1em; // 16px / 16px;
+
     &_cats {
         display: flex;
 
@@ -34,13 +36,15 @@
         }
     }
 
-    &_props {
-        &_dynamic {
+    &_dynamic-inputs {
+        display: flex;
 
-        }
+        & > * {
+            flex-basis: 100%;
 
-        &_static {
-
+            &:not(:first-child) {
+                margin-left: 1em;
+            }
         }
     }
 }

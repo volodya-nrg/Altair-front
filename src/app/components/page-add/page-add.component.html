@@ -2,7 +2,6 @@
     <h1>Добавить объявление</h1>
 
     <h2>Каталог</h2>
-
     <div class="page-add_cats">
         <ul *ngFor="let subCat of aCols" class="page-add_cats_col">
             <li *ngFor="let cat of subCat.childes" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
@@ -10,12 +9,100 @@
     </div>
 
     <h2>Параметры</h2>
-    <div class="page-add_props">
-        <div class="page-add_props_dynamic">
-
+    <form [formGroup]="form" class="form" (ngSubmit)="onSubmit($event)">
+        <div *ngFor="let propFull of aDynamicPropsFull" class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">
+                    {{ propFull.title }}
+                </div>
+                <div class="form_cols_col">
+                    <div class="page-add_dynamic-inputs">
+                        <div>
+                            <input *ngIf=" propFull.kindPropertyName === 'input' "
+                                   formControlName="{{propFull.name}}"
+                                   class="form_100"
+                                   type="text"/>
+                            <input *ngIf=" propFull.kindPropertyName === 'input_number' "
+                                   formControlName="{{propFull.name}}"
+                                   type="number"/>
+                            <select *ngIf=" propFull.kindPropertyName === 'select' "
+                                    formControlName="{{propFull.name}}">
+                                <option *ngIf="propFull.values.length" value="">-</option>
+                                <option *ngFor="let val of propFull.values"
+                                        [value]="val.valueId">{{ val.title }}</option>
+                            </select>
+                            <div *ngIf=" propFull.kindPropertyName === 'radio' ">
+                                <span *ngFor="let val of propFull.values; let i = index" class="form_radio-chain">
+                                    <input formControlName="{{propFull.name}}" id="{{propFull.name}}_{{ i }}"
+                                           type="radio"
+                                           [value]="val.valueId"/>
+                                    <label for="{{propFull.name}}_{{ i }}">
+                                        {{ val.title }}
+                                    </label>
+                                </span>
+                            </div>
+                            <textarea *ngIf=" propFull.kindPropertyName === 'textarea' "
+                                      formControlName="{{propFull.name}}"></textarea>
+                            <div *ngIf=" propFull.kindPropertyName === 'photo' ">
+                                <input formControlName="{{propFull.name}}" type="file"
+                                       [multiple]=" propFull.privateComment !== '0' "/>
+                            </div>
+                        </div>
+                        <div *ngIf="propFull.suffix">
+                            {{ propFull.suffix }}
+                        </div>
+                    </div>
+                    <p *ngIf="propFull.propertyComment && propFull.kindPropertyName !== 'photo' "
+                       class="form_comment text-mute">{{ propFull.propertyComment }}</p>
+                    <p *ngIf="propFull.comment" class="form_comment text-mute">{{ propFull.comment }}</p>
+                </div>
+            </div>
         </div>
-        <div class="page-add_props_static">
-
+        <div *ngIf="!leaf || leaf && !leaf.isAutogenerateTitle" class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">
+                    Название объявления
+                </div>
+                <div class="form_cols_col">
+                    <input formControlName="title" class="form_100" type="text"/>
+                    <p *ngIf="leaf && leaf.titleComment" class="form_comment text-mute">{{ leaf.titleComment }}</p>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">
+                    Описание объявления
+                </div>
+                <div class="form_cols_col">
+                    <textarea formControlName="description"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">
+                    {{ leaf && leaf.priceAlias || 'Цена' }}
+                </div>
+                <div class="form_cols_col">
+                    <input formControlName="price" type="number" min="0"/>
+                    сум {{ leaf && leaf.priceSuffix }}
+                </div>
+            </div>
+        </div>
+        <div class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">
+                    Видео c YouTube
+                </div>
+                <div class="form_cols_col">
+                    <input formControlName="youtube" type="text" class="form_100"
+                           placeholder="н-р: https://www.youtube.com/watch?v=zU-LndSG5RE"/>
+                </div>
+            </div>
+        </div>
+        <div class="form_row align-right">
+            <input type="submit" value="Создать"/>
+        </div>
+    </form>
 </div>

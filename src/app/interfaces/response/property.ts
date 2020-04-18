@@ -16,8 +16,8 @@ export interface PropertyFullInterface extends PropertyInterface, PropertyDopInt
 interface PropertyDopInterface {
     kindPropertyName: string;
     propertyPos: number;
-    isRequire: boolean;
-    isCanAsFilter: boolean;
-    comment: string;
+    propertyIsRequire: boolean;
+    propertyIsCanAsFilter: boolean;
+    propertyComment: string;
     values: ValuePropertyInterface[];
 }

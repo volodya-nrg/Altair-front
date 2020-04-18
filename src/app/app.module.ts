@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -17,7 +17,7 @@ import {SearchComponent} from './components/search/search.component';
 import {AdComponent} from './components/ad/ad.component';
 import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
-import { PageSearchComponent } from './components/page-search/page-search.component';
+import {PageSearchComponent} from './components/page-search/page-search.component';
 
 @NgModule({
     declarations: [
