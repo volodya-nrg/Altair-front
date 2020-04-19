@@ -47,6 +47,9 @@
                                 <input formControlName="{{propFull.name}}" type="file"
                                        [multiple]=" propFull.privateComment !== '0' "/>
                             </div>
+                            <div *ngIf=" propFull.kindPropertyName === 'ymaps' ">
+                                ymaps
+                            </div>
                         </div>
                         <div *ngIf="propFull.suffix">
                             {{ propFull.suffix }}
