@@ -1,4 +1,4 @@
-import {ValuePropertyInterface} from './value_property';
+import {ValuePropertyInterface} from './value-property';
 
 export interface PropertyInterface {
     propertyId: number;

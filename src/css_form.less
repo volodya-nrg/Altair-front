@@ -83,6 +83,12 @@
     &_comment {
         margin: 0.3em 0 0 0; // 4px / 16px
     }
+
+    input[type="text"], input[type="number"], input[type="email"], input[type="file"], select, textarea {
+        &.sx-error {
+            border-color: red;
+        }
+    }
 }
 
 input[type="button"], input[type="submit"], button {

@@ -9,11 +9,13 @@
     </div>
 
     <h2>Параметры</h2>
-    <form [formGroup]="form" class="form" (ngSubmit)="onSubmit($event)">
+    <form [formGroup]="form" class="form" (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
+        <input type="hidden" formControlName="catId" value="0"/>
         <div *ngFor="let propFull of aDynamicPropsFull" class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
                     {{ propFull.title }}
+                    <span *ngIf="propFull.propertyIsRequire">*</span>
                 </div>
                 <div class="form_cols_col">
                     <div class="page-add_dynamic-inputs">
@@ -44,11 +46,16 @@
                             <textarea *ngIf=" propFull.kindPropertyName === 'textarea' "
                                       formControlName="{{propFull.name}}"></textarea>
                             <div *ngIf=" propFull.kindPropertyName === 'photo' ">
-                                <input formControlName="{{propFull.name}}" type="file"
-                                       [multiple]=" propFull.privateComment !== '0' "/>
+                                <!-- тут именно name, иначе Ангуляр пытается воспринять как строку -->
+                                <input type="hidden" formControlName="files"/>
+                                <input type="file"
+                                       accept="image/jpeg,image/png"
+                                       [multiple]=" propFull.privateComment !== '0' "
+                                       (change)="addPhoto($event)"
+                                />
                             </div>
                             <div *ngIf=" propFull.kindPropertyName === 'ymaps' ">
-                                ymaps
+                                <input formControlName="{{propFull.kindPropertyName}}" class="form_100" type="text"/>
                             </div>
                         </div>
                         <div *ngIf="propFull.suffix">
@@ -65,6 +72,7 @@
             <div class="form_cols">
                 <div class="form_cols_col">
                     Название объявления
+                    <span *ngIf="leaf && !leaf.isAutogenerateTitle">*</span>
                 </div>
                 <div class="form_cols_col">
                     <input formControlName="title" class="form_100" type="text"/>
@@ -75,7 +83,7 @@
         <div class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
-                    Описание объявления
+                    Описание объявления *
                 </div>
                 <div class="form_cols_col">
                     <textarea formControlName="description"></textarea>
@@ -88,7 +96,9 @@
                     {{ leaf && leaf.priceAlias || 'Цена' }}
                 </div>
                 <div class="form_cols_col">
-                    <input formControlName="price" type="number" min="0"/>
+                    <input formControlName="price"
+                           type="number"
+                           min="0"/>
                     сум {{ leaf && leaf.priceSuffix }}
                 </div>
             </div>
@@ -105,7 +115,7 @@
             </div>
         </div>
         <div class="form_row align-right">
-            <input type="submit" value="Создать"/>
+            <input type="submit" [disabled]="form.invalid" value="Создать"/>
         </div>
     </form>
 </div>
