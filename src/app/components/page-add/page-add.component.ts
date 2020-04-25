@@ -7,6 +7,7 @@ import {PropertyFullInterface} from '../../interfaces/response/property';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
+import {SettingsService} from '../../services/settings.service';
 
 @Component({
     selector: 'app-page-add',
@@ -37,6 +38,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         private catService: CatService,
         private propertyService: PropertyService,
         private adService: AdService,
+        private settingsService: SettingsService,
     ) {
         this.defaultFormControls = {
             catId: new FormControl('', Validators.required),
@@ -49,16 +51,18 @@ export class PageAddComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form = this.fb.group(this.defaultFormControls);
-
-        this.subscription1 = this.catService.getTree().subscribe(x => {
-            this.catTree = x;
-            this.aCols.push(x);
-        });
+        this.subscription1 = this.settingsService.settings.subscribe(x => this.start());
         this.subscriptions.push(this.subscription1);
     }
 
     ngOnDestroy(): void {
+        console.log('destroy pageAdd');
         this.subscriptions.forEach(x => x.unsubscribe());
+    }
+
+    start(): void {
+        this.catTree = this.settingsService.catsTree;
+        this.aCols.push(this.catTree);
     }
 
     showSubCat({target}, cat: CatTreeInterface): void {

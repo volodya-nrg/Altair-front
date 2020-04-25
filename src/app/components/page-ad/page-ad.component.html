@@ -1,35 +1,14 @@
 <app-breadcrumbs></app-breadcrumbs>
-<div class="ad">
-    <h1>Домработница, сиделка, продавец</h1>
-    <div class="ad_photo-and-info">
-        <div class="ad_photo-and-info_photo">
-            <img src=""/>
+<div *ngIf="ad" class="page-ad">
+    <h1>{{ ad.title }}</h1>
+    <div class="page-ad_photo-and-info">
+        <div class="page-ad_photo-and-info_photo">
+            <img *ngIf="ad.images && ad.images.length" [src]="url + '/images/' + ad.images[0].filepath"/>
         </div>
-        <div class="ad_photo-and-info_info">
+        <div class="page-ad_photo-and-info_info">
             <ul>
-                <li>
-                    <span class="text-mute">Готовность к командировкам:</span> иногда
-                </li>
-                <li>
-                    <span class="text-mute">Переезд:</span> возможен
-                </li>
-                <li>
-                    <span class="text-mute">Сфера деятельности:</span> Домашний персонал
-                </li>
-                <li>
-                    <span class="text-mute">График работы:</span> вахтовый метод
-                </li>
-                <li>
-                    <span class="text-mute">Образование:</span> среднее специальное
-                </li>
-                <li>
-                    <span class="text-mute">Стаж работы:</span> без опыта
-                </li>
-                <li>
-                    <span class="text-mute">Пол:</span> женский
-                </li>
-                <li>
-                    <span class="text-mute">Возраст:</span> 32 года
+                <li *ngFor="let detail of ad.details">
+                    <span class="text-mute">{{ detail.propertyName }} - {{ detail.kindPropertyName }}:</span> {{ detail.value }}
                 </li>
             </ul>
         </div>

@@ -18,4 +18,22 @@ export class AdService {
     create(data: any): Observable<AdFullInterface> {
         return this.http.post<AdFullInterface>(`${this.url}/api/v1/ads`, data);
     }
+
+    getFromCat(catId: number): Observable<AdFullInterface[]> {
+        let options = {};
+
+        if (catId) {
+            options = {
+                params: {
+                    catId: catId,
+                }
+            };
+        }
+
+        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, options);
+    }
+
+    getOne(adId: number): Observable<AdFullInterface> {
+        return this.http.get<AdFullInterface>(`${this.url}/api/v1/ads/${adId}`);
+    }
 }

@@ -2,6 +2,8 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, View
 import {Router} from '@angular/router';
 import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
+import {SettingsService} from '../../services/settings.service';
+import {SettingsInterface} from '../../interfaces/response/settings';
 
 @Component({
     selector: 'app-nav',
@@ -22,7 +24,8 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private renderer: Renderer2,
         private router: Router,
-        private catService: CatService
+        private catService: CatService,
+        private settingsService: SettingsService,
     ) {
     }
 
@@ -30,16 +33,19 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
+        console.log('destroy nav component');
         this.subscriptions.forEach(x => x.unsubscribe());
         this.toggleEventOnLink(false);
     }
 
     ngAfterViewInit() {
-        this.subscription = this.catService.getTree().subscribe(x => {
-            this.catTreeHTML = this.walkOnCats(x.childes, '/cat');
-            setTimeout(() => this.toggleEventOnLink(true), 0);
-        });
+        this.subscription = this.settingsService.settings.subscribe(x => this.start());
         this.subscriptions.push(this.subscription);
+    }
+
+    start(): void {
+        this.catTreeHTML = this.walkOnCats(this.settingsService.catsTree.childes, '/cat');
+        setTimeout(() => this.toggleEventOnLink(true), 0);
     }
 
     toggleEventOnLink(isAdd: boolean): void {

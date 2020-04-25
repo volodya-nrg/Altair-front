@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
@@ -18,6 +18,7 @@ import {AdComponent} from './components/ad/ad.component';
 import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
 import {PageSearchComponent} from './components/page-search/page-search.component';
+import {SettingsService} from './services/settings.service';
 
 @NgModule({
     declarations: [
@@ -42,7 +43,14 @@ import {PageSearchComponent} from './components/page-search/page-search.componen
         ReactiveFormsModule,
         HttpClientModule,
     ],
-    providers: [],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (settings: SettingsService) => () => settings.load(),
+            deps: [SettingsService],
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -11,7 +11,7 @@ export class CatService {
     private url: string = environment.apiUrl;
 
     constructor(
-        private http: HttpClient,
+        private http: HttpClient
     ) {
     }
 
