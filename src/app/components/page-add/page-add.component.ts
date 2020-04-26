@@ -2,8 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Subscription} from 'rxjs';
-import {PropertyService} from '../../services/property.service';
-import {PropertyFullInterface} from '../../interfaces/response/property';
+import {PropService} from '../../services/prop.service';
+import {PropFullInterface} from '../../interfaces/response/prop';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
@@ -30,13 +30,13 @@ export class PageAddComponent implements OnInit, OnDestroy {
         price: FormControl,
         youtube: FormControl,
     };
-    aDynamicPropsFull: PropertyFullInterface[] = [];
+    aDynamicPropsFull: PropFullInterface[] = [];
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
 
     constructor(
         private fb: FormBuilder,
         private catService: CatService,
-        private propertyService: PropertyService,
+        private propService: PropService,
         private adService: AdService,
         private settingsService: SettingsService,
     ) {
@@ -89,16 +89,16 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.leaf = cat;
 
         // подтягиваем доп. параметры
-        this.subscription2 = this.propertyService.getPropertiesFullForCat(cat.catId).subscribe(x => {
+        this.subscription2 = this.propService.getPropsFullForCat(cat.catId).subscribe(x => {
             let newFormGroup = this.fb.group({});
 
             for (let i = 0; i < x.length; i++) {
                 let newProp = x[i];
-                let oldValue = newProp.kindPropertyName === 'input_number' ? 0 : '';
+                let oldValue = newProp.kindPropName === 'input_number' ? 0 : '';
                 let aValidators = [];
 
                 // если данное св-во обязательно, то подключим валидатор
-                if (newProp.propertyIsRequire) {
+                if (newProp.propIsRequire) {
                     aValidators.push(Validators.required);
                 }
 

@@ -1,34 +1,53 @@
 .page-ad {
-    &_photo-and-info {
+    &_basic {
         display: flex;
-        align-items: flex-start;
 
         & > * {
+            &:first-child {
+                flex-basis: 20em; // 320px / 16px
+            }
+
             &:not(:first-child) {
                 margin-left: 1em;
             }
         }
+    }
 
-        &_photo {
-            flex: 0 0 20em; // 320px / 16px
-            height: 20em; // 320px / 16px
-            overflow: hidden;
-            background-color: whitesmoke;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+    &_photo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 20em; // 320px / 16px
+        background-color: whitesmoke;
 
-            img {
-                max-width: 100%;
-            }
+        img {
+            max-width: 100%;
+            cursor: pointer;
         }
+    }
 
-        &_info {
-            ul {
-                margin: 0;
-                padding: 0;
-                list-style: none;
-            }
+    &_mini-photos {
+        margin-top: 1em;
+    }
+
+    &_mini-photo {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 3.5em; // 56px / 16px
+        height: 3.5em; // 56px / 16px
+        background-color: whitesmoke;
+        margin-right: 0.5em; // 8px / 16px
+
+        img {
+            max-width: 100%;
+            cursor: pointer;
         }
+    }
+
+    &_props {
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 }

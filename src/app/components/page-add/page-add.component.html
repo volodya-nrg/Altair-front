@@ -15,25 +15,25 @@
             <div class="form_cols">
                 <div class="form_cols_col">
                     {{ propFull.title }}
-                    <span *ngIf="propFull.propertyIsRequire">*</span>
+                    <span *ngIf="propFull.propIsRequire">*</span>
                 </div>
                 <div class="form_cols_col">
                     <div class="page-add_dynamic-inputs">
                         <div>
-                            <input *ngIf=" propFull.kindPropertyName === 'input' "
+                            <input *ngIf=" propFull.kindPropName === 'input' "
                                    formControlName="{{propFull.name}}"
                                    class="form_100"
                                    type="text"/>
-                            <input *ngIf=" propFull.kindPropertyName === 'input_number' "
+                            <input *ngIf=" propFull.kindPropName === 'input_number' "
                                    formControlName="{{propFull.name}}"
                                    type="number"/>
-                            <select *ngIf=" propFull.kindPropertyName === 'select' "
+                            <select *ngIf=" propFull.kindPropName === 'select' "
                                     formControlName="{{propFull.name}}">
                                 <option *ngIf="propFull.values.length" value="">-</option>
                                 <option *ngFor="let val of propFull.values"
                                         [value]="val.valueId">{{ val.title }}</option>
                             </select>
-                            <div *ngIf=" propFull.kindPropertyName === 'radio' ">
+                            <div *ngIf=" propFull.kindPropName === 'radio' ">
                                 <span *ngFor="let val of propFull.values; let i = index" class="form_radio-chain">
                                     <input formControlName="{{propFull.name}}" id="{{propFull.name}}_{{ i }}"
                                            type="radio"
@@ -43,9 +43,9 @@
                                     </label>
                                 </span>
                             </div>
-                            <textarea *ngIf=" propFull.kindPropertyName === 'textarea' "
+                            <textarea *ngIf=" propFull.kindPropName === 'textarea' "
                                       formControlName="{{propFull.name}}"></textarea>
-                            <div *ngIf=" propFull.kindPropertyName === 'photo' ">
+                            <div *ngIf=" propFull.kindPropName === 'photo' ">
                                 <!-- тут именно name, иначе Ангуляр пытается воспринять как строку -->
                                 <input type="hidden" formControlName="files"/>
                                 <input type="file"
@@ -54,16 +54,16 @@
                                        (change)="addPhoto($event)"
                                 />
                             </div>
-                            <div *ngIf=" propFull.kindPropertyName === 'ymaps' ">
-                                <input formControlName="{{propFull.kindPropertyName}}" class="form_100" type="text"/>
+                            <div *ngIf=" propFull.kindPropName === 'ymaps' ">
+                                <input formControlName="{{propFull.kindPropName}}" class="form_100" type="text"/>
                             </div>
                         </div>
                         <div *ngIf="propFull.suffix">
                             {{ propFull.suffix }}
                         </div>
                     </div>
-                    <p *ngIf="propFull.propertyComment && propFull.kindPropertyName !== 'photo' "
-                       class="form_comment text-mute">{{ propFull.propertyComment }}</p>
+                    <p *ngIf="propFull.propComment && propFull.kindPropName !== 'photo' "
+                       class="form_comment text-mute">{{ propFull.propComment }}</p>
                     <p *ngIf="propFull.comment" class="form_comment text-mute">{{ propFull.comment }}</p>
                 </div>
             </div>

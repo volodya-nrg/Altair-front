@@ -4,7 +4,7 @@ import {SettingsInterface} from '../interfaces/response/settings';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CatTreeInterface} from '../interfaces/response/cat';
-import {PropertyInterface} from '../interfaces/response/property';
+import {PropInterface} from '../interfaces/response/prop';
 
 @Injectable({
     providedIn: 'root'
@@ -26,8 +26,8 @@ export class SettingsService {
         return this.conf.catsTree;
     }
 
-    get props(): PropertyInterface[] {
-        return this.conf.properties;
+    get props(): PropInterface[] {
+        return this.conf.props;
     }
 
     load(): void {

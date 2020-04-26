@@ -1,11 +1,5 @@
 <ul class="breadcrumbs">
-    <li class="text-eclipse">
-        <a href="javascript:void(0);"><small>Резюме</small></a>
-    </li>
-    <li class="text-eclipse">
-        <a href="javascript:void(0);"><small>Домашний персонал</small></a>
-    </li>
-    <li class="text-eclipse">
-        <a href="javascript:void(0);"><small>Вахтовый метод</small></a>
+    <li *ngFor="let item of items; let i = index" class="text-eclipse">
+        <a href="javascript:void(0);" [routerLink]="item.slug"><small>{{ item.name }}</small></a>
     </li>
 </ul>

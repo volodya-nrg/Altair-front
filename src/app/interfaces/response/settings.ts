@@ -1,9 +1,9 @@
 import {CatTreeInterface} from './cat';
-import {PropertyInterface} from './property';
-import {KindPropertyInterface} from './kind-property';
+import {PropInterface} from './prop';
+import {KindPropInterface} from './kind-prop';
 
 export interface SettingsInterface {
     catsTree: CatTreeInterface,
-    kindProperties: KindPropertyInterface[],
-    properties: PropertyInterface[],
+    kindProps: KindPropInterface[],
+    props: PropInterface[],
 }

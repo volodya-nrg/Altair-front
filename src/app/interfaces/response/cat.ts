@@ -1,4 +1,4 @@
-import {PropertyFullInterface} from './property';
+import {PropFullInterface} from './prop';
 
 export interface CatInterface {
     catId: number;
@@ -32,5 +32,5 @@ interface ChildesFullInterface {
 }
 
 interface PropsFullInterface {
-    properties: PropertyFullInterface[];
+    props: PropFullInterface[];
 }

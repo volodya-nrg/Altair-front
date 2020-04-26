@@ -3,7 +3,8 @@ import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {SettingsService} from '../../services/settings.service';
+import {PagesService} from '../../services/pages.service';
+import {CatFullInterface} from '../../interfaces/response/cat';
 
 @Component({
     selector: 'app-page-ad',
@@ -13,13 +14,14 @@ import {SettingsService} from '../../services/settings.service';
 export class PageAdComponent implements OnInit {
     private subscription: Subscription;
     private subscriptions: Subscription[] = [];
-    ad: AdFullInterface;
+    adFull: AdFullInterface;
+    catFull: CatFullInterface;
     url: string = environment.apiUrl;
     adId: number;
 
     constructor(
         private adService: AdService,
-        public settingsService: SettingsService,
+        private pagesService: PagesService,
     ) {
         this.adId = this.getAdIdFromUrl();
 
@@ -32,7 +34,10 @@ export class PageAdComponent implements OnInit {
     ngOnInit(): void {
         console.log('init pageAd');
 
-        this.subscription = this.adService.getOne(this.adId).subscribe(x => this.ad = x);
+        this.subscription = this.pagesService.pageAd(this.adId).subscribe(x => {
+            this.adFull = x.adFull;
+            this.catFull = x.catFull;
+        });
         this.subscriptions.push(this.subscription);
     }
 

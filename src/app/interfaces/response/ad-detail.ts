@@ -1,5 +1,14 @@
 export interface AdDetailInterface {
     adId: number;
-    propertyId: number;
+    propId: number;
     value: string;
+}
+
+export interface AdDetailExtInterface extends AdDetailInterface, ExtInterface {
+}
+
+interface ExtInterface {
+    propName: string;
+    kindPropName: string;
+    valueName: string;
 }
