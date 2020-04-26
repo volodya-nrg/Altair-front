@@ -1,4 +1,4 @@
-<ul class="breadcrumbs">
+<ul *ngIf="items.length" class="breadcrumbs">
     <li *ngFor="let item of items; let i = index" class="text-eclipse">
         <a href="javascript:void(0);" [routerLink]="item.slug"><small>{{ item.name }}</small></a>
     </li>

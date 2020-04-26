@@ -1,59 +1,57 @@
-<ng-container *ngIf="adFull && catFull">
-    <app-breadcrumbs [curCatId]="catFull.catId"></app-breadcrumbs>
-    <div class="page-ad">
-        <h1>{{ adFull.title }}</h1>
-        <div class="page-ad_basic">
-            <div>
-                <div class="page-ad_photo">
-                    <img *ngIf="adFull.images && adFull.images.length"
-                         [src]="url + '/images/' + adFull.images[0].filepath"
-                         title="{{ adFull.title }}"/>
-                </div>
-                <div *ngIf="adFull.images && adFull.images.length > 1" class="page-ad_mini-photos">
-                    <ng-container *ngFor="let image of adFull.images; let i = index">
-                    <span *ngIf="i" class="page-ad_mini-photo">
-                        <img [src]="url + '/images/' + image.filepath" title="{{ adFull.title }}"/>
-                    </span>
+<div *ngIf="adFull && catFull" class="page-ad">
+    <h1>{{ adFull.title }}</h1>
+    <div class="page-ad_basic">
+        <div>
+            <div class="page-ad_photo">
+                <img *ngIf="adFull.images && adFull.images.length"
+                     [src]="url + '/images/' + adFull.images[0].filepath"
+                     title="{{ adFull.title }}"/>
+            </div>
+            <div *ngIf="adFull.images && adFull.images.length > 1" class="page-ad_mini-photos">
+                <ng-container *ngFor="let image of adFull.images; let i = index">
+                <span *ngIf="i" class="page-ad_mini-photo">
+                    <img [src]="url + '/images/' + image.filepath" title="{{ adFull.title }}"/>
+                </span>
+                </ng-container>
+            </div>
+        </div>
+        <div>
+            <ul class="page-ad_props">
+                <li *ngFor="let detailExt of adFull.detailsExt">
+                    <ng-container *ngIf="detailExt.kindPropName != 'photo' ">
+                        <ng-container *ngFor="let prop of catFull.props">
+                            <ng-container *ngIf="prop.propId === detailExt.propId">
+                                <span class="text-mute">{{ prop.title }}:</span>
+                            </ng-container>
+                        </ng-container>
+
+                        {{ detailExt.valueName ? detailExt.valueName : detailExt.value }}
                     </ng-container>
+                </li>
+            </ul>
+            <div class="page-ad_description">
+                <span class="text-mute">Описание:</span>
+                <div>
+                    {{ adFull.description }}
                 </div>
             </div>
-            <div>
-                <ul class="page-ad_props">
-                    <li *ngFor="let detailExt of adFull.detailsExt">
-                        <ng-container *ngIf="detailExt.kindPropName != 'photo' ">
-                            <ng-container *ngFor="let prop of catFull.props">
-                                <ng-container *ngIf="prop.propId === detailExt.propId">
-                                    <span class="text-mute">{{ prop.title }}:</span>
-                                </ng-container>
-                            </ng-container>
-
-                            {{ detailExt.valueName ? detailExt.valueName : detailExt.value }}
-                        </ng-container>
-                    </li>
-                </ul>
-                <div class="page-ad_description">
-                    <span class="text-mute">Описание:</span>
-                    <div>
-                        {{ adFull.description }}
-                    </div>
+            <div class="page-ad_price">
+                <span class="text-mute">{{ catFull.priceAlias ? catFull.priceAlias : 'Цена' }}:</span>
+                {{ adFull.price }} сум {{ catFull.priceSuffix }}
+            </div>
+            <div class="page-ad_youtube">
+                <span class="text-mute">Видео:</span>
+                <div>
+                    {{ adFull.youtube }}
                 </div>
-                <div class="page-ad_price">
-                    <span class="text-mute">{{ catFull.priceAlias ? catFull.priceAlias : 'Цена' }}:</span>
-                    {{ adFull.price }} сум {{ catFull.priceSuffix }}
-                </div>
-                <div class="page-ad_youtube">
-                    <span class="text-mute">Видео:</span>
-                    <div>
-                        {{ adFull.youtube }}
-                    </div>
-                </div>
-                <div class="page-ad_created-at">
-                    <span class="text-mute">Созданно:</span> {{ adFull.createdAt }}
-                </div>
-                <div class="page-ad_updated-at">
-                    <span class="text-mute">Измененно:</span> {{ adFull.updatedAt }}
-                </div>
+            </div>
+            <div class="page-ad_created-at">
+                <span class="text-mute">Созданно:</span> {{ adFull.createdAt }}
+            </div>
+            <div class="page-ad_updated-at">
+                <span class="text-mute">Измененно:</span> {{ adFull.updatedAt }}
             </div>
         </div>
     </div>
-</ng-container>
+</div>
+

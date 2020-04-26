@@ -45,18 +45,17 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
             const cat = listCatTree[i];
 
             if (cat.catId === findCatId) {
-                receiver.push({name: cat.name, slug: cat.slug});
+                receiver.unshift({name: cat.name, slug: cat.slug});
                 return true;
             }
             if (cat.childes && cat.childes.length) {
                 let res = this.walk(cat.childes, findCatId, receiver, deep + 1);
 
                 if (res) {
-                    receiver.push({name: cat.name, slug: cat.slug});
+                    receiver.unshift({name: cat.name, slug: cat.slug});
 
                     if (!deep) {
-                        receiver.push(this.first);
-                        receiver = receiver.reverse();
+                        receiver.unshift(this.first);
 
                         let a = '/';
                         for (let j = 0; j < receiver.length; j++) {

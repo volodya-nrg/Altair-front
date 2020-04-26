@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
 import {SettingsService} from '../../services/settings.service';
-import {SettingsInterface} from '../../interfaces/response/settings';
 
 @Component({
     selector: 'app-nav',
@@ -14,7 +13,7 @@ import {SettingsInterface} from '../../interfaces/response/settings';
 export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscription: Subscription;
     private subscriptions: Subscription[] = [];
-    private links: Array<HTMLBaseElement> = [];
+    private links: HTMLBaseElement[] = [];
     private detachClick: () => void;
     isActive: boolean = false;
     catTreeHTML: string = '';
