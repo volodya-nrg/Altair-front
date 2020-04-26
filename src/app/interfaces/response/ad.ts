@@ -1,5 +1,6 @@
-import {AdDetailExtInterface} from './ad-detail';
+import {AdDetailInterface} from './ad-detail';
 import {ImageInterface} from './image';
+import {PropertyFullInterface} from './property';
 
 export interface AdInterface {
     adId: number;
@@ -22,5 +23,6 @@ export interface AdFullInterface extends AdInterface, AdDopInterface {
 
 interface AdDopInterface {
     images: ImageInterface[];
-    details: AdDetailExtInterface[];
+    details: AdDetailInterface[];
+    propertiesFull: PropertyFullInterface[];
 }

@@ -36,10 +36,14 @@ export class SettingsService {
                 format: 'json'
             }
         });
-        this.settings$.subscribe(x => {
-            this.conf = x;
-            this.settings.next(this.conf);
-            this.settings.complete();
-        });
+        this.settings$.subscribe(
+            x => {
+                this.conf = x;
+                this.settings.next(this.conf);
+            },
+            err => {
+            },
+            () => this.settings.complete()
+        );
     }
 }

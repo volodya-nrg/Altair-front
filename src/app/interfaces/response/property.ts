@@ -12,6 +12,8 @@ export interface PropertyInterface {
 
 export interface PropertyFullInterface extends PropertyInterface, PropertyDopInterface {
 }
+export interface PropertyWithKindNameInterface extends PropertyInterface, PropertyDop2Interface {
+}
 
 interface PropertyDopInterface {
     kindPropertyName: string;
@@ -20,4 +22,7 @@ interface PropertyDopInterface {
     propertyIsCanAsFilter: boolean;
     propertyComment: string;
     values: ValuePropertyInterface[];
+}
+interface PropertyDop2Interface {
+    kindPropertyName: string;
 }

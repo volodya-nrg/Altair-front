@@ -19,7 +19,7 @@ export class PageAdComponent implements OnInit {
 
     constructor(
         private adService: AdService,
-        private settingsService: SettingsService,
+        public settingsService: SettingsService,
     ) {
         this.adId = this.getAdIdFromUrl();
 

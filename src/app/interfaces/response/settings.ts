@@ -1,6 +1,6 @@
 import {CatTreeInterface} from './cat';
-import {KindPropertyInterface} from './kind-property';
 import {PropertyInterface} from './property';
+import {KindPropertyInterface} from './kind-property';
 
 export interface SettingsInterface {
     catsTree: CatTreeInterface,
