@@ -21,6 +21,7 @@ export class PageAdComponent implements OnInit, OnDestroy {
     catFull: CatFullInterface;
     url: string = environment.apiUrl;
     adId: number;
+    isLoading: boolean = false;
 
     constructor(
         private adService: AdService,
@@ -48,9 +49,11 @@ export class PageAdComponent implements OnInit, OnDestroy {
     }
 
     start(settings: SettingsInterface): void {
+        this.isLoading = true;
         let s = this.servicePages.pageAd(this.adId).subscribe(x => {
             this.adFull = x.adFull;
             this.catFull = x.catFull;
+            this.isLoading = false;
 
             let cats: CatInterface[] = [];
             Helpers.getDestidantCatTree(settings.catsTree.childes, this.adFull.catId, cats, 0);

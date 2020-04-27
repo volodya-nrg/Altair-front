@@ -17,6 +17,7 @@ import {Helpers} from '../../helpers';
 export class PageCatComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     ads: AdFullInterface[] = [];
+    isLoading: boolean = false;
 
     constructor(
         private serviceAd: AdService,
@@ -63,8 +64,11 @@ export class PageCatComponent implements OnInit, OnDestroy {
     }
 
     send(catId: number): void {
+        this.isLoading = false;
+        this.ads.length = 0;
         let s = this.serviceAd.getFromCat(catId).subscribe(x => {
             this.ads = x;
+            this.isLoading = true;
         });
         this.subscriptions.push(s);
 

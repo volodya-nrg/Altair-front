@@ -19,6 +19,7 @@ import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
 import {PageSearchComponent} from './components/page-search/page-search.component';
 import {SettingsService} from './services/settings.service';
+import { PreloaderComponent } from './components/preloader/preloader.component';
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import {SettingsService} from './services/settings.service';
         SafeHtmlPipe,
         BreadcrumbsComponent,
         PageSearchComponent,
+        PreloaderComponent,
     ],
     imports: [
         BrowserModule,

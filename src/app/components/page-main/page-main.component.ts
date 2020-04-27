@@ -11,6 +11,7 @@ import {Subscription} from 'rxjs';
 export class PageMainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     ads: AdFullInterface[] = [];
+    isLoading: boolean = false;
 
     constructor(
         private serviceAd: AdService
@@ -19,7 +20,12 @@ export class PageMainComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('init pageMain');
-        let s = this.serviceAd.getFromCat(0).subscribe(x => this.ads = x);
+
+        this.isLoading = true;
+        let s = this.serviceAd.getFromCat(0).subscribe(x => {
+            this.ads = x;
+            this.isLoading = false;
+        });
         this.subscriptions.push(s);
     }
 

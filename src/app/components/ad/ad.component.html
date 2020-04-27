@@ -6,8 +6,8 @@
         <a class="ad_title" [routerLink]=" '/ad/' + ad.slug " title="{{ ad.title }}">
             Далекий афелий : методология и особенности {{ ad.title }}
         </a>
-        <div class="ad_price">123{{ ad.price }} сум</div>
+        <div class="ad_price">{{ ad.price }} сум</div>
         <small class="ad_city">Ташкент</small>
-        <small class="ad_created">{{ ad.createdAt }}</small>
+        <small class="ad_created">{{ ad.createdAt | date:"dd/MM/yyyy" }}</small>
     </div>
 </div>
