@@ -1,18 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {PagesService} from '../../services/pages.service';
-import {CatFullInterface} from '../../interfaces/response/cat';
+import {CatFullInterface, CatInterface} from '../../interfaces/response/cat';
+import {BreadcrumbsService} from '../../services/breadcrumbs.service';
+import {SettingsService} from '../../services/settings.service';
+import {SettingsInterface} from '../../interfaces/response/settings';
+import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-page-ad',
     templateUrl: './page-ad.component.html',
     styleUrls: ['./page-ad.component.less']
 })
-export class PageAdComponent implements OnInit {
-    private subscription: Subscription;
+export class PageAdComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     adFull: AdFullInterface;
     catFull: CatFullInterface;
@@ -21,9 +24,11 @@ export class PageAdComponent implements OnInit {
 
     constructor(
         private adService: AdService,
-        private pagesService: PagesService,
+        private servicePages: PagesService,
+        private serviceBreadcrumbs: BreadcrumbsService,
+        private settingsService: SettingsService,
     ) {
-        this.adId = this.getAdIdFromUrl();
+        this.adId = Helpers.getAdIdFromUrl();
 
         if (!this.adId) {
             alert('Ошибка: не верный id объявления!');
@@ -33,12 +38,8 @@ export class PageAdComponent implements OnInit {
 
     ngOnInit(): void {
         console.log('init pageAd');
-
-        this.subscription = this.pagesService.pageAd(this.adId).subscribe(x => {
-            this.adFull = x.adFull;
-            this.catFull = x.catFull;
-        });
-        this.subscriptions.push(this.subscription);
+        let s = this.settingsService.settings.subscribe(x => this.start(x));
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
@@ -46,22 +47,17 @@ export class PageAdComponent implements OnInit {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    getAdIdFromUrl(): number {
-        let result = 0;
-        const regexp = /_(\d+)$/;
-        const a = document.createElement('a');
-        a.href = window.location.href;
+    start(settings: SettingsInterface): void {
+        let s = this.servicePages.pageAd(this.adId).subscribe(x => {
+            this.adFull = x.adFull;
+            this.catFull = x.catFull;
 
-        let res = a.pathname.match(regexp);
+            let cats: CatInterface[] = [];
+            Helpers.getDestidantCatTree(settings.catsTree.childes, this.adFull.catId, cats, 0);
 
-        if (res && res.length && res.length > 1) {
-            const adId = parseInt(res[1], 10);
-
-            if (adId) {
-                result = adId;
-            }
-        }
-
-        return result;
+            const bcItems = Helpers.buildBCFromCats(cats);
+            this.serviceBreadcrumbs.bhSubject.next(bcItems);
+        });
+        this.subscriptions.push(s);
     }
 }

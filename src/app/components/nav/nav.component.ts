@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
 import {SettingsService} from '../../services/settings.service';
+import {SettingsInterface} from '../../interfaces/response/settings';
 
 @Component({
     selector: 'app-nav',
@@ -11,7 +12,6 @@ import {SettingsService} from '../../services/settings.service';
     encapsulation: ViewEncapsulation.None,
 })
 export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
-    private subscription: Subscription;
     private subscriptions: Subscription[] = [];
     private links: HTMLBaseElement[] = [];
     private detachClick: () => void;
@@ -23,27 +23,28 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private renderer: Renderer2,
         private router: Router,
-        private catService: CatService,
+        private serviceCat: CatService,
         private settingsService: SettingsService,
     ) {
     }
 
     ngOnInit(): void {
+        console.log('init navComponent');
     }
 
     ngOnDestroy(): void {
-        console.log('destroy nav component');
+        console.log('destroy navComponent');
         this.subscriptions.forEach(x => x.unsubscribe());
         this.toggleEventOnLink(false);
     }
 
     ngAfterViewInit() {
-        this.subscription = this.settingsService.settings.subscribe(x => this.start());
-        this.subscriptions.push(this.subscription);
+        let s = this.settingsService.settings.subscribe(x => this.start(x));
+        this.subscriptions.push(s);
     }
 
-    start(): void {
-        this.catTreeHTML = this.walkOnCats(this.settingsService.catsTree.childes, '/cat');
+    start(settings: SettingsInterface): void {
+        this.catTreeHTML = this.walkOnCats(settings.catsTree.childes, '/cat');
         setTimeout(() => this.toggleEventOnLink(true), 0);
     }
 

@@ -1,8 +1,7 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {SettingsService} from '../../services/settings.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {CatTreeInterface} from '../../interfaces/response/cat';
 import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
+import {BreadcrumbsService} from '../../services/breadcrumbs.service';
 
 @Component({
     selector: 'app-breadcrumbs',
@@ -10,66 +9,22 @@ import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
     styleUrls: ['./breadcrumbs.component.less']
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy {
-    private subscription: Subscription;
     private subscriptions: Subscription[] = [];
-    private first: BreadcrumbsInterface;
     items: BreadcrumbsInterface[] = [];
-    @Input('curCatId') curCatId: number;
 
     constructor(
-        private settingsService: SettingsService
+        private serviceBreadcrumbs: BreadcrumbsService
     ) {
-        this.first = {
-            name: 'Каталог',
-            slug: 'cat',
-        };
     }
 
     ngOnInit(): void {
-        console.log('init BreadcrumbsComponent');
-        this.subscription = this.settingsService.settings.subscribe(x => this.start());
-        this.subscriptions.push(this.subscription);
+        console.log('init breadcrumbsComponent');
+        const s = this.serviceBreadcrumbs.bhSubject.subscribe(x => this.items = x);
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
-        console.log('destroy BreadcrumbsComponent');
+        console.log('destroy breadcrumbsComponent');
         this.subscriptions.forEach(x => x.unsubscribe());
-    }
-
-    start(): void {
-        this.walk(this.settingsService.catsTree.childes, this.curCatId, this.items, 0);
-    }
-
-    walk(listCatTree: CatTreeInterface[], findCatId: number, receiver: BreadcrumbsInterface[], deep: number): boolean {
-        for (let i = 0; i < listCatTree.length; i++) {
-            const cat = listCatTree[i];
-
-            if (cat.catId === findCatId) {
-                receiver.unshift({name: cat.name, slug: cat.slug});
-                return true;
-            }
-            if (cat.childes && cat.childes.length) {
-                let res = this.walk(cat.childes, findCatId, receiver, deep + 1);
-
-                if (res) {
-                    receiver.unshift({name: cat.name, slug: cat.slug});
-
-                    if (!deep) {
-                        receiver.unshift(this.first);
-
-                        let a = '/';
-                        for (let j = 0; j < receiver.length; j++) {
-                            const b = '/' + receiver[j].slug;
-                            receiver[j].slug = a + b;
-                            a += b;
-                        }
-                    }
-
-                    return res;
-                }
-            }
-        }
-
-        return false;
     }
 }

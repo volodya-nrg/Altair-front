@@ -1,7 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {environment} from '../../../environments/environment';
-import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-ad',
@@ -17,10 +16,10 @@ export class AdComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init ad component');
+        console.log('init adComponent');
     }
 
     ngOnDestroy(): void {
-        console.log('destroy ad component');
+        console.log('destroy adComponent');
     }
 }

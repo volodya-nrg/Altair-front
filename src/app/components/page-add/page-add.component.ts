@@ -8,6 +8,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
 import {SettingsService} from '../../services/settings.service';
+import {SettingsInterface} from '../../interfaces/response/settings';
 
 @Component({
     selector: 'app-page-add',
@@ -15,11 +16,8 @@ import {SettingsService} from '../../services/settings.service';
     styleUrls: ['./page-add.component.less']
 })
 export class PageAddComponent implements OnInit, OnDestroy {
-    private subscription1: Subscription;
-    private subscription2: Subscription;
-    private subscription3: Subscription;
     private subscriptions: Subscription[] = [];
-    private catTree: CatTreeInterface; // деревом со св-вами
+    private catTree: CatTreeInterface;
     private previosTitleHelp: string;
     aCols: CatTreeInterface[] = []; // динамическая переменная
     form: FormGroup;
@@ -35,10 +33,10 @@ export class PageAddComponent implements OnInit, OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private catService: CatService,
-        private propService: PropService,
-        private adService: AdService,
-        private settingsService: SettingsService,
+        private serviceCat: CatService,
+        private serviceProp: PropService,
+        private serviceAd: AdService,
+        private serviceSettings: SettingsService,
     ) {
         this.defaultFormControls = {
             catId: new FormControl('', Validators.required),
@@ -50,9 +48,10 @@ export class PageAddComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        console.log('init pageAdd');
         this.form = this.fb.group(this.defaultFormControls);
-        this.subscription1 = this.settingsService.settings.subscribe(x => this.start());
-        this.subscriptions.push(this.subscription1);
+        let s = this.serviceSettings.settings.subscribe(x => this.start(x));
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
@@ -60,8 +59,8 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    start(): void {
-        this.catTree = this.settingsService.catsTree;
+    start(settings: SettingsInterface): void {
+        this.catTree = settings.catsTree;
         this.aCols.push(this.catTree);
     }
 
@@ -89,7 +88,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.leaf = cat;
 
         // подтягиваем доп. параметры
-        this.subscription2 = this.propService.getPropsFullForCat(cat.catId).subscribe(x => {
+        let s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(x => {
             let newFormGroup = this.fb.group({});
 
             for (let i = 0; i < x.length; i++) {
@@ -149,7 +148,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
             this.form = newFormGroup;
             this.aDynamicPropsFull = x;
         });
-        this.subscriptions.push(this.subscription2);
+        this.subscriptions.push(s);
     }
 
     getDeepLevel(catId: number): number {
@@ -184,11 +183,11 @@ export class PageAddComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        this.subscription3 = this.adService.create(newFormData).subscribe(x => {
+        let s = this.serviceAd.create(newFormData).subscribe(x => {
             console.log(x);
             target.reset();
         });
-        this.subscriptions.push(this.subscription3);
+        this.subscriptions.push(s);
     }
 
     addPhoto({target}) {

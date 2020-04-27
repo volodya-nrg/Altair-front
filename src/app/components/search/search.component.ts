@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log('init serachComponent');
         this.form = this.fb.group({
             query: ['', Validators.required]
         });

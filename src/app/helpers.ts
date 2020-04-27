@@ -1,3 +1,7 @@
+import {CatInterface, CatTreeInterface} from './interfaces/response/cat';
+import {BreadcrumbsInterface} from './interfaces/breadcrumbs';
+import {UrlSegment} from '@angular/router';
+
 export class Helpers {
     static rand(min: number, max: number) {
         min = Math.ceil(min);
@@ -62,5 +66,103 @@ export class Helpers {
         }
 
         return formData;
+    }
+
+    static getDestidantCatTree(listCatTree: CatTreeInterface[], findCatId: number, receiver: CatInterface[], deep: number): boolean {
+        for (let i = 0; i < listCatTree.length; i++) {
+            const cat = listCatTree[i];
+
+            if (cat.catId === findCatId) {
+                const a = Object.assign({}, cat);
+                delete a.childes;
+
+                receiver.unshift(a);
+                return true;
+            }
+            if (cat.childes && cat.childes.length) {
+                let res = this.getDestidantCatTree(cat.childes, findCatId, receiver, deep + 1);
+
+                if (res) {
+                    const a = Object.assign({}, cat);
+                    delete a.childes;
+
+                    receiver.unshift(a);
+
+                    if (!deep) {
+                        // тут конец
+                    }
+
+                    return res;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    static buildBCFromCats(cats: CatInterface[]): BreadcrumbsInterface[] {
+        let bcItems: BreadcrumbsInterface[] = [];
+        let urlSave = '/';
+
+        urlSave += 'cat';
+        bcItems.push({
+            name: 'Каталог',
+            url: urlSave,
+        });
+
+        Object.keys(cats).forEach(key => {
+            const cat = cats[key];
+
+            urlSave += '/' + cat.slug;
+            bcItems.push({
+                name: cat.name,
+                url: urlSave,
+            });
+        });
+
+        return bcItems;
+    }
+
+    static getAdIdFromUrl(): number {
+        let result = 0;
+        const regexp = /_(\d+)$/;
+        const a = document.createElement('a');
+        a.href = window.location.href;
+
+        let res = a.pathname.match(regexp);
+
+        if (res && res.length && res.length > 1) {
+            const adId = parseInt(res[1], 10);
+
+            if (adId) {
+                result = adId;
+            }
+        }
+
+        return result;
+    }
+
+    static findCatIdFromSlugs(catsTree: CatTreeInterface[], slugs: UrlSegment[]): number {
+        let catId = 0;
+
+        if (!slugs.length) {
+            return catId;
+        }
+
+        for (let i = 0; i < catsTree.length; i++) {
+            const cat = catsTree[i];
+
+            // нашли то что искали
+            if (cat.slug === slugs[0].path) {
+                if (cat.slug === slugs[0].path && slugs.length === 1) {
+                    return cat.catId;
+                }
+                if (cat.slug === slugs[0].path && slugs.length > 1 && cat.childes && cat.childes.length) {
+                    return this.findCatIdFromSlugs(cat.childes, slugs.slice(1));
+                }
+            }
+        }
+
+        return catId;
     }
 }

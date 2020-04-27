@@ -9,19 +9,18 @@ import {Subscription} from 'rxjs';
     styleUrls: ['./page-main.component.less'],
 })
 export class PageMainComponent implements OnInit, OnDestroy {
-    private subscription: Subscription;
     private subscriptions: Subscription[] = [];
     ads: AdFullInterface[] = [];
 
     constructor(
-        private adService: AdService
+        private serviceAd: AdService
     ) {
     }
 
     ngOnInit(): void {
         console.log('init pageMain');
-        this.subscription = this.adService.getFromCat(0).subscribe(x => this.ads = x);
-        this.subscriptions.push(this.subscription);
+        let s = this.serviceAd.getFromCat(0).subscribe(x => this.ads = x);
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {

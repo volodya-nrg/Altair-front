@@ -1,10 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router, UrlSegment} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
-import {BehaviorSubject, Subscription} from 'rxjs';
+import {Subscription} from 'rxjs';
 import {SettingsService} from '../../services/settings.service';
-import {CatTreeInterface} from '../../interfaces/response/cat';
+import {CatInterface} from '../../interfaces/response/cat';
+import {SettingsInterface} from '../../interfaces/response/settings';
+import {BreadcrumbsService} from '../../services/breadcrumbs.service';
+import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-page-cat',
@@ -13,31 +16,21 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
 })
 export class PageCatComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    private catSubject: BehaviorSubject<number>;
     ads: AdFullInterface[] = [];
-    catId: number;
 
     constructor(
-        private adService: AdService,
-        private settingsService: SettingsService,
-        private route: ActivatedRoute,
+        private serviceAd: AdService,
+        private serviceSettings: SettingsService,
+        private serviceBreadcrumbs: BreadcrumbsService,
         private router: Router,
+        private route: ActivatedRoute,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init pageCat');
-
-        const s = this.router.events.subscribe(event => {
-            if (event instanceof NavigationEnd) {
-                this.catId = this.findCatIdFromSlugs(this.settingsService.catsTree.childes, this.route.snapshot.url);
-                this.catSubject.next(this.catId);
-            }
-        });
+        let s = this.serviceSettings.settings.subscribe(x => this.start(x));
         this.subscriptions.push(s);
-        this.subscriptions.push(
-            this.settingsService.settings.subscribe(x => this.start())
-        );
     }
 
     ngOnDestroy(): void {
@@ -45,51 +38,44 @@ export class PageCatComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    start(): void {
-        this.catId = this.findCatIdFromSlugs(this.settingsService.catsTree.childes, this.route.snapshot.url);
+    start(settings: SettingsInterface): void {
+        let s = this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                const catId = Helpers.findCatIdFromSlugs(settings.catsTree.childes, this.route.snapshot.url);
+                this.send(catId);
+            }
+        });
+        this.subscriptions.push(s);
 
-        if (!this.catId && this.route.snapshot.url.length) {
+        const catId = Helpers.findCatIdFromSlugs(settings.catsTree.childes, this.route.snapshot.url);
+
+        if (!catId && this.route.snapshot.url.length) {
             console.log('NOT FOUND');
             return;
 
-        } else if (!this.catId) {
+        } else if (!catId) {
             console.log('PAGE /CAT');
+            this.renderBC(catId);
             return;
         }
 
-        this.catSubject = new BehaviorSubject<number>(this.catId);
-        this.subscriptions.push(
-            this.catSubject.subscribe(x => this.request(x))
-        );
+        this.send(catId);
     }
 
-    request(catId: number): void {
-        this.subscriptions.push(
-            this.adService.getFromCat(catId).subscribe(x => this.ads = x)
-        );
+    send(catId: number): void {
+        let s = this.serviceAd.getFromCat(catId).subscribe(x => {
+            this.ads = x;
+        });
+        this.subscriptions.push(s);
+
+        this.renderBC(catId);
     }
 
-    findCatIdFromSlugs(catsTree: CatTreeInterface[], slugs: UrlSegment[]): number {
-        let catId = 0;
+    renderBC(catId: number): void {
+        let cats: CatInterface[] = [];
+        Helpers.getDestidantCatTree(this.serviceSettings.catsTree.childes, catId, cats, 0);
 
-        if (!slugs.length) {
-            return catId;
-        }
-
-        for (let i = 0; i < catsTree.length; i++) {
-            const cat = catsTree[i];
-
-            // нашли то что искали
-            if (cat.slug === slugs[0].path) {
-                if (cat.slug === slugs[0].path && slugs.length === 1) {
-                    return cat.catId;
-                }
-                if (cat.slug === slugs[0].path && slugs.length > 1 && cat.childes && cat.childes.length) {
-                    return this.findCatIdFromSlugs(cat.childes, slugs.slice(1));
-                }
-            }
-        }
-
-        return catId;
+        const bcItems = Helpers.buildBCFromCats(cats);
+        this.serviceBreadcrumbs.bhSubject.next(bcItems);
     }
 }

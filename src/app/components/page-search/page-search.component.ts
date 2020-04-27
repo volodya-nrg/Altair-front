@@ -16,7 +16,8 @@ export class PageSearchComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        console.log('init PageSearch');
         this.query = this.route.snapshot.queryParams['query'] || '';
-        console.log('PageSearchComponent', this.query);
+        console.log(this.query);
     }
 }
