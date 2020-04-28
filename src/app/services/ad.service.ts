@@ -19,18 +19,14 @@ export class AdService {
         return this.http.post<AdFullInterface>(`${this.url}/api/v1/ads`, data);
     }
 
-    getFromCat(catId: number): Observable<AdFullInterface[]> {
-        let options = {};
-
-        if (catId) {
-            options = {
-                params: {
-                    catId: catId.toString(),
-                }
-            };
-        }
-
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, options);
+    getFromCat(catId: number, limit: number, offset: number): Observable<AdFullInterface[]> {
+        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, {
+            params: {
+                catId: catId.toString(),
+                limit: limit.toString(),
+                offset: offset.toString(),
+            }
+        });
     }
 
     getByQuery(query: string, catId: number): Observable<AdFullInterface[]> {

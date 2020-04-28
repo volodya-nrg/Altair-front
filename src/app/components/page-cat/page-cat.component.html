@@ -1,9 +1,5 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="page-cat">
-    <ng-container *ngIf="ads.length; else tplLoading">
-        <app-ad *ngFor="let ad of ads" [ad]="ad"></app-ad>
-    </ng-container>
+    <app-ad *ngFor="let ad of ads" [ad]="ad"></app-ad>
+    <app-preloader #preloader></app-preloader>
 </div>
-<ng-template #tplLoading>
-    <app-preloader></app-preloader>
-</ng-template>

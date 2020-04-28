@@ -23,7 +23,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
         console.log('init pageMain');
 
         this.isLoading = true;
-        let s = this.serviceAd.getFromCat(0).subscribe(
+        let s = this.serviceAd.getFromCat(0, 10, 0).subscribe(
             x => {
                 this.ads = x;
             },

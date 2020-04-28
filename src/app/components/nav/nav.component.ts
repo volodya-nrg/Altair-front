@@ -41,7 +41,9 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit() {
         let s = this.settingsService.settings.subscribe(
-            x => this.start(x),
+            x => {
+                this.start(x);
+            },
             err => Helpers.handleErr(err),
             () => {
             }

@@ -51,7 +51,9 @@ export class PageAddComponent implements OnInit, OnDestroy {
         console.log('init pageAdd');
         this.form = this.fb.group(this.defaultFormControls);
         let s = this.serviceSettings.settings.subscribe(
-            x => this.start(x),
+            x => {
+                this.start(x);
+            },
             err => Helpers.handleErr(err),
             () => {
             }

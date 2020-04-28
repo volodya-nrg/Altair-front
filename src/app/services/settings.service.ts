@@ -13,8 +13,8 @@ import {Helpers} from '../helpers';
 export class SettingsService {
     private url = environment.apiUrl;
     private conf: SettingsInterface;
+    private settings$: Observable<SettingsInterface>;
     settings: AsyncSubject<SettingsInterface>;
-    settings$: Observable<SettingsInterface>;
 
     constructor(
         private http: HttpClient,
