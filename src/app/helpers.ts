@@ -165,4 +165,8 @@ export class Helpers {
 
         return catId;
     }
+
+    static handleErr(err: any): void {
+        console.log(err);
+    }
 }

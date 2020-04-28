@@ -1,10 +1,16 @@
 .page-ad {
+    &_row + &_row {
+        margin-top: 0.5em; // 8px / 16px
+    }
+
     &_basic {
         display: flex;
 
         & > * {
+            flex-basis: 100%;
+
             &:first-child {
-                flex-basis: 20em; // 320px / 16px
+                flex: 0 0 20em; // 320px / 16px
             }
 
             &:not(:first-child) {
@@ -49,5 +55,15 @@
         margin: 0;
         padding: 0;
         list-style: none;
+        min-height: 18.5em;
+    }
+
+    &_price {
+        font-size: 1.5em;
+        color: black;
+    }
+
+    &_description {
+        white-space: pre;
     }
 }

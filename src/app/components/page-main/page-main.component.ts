@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AdService} from '../../services/ad.service';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
+import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-page-main',
@@ -22,10 +23,18 @@ export class PageMainComponent implements OnInit, OnDestroy {
         console.log('init pageMain');
 
         this.isLoading = true;
-        let s = this.serviceAd.getFromCat(0).subscribe(x => {
-            this.ads = x;
-            this.isLoading = false;
-        });
+        let s = this.serviceAd.getFromCat(0).subscribe(
+            x => {
+                this.ads = x;
+            },
+            err => {
+                this.isLoading = false;
+                Helpers.handleErr(err)
+            },
+            () => {
+                this.isLoading = false;
+            }
+        );
         this.subscriptions.push(s);
     }
 

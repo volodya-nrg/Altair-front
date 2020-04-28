@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {CatTreeInterface} from '../interfaces/response/cat';
 import {PropInterface} from '../interfaces/response/prop';
+import {Helpers} from '../helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -42,6 +43,7 @@ export class SettingsService {
                 this.settings.next(this.conf);
             },
             err => {
+                Helpers.handleErr(err);
             },
             () => this.settings.complete()
         );

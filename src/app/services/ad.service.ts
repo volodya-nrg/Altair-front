@@ -25,12 +25,21 @@ export class AdService {
         if (catId) {
             options = {
                 params: {
-                    catId: catId,
+                    catId: catId.toString(),
                 }
             };
         }
 
         return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, options);
+    }
+
+    getByQuery(query: string, catId: number): Observable<AdFullInterface[]> {
+        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/search/ads`, {
+            params: {
+                q: query,
+                catId: catId.toString(),
+            }
+        });
     }
 
     getOne(adId: number): Observable<AdFullInterface> {

@@ -19,7 +19,8 @@ import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
 import {PageSearchComponent} from './components/page-search/page-search.component';
 import {SettingsService} from './services/settings.service';
-import { PreloaderComponent } from './components/preloader/preloader.component';
+import {PreloaderComponent} from './components/preloader/preloader.component';
+import {MyCurrencyPipe} from './pipes/my-currency.pipe';
 
 @NgModule({
     declarations: [
@@ -38,6 +39,7 @@ import { PreloaderComponent } from './components/preloader/preloader.component';
         BreadcrumbsComponent,
         PageSearchComponent,
         PreloaderComponent,
+        MyCurrencyPipe,
     ],
     imports: [
         BrowserModule,

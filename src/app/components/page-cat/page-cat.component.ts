@@ -30,7 +30,12 @@ export class PageCatComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('init pageCat');
-        let s = this.serviceSettings.settings.subscribe(x => this.start(x));
+        let s = this.serviceSettings.settings.subscribe(
+            x => this.start(x),
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 
@@ -64,12 +69,20 @@ export class PageCatComponent implements OnInit, OnDestroy {
     }
 
     send(catId: number): void {
-        this.isLoading = false;
         this.ads.length = 0;
-        let s = this.serviceAd.getFromCat(catId).subscribe(x => {
-            this.ads = x;
-            this.isLoading = true;
-        });
+        this.isLoading = true;
+        let s = this.serviceAd.getFromCat(catId).subscribe(
+            x => {
+                this.ads = x;
+            },
+            err => {
+                this.isLoading = false;
+                Helpers.handleErr(err);
+            },
+            () => {
+                this.isLoading = false;
+            }
+        );
         this.subscriptions.push(s);
 
         this.renderBC(catId);

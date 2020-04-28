@@ -4,6 +4,7 @@ import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
 import {SettingsService} from '../../services/settings.service';
 import {SettingsInterface} from '../../interfaces/response/settings';
+import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-nav',
@@ -39,7 +40,12 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        let s = this.settingsService.settings.subscribe(x => this.start(x));
+        let s = this.settingsService.settings.subscribe(
+            x => this.start(x),
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 

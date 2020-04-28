@@ -1,13 +1,16 @@
 <div class="ad" [class.sx-horiz]=" viewOpt === 'line' ">
     <a class="ad_cover" [routerLink]=" '/ad/' + ad.slug ">
-        <img *ngIf="ad.images && ad.images.length" [src]="url + '/images/' + ad.images[0].filepath"/>
+        <img *ngIf="ad.images && ad.images.length"
+             [src]="url + '/images/' + ad.images[0].filepath"
+             title="{{ ad.title }}"
+        />
     </a>
     <div class="ad_data">
         <a class="ad_title" [routerLink]=" '/ad/' + ad.slug " title="{{ ad.title }}">
-            Далекий афелий : методология и особенности {{ ad.title }}
+            {{ ad.title }}
         </a>
-        <div class="ad_price">{{ ad.price }} сум</div>
+        <div class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
         <small class="ad_city">Ташкент</small>
-        <small class="ad_created">{{ ad.createdAt | date:"dd/MM/yyyy" }}</small>
+        <small class="ad_created">{{ ad.createdAt | date }}</small>
     </div>
 </div>

@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
+import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-breadcrumbs',
@@ -19,7 +20,12 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('init breadcrumbsComponent');
-        const s = this.serviceBreadcrumbs.bhSubject.subscribe(x => this.items = x);
+        const s = this.serviceBreadcrumbs.bhSubject.subscribe(
+            x => this.items = x,
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 

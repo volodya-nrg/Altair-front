@@ -1,6 +1,6 @@
 <div class="search">
     <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="search_form">
-        <input class="search_form_query" formControlName="query" type="text" name=""/>
+        <input class="search_form_query" formControlName="q" type="text"/>
         <input class="search_form_submit" type="submit" value="Поиск"/>
     </form>
 </div>

@@ -50,7 +50,12 @@ export class PageAddComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init pageAdd');
         this.form = this.fb.group(this.defaultFormControls);
-        let s = this.serviceSettings.settings.subscribe(x => this.start(x));
+        let s = this.serviceSettings.settings.subscribe(
+            x => this.start(x),
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 
@@ -88,66 +93,71 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.leaf = cat;
 
         // подтягиваем доп. параметры
-        let s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(x => {
-            let newFormGroup = this.fb.group({});
+        let s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(
+            x => {
+                let newFormGroup = this.fb.group({});
 
-            for (let i = 0; i < x.length; i++) {
-                let newProp = x[i];
-                let oldValue = newProp.kindPropName === 'input_number' ? 0 : '';
-                let aValidators = [];
+                for (let i = 0; i < x.length; i++) {
+                    let newProp = x[i];
+                    let oldValue = newProp.kindPropName === 'input_number' ? 0 : '';
+                    let aValidators = [];
 
-                // если данное св-во обязательно, то подключим валидатор
-                if (newProp.propIsRequire) {
-                    aValidators.push(Validators.required);
+                    // если данное св-во обязательно, то подключим валидатор
+                    if (newProp.propIsRequire) {
+                        aValidators.push(Validators.required);
+                    }
+
+                    // посмотрим в текущих контролах введеные уже значения. Его и зафиксируем.
+                    Object.keys(this.form.controls).forEach(key => {
+                        if (key === newProp.name) {
+                            oldValue = this.form.controls[key].value;
+                            return false;
+                        }
+                    });
+
+                    newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
                 }
 
-                // посмотрим в текущих контролах введеные уже значения. Его и зафиксируем.
-                Object.keys(this.form.controls).forEach(key => {
-                    if (key === newProp.name) {
-                        oldValue = this.form.controls[key].value;
-                        return false;
-                    }
-                });
-
-                newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
-            }
-
-            // обновим значения те что по дефолку. Не теряем старые введенные значени.
-            this.form.controls.catId.setValue(cat.catId);
-            for (let defKey in this.defaultFormControls) {
-                for (let curKey in this.form.controls) {
-                    if (defKey === curKey) {
-                        newFormGroup.addControl(defKey, this.form.controls[defKey]);
-                        break;
+                // обновим значения те что по дефолку. Не теряем старые введенные значени.
+                this.form.controls.catId.setValue(cat.catId);
+                for (let defKey in this.defaultFormControls) {
+                    for (let curKey in this.form.controls) {
+                        if (defKey === curKey) {
+                            newFormGroup.addControl(defKey, this.form.controls[defKey]);
+                            break;
+                        }
                     }
                 }
-            }
 
-            // если предыдущей заголовок был со вспомогательным текстом, то обновим заголовок
-            if (this.previosTitleHelp) {
-                let oldTitleValue = newFormGroup.controls.title.value;
-                oldTitleValue = oldTitleValue.replace(new RegExp(this.previosTitleHelp, 'gi'), '');
-                newFormGroup.controls.title.setValue(oldTitleValue.trim());
-                this.previosTitleHelp = '';
-            }
+                // если предыдущей заголовок был со вспомогательным текстом, то обновим заголовок
+                if (this.previosTitleHelp) {
+                    let oldTitleValue = newFormGroup.controls.title.value;
+                    oldTitleValue = oldTitleValue.replace(new RegExp(this.previosTitleHelp, 'gi'), '');
+                    newFormGroup.controls.title.setValue(oldTitleValue.trim());
+                    this.previosTitleHelp = '';
+                }
 
-            // если есть вспомогательный текст, то вставим его
-            if (cat.titleHelp) {
-                let oldTitleValue = newFormGroup.controls.title.value;
-                oldTitleValue = oldTitleValue.replace(new RegExp(cat.titleHelp, 'gi'), '');
-                oldTitleValue = cat.titleHelp + ' ' + oldTitleValue.trim();
-                newFormGroup.controls.title.setValue(oldTitleValue);
-                this.previosTitleHelp = cat.titleHelp;
-            }
+                // если есть вспомогательный текст, то вставим его
+                if (cat.titleHelp) {
+                    let oldTitleValue = newFormGroup.controls.title.value;
+                    oldTitleValue = oldTitleValue.replace(new RegExp(cat.titleHelp, 'gi'), '');
+                    oldTitleValue = cat.titleHelp + ' ' + oldTitleValue.trim();
+                    newFormGroup.controls.title.setValue(oldTitleValue);
+                    this.previosTitleHelp = cat.titleHelp;
+                }
 
-            // сделаем не обязательным заголовок и скроем его
-            if (cat.isAutogenerateTitle) {
-                newFormGroup.controls.title.clearValidators();
-            }
+                // сделаем не обязательным заголовок и скроем его
+                if (cat.isAutogenerateTitle) {
+                    newFormGroup.controls.title.clearValidators();
+                }
 
-            this.form = newFormGroup;
-            this.aDynamicPropsFull = x;
-        });
+                this.form = newFormGroup;
+                this.aDynamicPropsFull = x;
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 
@@ -183,10 +193,15 @@ export class PageAddComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        let s = this.serviceAd.create(newFormData).subscribe(x => {
-            console.log(x);
-            target.reset();
-        });
+        let s = this.serviceAd.create(newFormData).subscribe(
+            x => {
+                console.log(x);
+                target.reset();
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            }
+        );
         this.subscriptions.push(s);
     }
 

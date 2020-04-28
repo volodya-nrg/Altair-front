@@ -1,3 +1,8 @@
 <div class="page-search">
-    <app-ad *ngFor="let ad of aAds" [ad]="ad"></app-ad>
+    <div *ngIf="!q" class="align-center text-mute">укажите в поиске фразе</div>
+    <div *ngIf="q && !ads.length" class="align-center text-mute">по данному запросу ни чего не найдено</div>
+    <app-preloader *ngIf="isLoading"></app-preloader>
+    <ng-container *ngIf="ads.length">
+        <app-ad *ngFor="let ad of ads" [ad]="ad"></app-ad>
+    </ng-container>
 </div>
