@@ -49,7 +49,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.loadMoreForScroll = this.loadMore.bind(this);
 
-        let s = this.serviceSettings.settings.subscribe(
+        const s = this.serviceSettings.settings.subscribe(
             x => {
                 this.start(x);
                 this.pointerOnCatTree = x.catsTree;
@@ -76,12 +76,11 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     removeScroll(): void {
-        console.log('выключили скролл');
         window.removeEventListener('scroll', this.loadMoreForScroll);
     }
 
     start(settings: SettingsInterface): void {
-        let s = this.router.events.subscribe(event => {
+        const s = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 console.log('смена роутинга, тут на странице');
                 this.reset();
@@ -91,8 +90,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.subscriptions.push(s);
 
         this.catId = Helpers.findCatIdFromSlugs(settings.catsTree.childes, this.route.snapshot.url);
-
-        console.log(this.catId, this.route.snapshot.url.length);
 
         // если находимся в /cat
         if (this.catId === 0 && this.route.snapshot.url.length === 0) {
@@ -114,7 +111,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     send(): void {
         this.isLoading = true;
-        let s = this.serviceAd.getFromCat(this.catId, this.limit, this.offset).subscribe(
+        const s = this.serviceAd.getFromCat(this.catId, this.limit, this.offset).subscribe(
             x => {
                 this.ads.push(...x);
                 this.offset += this.limit;
@@ -142,7 +139,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     renderBC(): void {
         let cats: CatInterface[] = [];
-        Helpers.getDescendantCatTree(this.serviceSettings.catsTree.childes, this.catId, cats, 0);
+        Helpers.getDescendants(this.serviceSettings.catsTree.childes, this.catId, cats, 0);
         this.serviceBreadcrumbs.bhSubject.next(Helpers.buildBCFromCats(cats));
     }
 

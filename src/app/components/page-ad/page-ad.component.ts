@@ -39,7 +39,7 @@ export class PageAdComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         console.log('init pageAd');
-        let s = this.settingsService.settings.subscribe(
+        const s = this.settingsService.settings.subscribe(
             x => {
                 this.start(x);
             },
@@ -56,13 +56,13 @@ export class PageAdComponent implements OnInit, OnDestroy {
 
     start(settings: SettingsInterface): void {
         this.isLoading = true;
-        let s = this.servicePages.pageAd(this.adId).subscribe(
+        const s = this.servicePages.pageAd(this.adId).subscribe(
             x => {
                 this.adFull = x.adFull;
                 this.catFull = x.catFull;
 
                 let cats: CatInterface[] = [];
-                Helpers.getDescendantCatTree(settings.catsTree.childes, this.adFull.catId, cats, 0);
+                Helpers.getDescendants(settings.catsTree.childes, this.adFull.catId, cats, 0);
 
                 const bcItems = Helpers.buildBCFromCats(cats);
                 this.serviceBreadcrumbs.bhSubject.next(bcItems);

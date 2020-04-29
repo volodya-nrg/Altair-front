@@ -50,7 +50,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init pageAdd');
         this.form = this.fb.group(this.defaultFormControls);
-        let s = this.serviceSettings.settings.subscribe(
+        const s = this.serviceSettings.settings.subscribe(
             x => {
                 this.start(x);
             },
@@ -95,7 +95,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.leaf = cat;
 
         // подтягиваем доп. параметры
-        let s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(
+        const s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(
             x => {
                 let newFormGroup = this.fb.group({});
 
@@ -195,7 +195,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        let s = this.serviceAd.create(newFormData).subscribe(
+        const s = this.serviceAd.create(newFormData).subscribe(
             x => {
                 console.log(x);
                 target.reset();

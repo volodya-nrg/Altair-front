@@ -27,7 +27,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init pageMain');
 
-        let s = this.settingsService.settings.subscribe(
+        const s = this.settingsService.settings.subscribe(
             x => {
                 this.start(x);
             },
@@ -45,13 +45,13 @@ export class PageMainComponent implements OnInit, OnDestroy {
 
     start(settings: SettingsInterface): void {
         this.isLoading = true;
-        let s = this.servicePages.pageMain(4).subscribe(
+        const s = this.servicePages.pageMain(4).subscribe(
             x => {
                 this.lastAdsFull = x.last.adsFull;
 
                 if (this.lastAdsFull.length) {
                     const needCatId = this.lastAdsFull[0].catId;
-                    let listCat = Helpers.getAncestorsCatTree(settings.catsTree.childes, needCatId);
+                    let listCat = Helpers.getAncestors(settings.catsTree.childes, needCatId);
                     this.lastChainBC = Helpers.buildBCFromCats(listCat);
                 }
             },

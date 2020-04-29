@@ -23,14 +23,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init serachComponent');
 
-        let s = this.route.queryParams.subscribe(
+        const s = this.route.queryParams.subscribe(
             params => {
                 const q = params['q'];
 
                 if (q) {
-                    this.form.setValue({
-                        q: q
-                    });
+                    this.form.setValue({q: q});
                 }
             },
             err => Helpers.handleErr(err),

@@ -68,7 +68,7 @@ export class Helpers {
         return formData;
     }
 
-    static getAncestorsCatTree(listCatTree: CatTreeInterface[], findCatId: number): CatInterface[] {
+    static getAncestors(listCatTree: CatTreeInterface[], findCatId: number): CatInterface[] {
         let list: CatInterface[] = [];
 
         for (let i = 0; i < listCatTree.length; i++) {
@@ -82,7 +82,7 @@ export class Helpers {
                 return list;
             }
             if (cat.childes && cat.childes.length) {
-                let res = this.getAncestorsCatTree(cat.childes, findCatId);
+                let res = this.getAncestors(cat.childes, findCatId);
 
                 if (res.length) {
                     const a = Object.assign({}, cat);
@@ -99,7 +99,7 @@ export class Helpers {
         return list;
     }
 
-    static getDescendantCatTree(listCatTree: CatTreeInterface[], findCatId: number, receiver: CatInterface[], deep: number): boolean {
+    static getDescendants(listCatTree: CatTreeInterface[], findCatId: number, receiver: CatInterface[], deep: number): boolean {
         for (let i = 0; i < listCatTree.length; i++) {
             const cat = listCatTree[i];
 
@@ -111,7 +111,7 @@ export class Helpers {
                 return true;
             }
             if (cat.childes && cat.childes.length) {
-                let res = this.getDescendantCatTree(cat.childes, findCatId, receiver, deep + 1);
+                let res = this.getDescendants(cat.childes, findCatId, receiver, deep + 1);
 
                 if (res) {
                     const a = Object.assign({}, cat);
@@ -158,11 +158,12 @@ export class Helpers {
         let result = 0;
         const regexp = /_(\d+)$/;
         const a = document.createElement('a');
+
         a.href = window.location.href;
 
         let res = a.pathname.match(regexp);
 
-        if (res && res.length && res.length > 1) {
+        if (res && res.length > 1) {
             const adId = parseInt(res[1], 10);
 
             if (adId) {

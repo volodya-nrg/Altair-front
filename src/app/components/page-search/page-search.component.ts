@@ -26,7 +26,7 @@ export class PageSearchComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init PageSearch');
 
-        let s = this.router.events.subscribe(event => {
+        const s = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.send();
             }
@@ -51,7 +51,7 @@ export class PageSearchComponent implements OnInit, OnDestroy {
 
         this.isLoading = true;
         this.ads.length = 0;
-        let s = this.serviceAd.getByQuery(this.q, 0).subscribe(
+        const s = this.serviceAd.getByQuery(this.q, 0).subscribe(
             x => {
                 this.ads = x;
             },

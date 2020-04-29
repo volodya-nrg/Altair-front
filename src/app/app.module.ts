@@ -21,7 +21,7 @@ import {PageSearchComponent} from './components/page-search/page-search.componen
 import {SettingsService} from './services/settings.service';
 import {PreloaderComponent} from './components/preloader/preloader.component';
 import {MyCurrencyPipe} from './pipes/my-currency.pipe';
-import { NotFoundComponent } from './components/not-found/not-found.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
 
 @NgModule({
     declarations: [
