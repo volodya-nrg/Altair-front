@@ -1,5 +1,5 @@
 <div class="page-search">
-    <div *ngIf="!q" class="align-center text-mute">укажите в поиске фразе</div>
+    <div *ngIf="!q" class="align-center text-mute">укажите в фразу для поиска</div>
     <div *ngIf="q && !ads.length" class="align-center text-mute">по данному запросу ни чего не найдено</div>
     <app-preloader *ngIf="isLoading"></app-preloader>
     <ng-container *ngIf="ads.length">

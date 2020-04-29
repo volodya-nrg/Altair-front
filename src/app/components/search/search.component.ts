@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Helpers} from '../../helpers';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.less']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription[] = [];
     form: FormGroup;
 
     constructor(
@@ -21,7 +23,7 @@ export class SearchComponent implements OnInit {
     ngOnInit(): void {
         console.log('init serachComponent');
 
-        this.route.queryParams.subscribe(
+        let s = this.route.queryParams.subscribe(
             params => {
                 const q = params['q'];
 
@@ -35,10 +37,16 @@ export class SearchComponent implements OnInit {
             () => {
             }
         );
+        this.subscriptions.push(s);
 
         this.form = this.fb.group({
             q: new FormControl('')
         });
+    }
+
+    ngOnDestroy(): void {
+        console.log('destroy searchCopm');
+        this.subscriptions.forEach(x => x.unsubscribe());
     }
 
     onSubmit({target}) {

@@ -199,5 +199,81 @@ export class Helpers {
 
     static handleErr(err: any): void {
         console.log(err);
+        alert(err);
+    }
+
+    static masonry(parent: HTMLBaseElement, selectorChildes: string, margin: number = 10): boolean {
+        const widthParent: number = parent.offsetWidth;
+        let list: HTMLBaseElement[] = Array.from(parent.querySelectorAll(selectorChildes));
+        let aPasted: HTMLBaseElement[] = [];
+        let aLook: HTMLBaseElement[] = [];
+        let saveX: number = 0;
+        let saveY: number = 0;
+
+        if (!list.length) {
+            return false;
+        }
+
+        let widthChild: number = list[0].offsetWidth + margin;
+
+        for (let i = 0, j = 0, modeCheckHeight = false; i < list.length; i++) {
+            const el: HTMLBaseElement = list[i];
+            el.style.position = 'absolute';
+
+            // если наткнулись уже на правый край
+            if ((widthChild * (j + 1)) > widthParent) {
+                j = 0;
+
+                if (!modeCheckHeight) {
+                    modeCheckHeight = true;
+                }
+            }
+
+            if (modeCheckHeight) {
+                let finedIndex: number = 0;
+                let tmpY = 0;
+                for (let k = 0; k < aLook.length; k++) {
+                    const el2: HTMLBaseElement = aLook[k];
+                    const top: number = parseInt(el2.style.top, 10) + el2.offsetHeight + margin;
+
+                    if (!k) {
+                        tmpY = top;
+                        continue;
+                    }
+                    if (top < tmpY) {
+                        tmpY = top;
+                        finedIndex = k;
+                    }
+                }
+
+                saveX = parseInt(aLook[finedIndex].style.left, 10);
+                saveY = tmpY;
+                aLook[finedIndex] = el;
+
+            } else {
+                saveX = widthChild * j;
+                aLook.push(el);
+            }
+
+            el.style.left = saveX + 'px';
+            el.style.top = saveY + 'px';
+
+            j++;
+            aPasted.push(el);
+        }
+
+        // выставим в конце высоту родительсткого блока
+        saveY = 0;
+        for (let i = 0; i < aPasted.length; i++) {
+            const el: HTMLBaseElement = aPasted[i];
+            const top: number = parseInt(el.style.top, 10) + el.offsetHeight;
+
+            if (saveY < top) {
+                saveY = top;
+            }
+        }
+        parent.style.height = saveY + 'px';
+
+        return true;
     }
 }

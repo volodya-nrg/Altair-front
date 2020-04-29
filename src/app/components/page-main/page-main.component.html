@@ -11,7 +11,7 @@
             <ng-container *ngFor="let bc of lastChainBC; let i = index">
                 <a [routerLink]="bc.url">{{ bc.name }}</a>
                 <ng-container *ngIf="i < lastChainBC.length-1">/</ng-container>
-                <ng-container *ngIf="i == lastChainBC.length-1">:</ng-container>
+                <ng-container *ngIf="i === lastChainBC.length-1">:</ng-container>
             </ng-container>
         </h3>
         <app-preloader *ngIf="isLoading"></app-preloader>

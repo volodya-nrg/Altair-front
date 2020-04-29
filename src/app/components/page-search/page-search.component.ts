@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
@@ -10,7 +10,7 @@ import {Helpers} from '../../helpers';
     templateUrl: './page-search.component.html',
     styleUrls: ['./page-search.component.less']
 })
-export class PageSearchComponent implements OnInit {
+export class PageSearchComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     q: string;
     ads: AdInterface[] = [];
@@ -34,6 +34,11 @@ export class PageSearchComponent implements OnInit {
         this.subscriptions.push(s);
 
         this.send();
+    }
+
+    ngOnDestroy(): void {
+        console.log('destroy searchCopm');
+        this.subscriptions.forEach(x => x.unsubscribe());
     }
 
     send(): void {
