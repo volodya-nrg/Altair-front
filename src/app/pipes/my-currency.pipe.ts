@@ -9,9 +9,9 @@ export class MyCurrencyPipe implements PipeTransform {
             return;
         }
 
-        const s = value.toString();
-        let res = s.replace(/(?<=\d)(?=(?:\d\d\d)+$)/g, ' ');
+        let s = value.toString();
+        s = s.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
 
-        return res;
+        return s;
     }
 }

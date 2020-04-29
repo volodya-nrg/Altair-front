@@ -107,6 +107,7 @@ input[type="button"], input[type="submit"], button {
     }
 
     &:active {
+        color: #333333; // для Safari
         background: #e5e5e5;
         background: -moz-linear-gradient(top, #e5e5e5 0%, #ffffff 100%);
         background: -webkit-linear-gradient(top, #e5e5e5 0%, #ffffff 100%);
@@ -115,10 +116,20 @@ input[type="button"], input[type="submit"], button {
     }
 
     &[disabled] {
+        color: lighten(#333333, 50%); // для Safari
         &:hover {
             border-color: lightgray;
             cursor: not-allowed;
         }
+        // для Safari
+        &:active {
+            background: #ffffff;
+            background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+            background: -webkit-linear-gradient(top, #ffffff 0%, #e5e5e5 100%);
+            background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0);
+        }
+        // \для Safari
     }
 }
 
