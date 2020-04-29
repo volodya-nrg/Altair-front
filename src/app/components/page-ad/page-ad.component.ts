@@ -62,7 +62,7 @@ export class PageAdComponent implements OnInit, OnDestroy {
                 this.catFull = x.catFull;
 
                 let cats: CatInterface[] = [];
-                Helpers.getDestidantCatTree(settings.catsTree.childes, this.adFull.catId, cats, 0);
+                Helpers.getDescendantCatTree(settings.catsTree.childes, this.adFull.catId, cats, 0);
 
                 const bcItems = Helpers.buildBCFromCats(cats);
                 this.serviceBreadcrumbs.bhSubject.next(bcItems);

@@ -68,7 +68,38 @@ export class Helpers {
         return formData;
     }
 
-    static getDestidantCatTree(listCatTree: CatTreeInterface[], findCatId: number, receiver: CatInterface[], deep: number): boolean {
+    static getAncestorsCatTree(listCatTree: CatTreeInterface[], findCatId: number): CatInterface[] {
+        let list: CatInterface[] = [];
+
+        for (let i = 0; i < listCatTree.length; i++) {
+            const cat = listCatTree[i];
+
+            if (cat.catId === findCatId) {
+                const a = Object.assign({}, cat);
+                delete a.childes;
+                list.unshift(cat);
+
+                return list;
+            }
+            if (cat.childes && cat.childes.length) {
+                let res = this.getAncestorsCatTree(cat.childes, findCatId);
+
+                if (res.length) {
+                    const a = Object.assign({}, cat);
+                    delete a.childes;
+
+                    list.unshift(...res);
+                    list.unshift(a);
+
+                    return list;
+                }
+            }
+        }
+
+        return list;
+    }
+
+    static getDescendantCatTree(listCatTree: CatTreeInterface[], findCatId: number, receiver: CatInterface[], deep: number): boolean {
         for (let i = 0; i < listCatTree.length; i++) {
             const cat = listCatTree[i];
 
@@ -80,7 +111,7 @@ export class Helpers {
                 return true;
             }
             if (cat.childes && cat.childes.length) {
-                let res = this.getDestidantCatTree(cat.childes, findCatId, receiver, deep + 1);
+                let res = this.getDescendantCatTree(cat.childes, findCatId, receiver, deep + 1);
 
                 if (res) {
                     const a = Object.assign({}, cat);

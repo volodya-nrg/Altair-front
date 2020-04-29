@@ -6,18 +6,31 @@
         recusandae saepe.
         Voluptatum.</p>
 
-    <app-preloader *ngIf="isLoading"></app-preloader>
-    <app-ad *ngFor="let ad of ads" [ad]="ad"></app-ad>
+    <div>
+        <h3 *ngIf="lastChainBC.length" class="page-main_last-chain-cats">
+            <ng-container *ngFor="let bc of lastChainBC; let i = index">
+                <a [routerLink]="bc.url">{{ bc.name }}</a>
+                <ng-container *ngIf="i < lastChainBC.length-1">/</ng-container>
+                <ng-container *ngIf="i == lastChainBC.length-1">:</ng-container>
+            </ng-container>
+        </h3>
+        <app-preloader *ngIf="isLoading"></app-preloader>
+        <app-ad *ngFor="let ad of lastAdsFull" [ad]="ad"></app-ad>
+    </div>
 
     <h2>Lorem ipsum dolor sit.</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid blanditiis debitis ducimus inventore
-        iure magnam molestiae, nulla sapiente totam vero voluptates? Accusamus aliquid facere hic placeat quaerat tenetur
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquid blanditiis debitis ducimus
+        inventore
+        iure magnam molestiae, nulla sapiente totam vero voluptates? Accusamus aliquid facere hic placeat quaerat
+        tenetur
         voluptatum.</p>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aperiam culpa cum dolorem eveniet exercitationem
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aperiam culpa cum dolorem eveniet
+        exercitationem
         necessitatibus quam repudiandae tempore voluptates! Fugiat inventore molestiae sapiente velit.</p>
 
     <h3>Lorem ipsum dolor sit amet, consectetur.</h3>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci consequatur culpa deserunt dolor facere
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus adipisci consequatur culpa deserunt dolor
+        facere
         id iusto, laboriosam laborum molestiae nisi obcaecati quam quibusdam, quisquam quo reiciendis velit voluptatem
         voluptatum?</p>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, distinctio natus nisi possimus quisquam

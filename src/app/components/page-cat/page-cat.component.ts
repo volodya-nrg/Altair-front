@@ -20,7 +20,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     private limit: number = 4;
     private offset: number = 0;
     private loadMoreForScroll: () => void;
-    private isLoadAll: boolean = false;
+    isLoadAll: boolean = false;
     ads: AdFullInterface[] = [];
     isLoading: boolean = false;
     @ViewChild('preloader', {static: true}) preloader: ElementRef;
@@ -77,15 +77,15 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.catId = Helpers.findCatIdFromSlugs(settings.catsTree.childes, this.route.snapshot.url);
 
-        // if (!this.catId && this.route.snapshot.url.length) {
-        //     console.log('NOT FOUND');
-        //     return;
+        if (!this.catId && this.route.snapshot.url.length) {
+            console.log('NOT FOUND');
+            return;
         //
         // } else if (!this.catId) {
         //     console.log('PAGE /CAT');
         //     this.renderBC();
         //     return;
-        // }
+        }
 
         this.send();
     }
@@ -98,7 +98,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.offset += this.limit;
                 this.isLoading = false;
 
-                console.log('x.length < this.limit', x.length, this.limit);
                 if (x.length < this.limit) {
                     this.isLoadAll = true;
 
@@ -121,7 +120,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     renderBC(): void {
         let cats: CatInterface[] = [];
-        Helpers.getDestidantCatTree(this.serviceSettings.catsTree.childes, this.catId, cats, 0);
+        Helpers.getDescendantCatTree(this.serviceSettings.catsTree.childes, this.catId, cats, 0);
         this.serviceBreadcrumbs.bhSubject.next(Helpers.buildBCFromCats(cats));
     }
 

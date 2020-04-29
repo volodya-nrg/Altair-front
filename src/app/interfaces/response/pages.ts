@@ -5,3 +5,9 @@ export interface PagesAdInterface {
     adFull: AdFullInterface;
     catFull: CatFullInterface;
 }
+
+export interface PagesMainInterface {
+    last: {
+        adsFull: AdFullInterface[],
+    };
+}
