@@ -22,6 +22,7 @@ import {SettingsService} from './services/settings.service';
 import {PreloaderComponent} from './components/preloader/preloader.component';
 import {MyCurrencyPipe} from './pipes/my-currency.pipe';
 import {NotFoundComponent} from './components/not-found/not-found.component';
+import { TreeInTheTopComponent } from './components/tree-in-the-top/tree-in-the-top.component';
 
 @NgModule({
     declarations: [
@@ -42,6 +43,7 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
         PreloaderComponent,
         MyCurrencyPipe,
         NotFoundComponent,
+        TreeInTheTopComponent,
     ],
     imports: [
         BrowserModule,
