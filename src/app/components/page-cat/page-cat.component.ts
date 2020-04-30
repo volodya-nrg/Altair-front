@@ -54,7 +54,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.start(x);
                 this.pointerOnCatTree = x.catsTree;
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );
@@ -126,7 +126,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
             },
             err => {
                 this.isLoading = false;
-                Helpers.handleErr(err);
+                Helpers.handleErr(err.error);
             },
             () => {
                 this.isLoading = false;

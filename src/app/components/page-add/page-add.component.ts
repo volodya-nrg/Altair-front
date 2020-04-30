@@ -54,7 +54,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
             x => {
                 this.start(x);
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );
@@ -156,7 +156,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
                 this.form = newFormGroup;
                 this.aDynamicPropsFull = x;
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );
@@ -183,24 +183,25 @@ export class PageAddComponent implements OnInit, OnDestroy {
     }
 
     onSubmit({target}) {
-        if (this.form.invalid) {
-            for (let key in this.form.controls) {
-                const formControl = this.form.get(key);
-
-                if (formControl.status === 'INVALID') {
-                    console.log('INVALID:', key);
-                }
-            }
-            return;
-        }
+        // if (this.form.invalid) {
+        //     for (let key in this.form.controls) {
+        //         const formControl = this.form.get(key);
+        //
+        //         if (formControl.status === 'INVALID') {
+        //             console.log('INVALID:', key);
+        //         }
+        //     }
+        //     return;
+        // }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
         const s = this.serviceAd.create(newFormData).subscribe(
             x => {
-                console.log(x);
                 target.reset();
             },
-            err => Helpers.handleErr(err),
+            err => {
+                Helpers.handleErr(err.error);
+            },
             () => {
             }
         );

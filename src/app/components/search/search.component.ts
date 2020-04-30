@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     this.form.setValue({q: q});
                 }
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );

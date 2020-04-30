@@ -57,7 +57,7 @@ export class PageSearchComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.isLoading = false;
-                Helpers.handleErr(err);
+                Helpers.handleErr(err.error);
             },
             () => {
                 this.isLoading = false;

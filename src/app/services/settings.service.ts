@@ -43,7 +43,7 @@ export class SettingsService {
                 this.settings.next(this.conf);
             },
             err => {
-                Helpers.handleErr(err);
+                Helpers.handleErr(err.error);
             },
             () => this.settings.complete()
         );

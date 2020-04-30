@@ -43,7 +43,7 @@ export class PageAdComponent implements OnInit, OnDestroy {
             x => {
                 this.start(x);
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {}
         );
         this.subscriptions.push(s);
@@ -69,7 +69,7 @@ export class PageAdComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.isLoading = false;
-                Helpers.handleErr(err);
+                Helpers.handleErr(err.error);
             },
             () => {
                 this.isLoading = false;

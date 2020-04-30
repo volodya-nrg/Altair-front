@@ -1,0 +1,56 @@
+@import "../../../css_variables";
+
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 13;
+
+    &_dark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: inherit;
+        height: inherit;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1;
+    }
+
+    &_box {
+        position: relative;
+        box-sizing: border-box;
+        width: @maxWidth;
+        height: auto;
+        overflow: hidden;
+        padding: 1em; // 16px / 16px
+        background-color: white;
+        border-radius: 0.2em; // 3.2px // 16px
+        z-index: 2;
+    }
+
+    &_close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em; // 32px / 16px
+        width: 1em; // 32px / 32px
+        height: 1em; // 32px / 32px
+        background-color: whitesmoke;
+        cursor: pointer;
+    }
+
+    &_content {
+        width: 100%;
+        height: auto;
+        max-height: 10em; // 160px / 16px
+        overflow-y: auto;
+    }
+}

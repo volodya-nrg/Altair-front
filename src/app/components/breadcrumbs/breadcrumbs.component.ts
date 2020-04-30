@@ -22,7 +22,7 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
         console.log('init breadcrumbsComponent');
         const s = this.serviceBreadcrumbs.bhSubject.subscribe(
             x => this.items = x,
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );

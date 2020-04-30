@@ -31,7 +31,7 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
         console.log('init navComponent');
         const s = this.settingsService.settings.subscribe(
             x => this.catTree = x.catsTree,
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );

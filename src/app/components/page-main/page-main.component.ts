@@ -31,7 +31,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
             x => {
                 this.start(x);
             },
-            err => Helpers.handleErr(err),
+            err => Helpers.handleErr(err.error),
             () => {
             }
         );
@@ -57,7 +57,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
             },
             err => {
                 this.isLoading = false;
-                Helpers.handleErr(err);
+                Helpers.handleErr(err.error);
             },
             () => {
                 this.isLoading = false;

@@ -1,0 +1,9 @@
+<div *ngIf="isActive()" class="modal">
+    <div class="modal_dark" (click)="hide()"></div>
+    <div class="modal_box">
+        <div class="modal_close" (click)="hide()">&times;</div>
+        <div class="modal_content">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
