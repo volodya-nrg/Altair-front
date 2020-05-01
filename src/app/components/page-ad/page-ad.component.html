@@ -9,13 +9,13 @@
                 <div>
                     <div class="page-ad_photo">
                         <img *ngIf="adFull.images && adFull.images.length"
-                             [src]="url + '/images/' + adFull.images[0].filepath"
+                             [src]="url + '/resample/320/320/' + adFull.images[0].filepath"
                              title="{{ adFull.title }}"/>
                     </div>
                     <div *ngIf="adFull.images && adFull.images.length > 1" class="page-ad_mini-photos">
                         <ng-container *ngFor="let image of adFull.images.slice(1)">
                             <span class="page-ad_mini-photo">
-                                <img [src]="url + '/images/' + image.filepath" title="{{ adFull.title }}"/>
+                                <img [src]="url + '/resample/56/56/' + image.filepath" title="{{ adFull.title }}"/>
                             </span>
                         </ng-container>
                     </div>
