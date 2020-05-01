@@ -2,14 +2,18 @@
     <h1>Добавить объявление</h1>
 
     <h2>Каталог</h2>
-    <div class="page-add_cats">
+    <div #catCols class="page-add_cats">
         <ul *ngFor="let subCat of aCols" class="page-add_cats_col">
             <li *ngFor="let cat of subCat.childes" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
         </ul>
     </div>
 
     <h2>Параметры</h2>
-    <form [formGroup]="form" class="form" (ngSubmit)="onSubmit($event)" enctype="multipart/form-data">
+    <form [formGroup]="form"
+          class="form"
+          [class.sx-loading]="isLoadingProps"
+          (ngSubmit)="onSubmit($event)"
+          enctype="multipart/form-data">
         <input type="hidden" formControlName="catId" value="0"/>
         <div *ngFor="let propFull of aDynamicPropsFull" class="form_row">
             <div class="form_cols">
@@ -18,7 +22,7 @@
                     <span *ngIf="propFull.propIsRequire">*</span>
                 </div>
                 <div class="form_cols_col">
-                    <div class="page-add_dynamic-inputs">
+                    <div class="page-add_dynamic-inputs sx-{{ propFull.kindPropName }}">
                         <div>
                             <input *ngIf=" propFull.kindPropName === 'input' "
                                    formControlName="{{propFull.name}}"
@@ -55,7 +59,9 @@
                                 />
                             </div>
                             <div *ngIf=" propFull.kindPropName === 'ymaps' ">
-                                <input formControlName="{{propFull.kindPropName}}" class="form_100" type="text"/>
+                                <input formControlName="{{propFull.kindPropName}}"
+                                       class="form_100"
+                                       type="text"/>
                             </div>
                         </div>
                         <div *ngIf="propFull.suffix">

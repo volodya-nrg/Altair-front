@@ -40,10 +40,43 @@
         display: flex;
 
         & > * {
-            flex-basis: 100%;
-
             &:not(:first-child) {
                 margin-left: 1em;
+            }
+        }
+
+        &.sx-input {
+            & > * {
+                flex-basis: 100%;
+            }
+        }
+
+        &.sx-input_number {
+
+        }
+
+        &.sx-select {
+        }
+
+        &.sx-radio {
+        }
+
+        &.sx-textarea {
+            & > * {
+                flex-basis: 100%;
+
+                &:last-child {
+                    flex-basis: auto;
+                }
+            }
+        }
+
+        &.sx-photo {
+        }
+
+        &.sx-ymaps {
+            & > * {
+                flex-basis: 100%;
             }
         }
     }

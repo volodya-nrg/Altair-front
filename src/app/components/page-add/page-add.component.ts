@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Subscription} from 'rxjs';
@@ -15,10 +15,10 @@ import {SettingsInterface} from '../../interfaces/response/settings';
     templateUrl: './page-add.component.html',
     styleUrls: ['./page-add.component.less']
 })
-export class PageAddComponent implements OnInit, OnDestroy {
+export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private catTree: CatTreeInterface;
-    private previosTitleHelp: string;
+    private previousTitleHelp: string;
     aCols: CatTreeInterface[] = []; // динамическая переменная
     form: FormGroup;
     defaultFormControls: {
@@ -30,6 +30,8 @@ export class PageAddComponent implements OnInit, OnDestroy {
     };
     aDynamicPropsFull: PropFullInterface[] = [];
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
+    isLoadingProps: boolean = false;
+    @ViewChild('catCols', {static: true}) catCols: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -38,18 +40,11 @@ export class PageAddComponent implements OnInit, OnDestroy {
         private serviceAd: AdService,
         private serviceSettings: SettingsService,
     ) {
-        this.defaultFormControls = {
-            catId: new FormControl('', Validators.required),
-            title: new FormControl('', Validators.required),
-            description: new FormControl('', Validators.required),
-            price: new FormControl(0, Validators.required),
-            youtube: new FormControl(''),
-        };
     }
 
     ngOnInit(): void {
         console.log('init pageAdd');
-        this.form = this.fb.group(this.defaultFormControls);
+        this.reset();
         const s = this.serviceSettings.settings.subscribe(
             x => {
                 this.start(x);
@@ -66,6 +61,9 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
+    ngAfterViewInit(): void {
+    };
+
     start(settings: SettingsInterface): void {
         this.catTree = settings.catsTree;
         this.aCols.push(this.catTree);
@@ -81,9 +79,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
             this.aCols.push(cat);
         }
 
-        for (let elem of target.parentNode.querySelectorAll('li.sx-active')) {
-            elem.classList.remove('sx-active');
-        }
+        this.resetActiveItems();
         target.classList.add('sx-active');
 
         // если это ветка, то выходим
@@ -95,6 +91,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.leaf = cat;
 
         // подтягиваем доп. параметры
+        this.isLoadingProps = true;
         const s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(
             x => {
                 let newFormGroup = this.fb.group({});
@@ -132,11 +129,11 @@ export class PageAddComponent implements OnInit, OnDestroy {
                 }
 
                 // если предыдущей заголовок был со вспомогательным текстом, то обновим заголовок
-                if (this.previosTitleHelp) {
+                if (this.previousTitleHelp) {
                     let oldTitleValue = newFormGroup.controls.title.value;
-                    oldTitleValue = oldTitleValue.replace(new RegExp(this.previosTitleHelp, 'gi'), '');
+                    oldTitleValue = oldTitleValue.replace(new RegExp(this.previousTitleHelp, 'gi'), '');
                     newFormGroup.controls.title.setValue(oldTitleValue.trim());
-                    this.previosTitleHelp = '';
+                    this.previousTitleHelp = '';
                 }
 
                 // если есть вспомогательный текст, то вставим его
@@ -145,7 +142,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
                     oldTitleValue = oldTitleValue.replace(new RegExp(cat.titleHelp, 'gi'), '');
                     oldTitleValue = cat.titleHelp + ' ' + oldTitleValue.trim();
                     newFormGroup.controls.title.setValue(oldTitleValue);
-                    this.previosTitleHelp = cat.titleHelp;
+                    this.previousTitleHelp = cat.titleHelp;
                 }
 
                 // сделаем не обязательным заголовок и скроем его
@@ -156,8 +153,12 @@ export class PageAddComponent implements OnInit, OnDestroy {
                 this.form = newFormGroup;
                 this.aDynamicPropsFull = x;
             },
-            err => Helpers.handleErr(err.error),
+            err => {
+                this.isLoadingProps = false;
+                Helpers.handleErr(err.error);
+            },
             () => {
+                this.isLoadingProps = false;
             }
         );
         this.subscriptions.push(s);
@@ -182,7 +183,7 @@ export class PageAddComponent implements OnInit, OnDestroy {
         return result;
     }
 
-    onSubmit({target}) {
+    onSubmit({target}): void {
         // if (this.form.invalid) {
         //     for (let key in this.form.controls) {
         //         const formControl = this.form.get(key);
@@ -197,7 +198,9 @@ export class PageAddComponent implements OnInit, OnDestroy {
         const newFormData = Helpers.getNewFormData(this.form.value);
         const s = this.serviceAd.create(newFormData).subscribe(
             x => {
-                target.reset();
+                target.reset(); // на всякий случай и нативную форму сбросим
+                this.reset();
+                alert("Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!");
             },
             err => {
                 Helpers.handleErr(err.error);
@@ -208,9 +211,37 @@ export class PageAddComponent implements OnInit, OnDestroy {
         this.subscriptions.push(s);
     }
 
-    addPhoto({target}) {
+    addPhoto({target}): void {
         this.form.patchValue({
             files: target.files
         });
+    }
+
+    resetActiveItems(): void {
+        let items = this.catCols.nativeElement.querySelectorAll('.sx-active');
+
+        for (let item of items) {
+            item.classList.remove('sx-active');
+        }
+    }
+
+    reset(): void {
+        this.defaultFormControls = {
+            catId: new FormControl('', Validators.required),
+            title: new FormControl(''),
+            description: new FormControl('', Validators.required),
+            price: new FormControl(0),
+            youtube: new FormControl(''),
+        };
+        this.form = this.fb.group(this.defaultFormControls);
+        this.aDynamicPropsFull.length = 0;
+        this.leaf = null;
+        this.isLoadingProps = false;
+        this.aCols.length = 0;
+
+        if (this.catTree) {
+            this.resetActiveItems();
+            this.aCols.push(this.catTree);
+        }
     }
 }

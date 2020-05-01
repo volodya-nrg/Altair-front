@@ -11,6 +11,6 @@
         </a>
         <div class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
         <small class="ad_city">Ташкент</small>
-        <small class="ad_created">{{ ad.createdAt | date }}</small>
+        <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
     </div>
 </div>
