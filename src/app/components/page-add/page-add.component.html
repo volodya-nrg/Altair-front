@@ -1,14 +1,14 @@
 <div class="page-add">
     <h1>Добавить объявление</h1>
 
-    <h2>Каталог</h2>
+    <h2>Каталог:</h2>
     <div #catCols class="page-add_cats">
         <ul *ngFor="let subCat of aCols" class="page-add_cats_col">
             <li *ngFor="let cat of subCat.childes" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
         </ul>
     </div>
 
-    <h2>Параметры</h2>
+    <h2>Параметры:</h2>
     <form [formGroup]="form"
           class="form"
           [class.sx-loading]="isLoadingProps"

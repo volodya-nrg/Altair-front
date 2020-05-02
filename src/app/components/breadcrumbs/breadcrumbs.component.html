@@ -1,4 +1,3 @@
-<!-- если есть что показать, то покажем данный ul -->
 <ul *ngIf="items.length" class="breadcrumbs">
     <li *ngFor="let item of items" class="text-eclipse">
         <a href="javascript:void(0);" [routerLink]="item.url"><small>{{ item.name }}</small></a>

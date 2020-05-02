@@ -12,8 +12,6 @@ export interface PropInterface {
 
 export interface PropFullInterface extends PropInterface, PropDopInterface {
 }
-export interface PropWithKindNameInterface extends PropInterface, PropDop2Interface {
-}
 
 interface PropDopInterface {
     kindPropName: string;
@@ -22,7 +20,4 @@ interface PropDopInterface {
     propIsCanAsFilter: boolean;
     propComment: string;
     values: ValuePropInterface[];
-}
-interface PropDop2Interface {
-    kindPropName: string;
 }
