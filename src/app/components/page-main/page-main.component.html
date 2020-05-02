@@ -7,8 +7,13 @@
                 <ng-container *ngIf="i === lastChainBC.length-1">:</ng-container>
             </ng-container>
         </h3>
-        <app-preloader *ngIf="isLoading"></app-preloader>
-        <app-carousel>
+        
+        <ng-container *ngIf="isLoading">
+            <br/>
+            <app-preloader></app-preloader>
+        </ng-container>
+
+        <app-carousel *ngIf="lastAdsFull.length">
             <div *ngFor="let ad of lastAdsFull">
                 <app-ad [ad]="ad"></app-ad>
             </div>

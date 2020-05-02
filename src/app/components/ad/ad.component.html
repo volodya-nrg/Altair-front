@@ -9,7 +9,8 @@
         <a class="ad_title" [routerLink]=" '/ad/' + ad.slug " title="{{ ad.title }}">
             {{ ad.title }}
         </a>
-        <div class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
+        <div *ngIf="ad.price === 0" class="ad_price"><strong>Бесплатно</strong></div>
+        <div *ngIf="ad.price > 0" class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
         <small class="ad_city">Ташкент</small>
         <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
     </div>
