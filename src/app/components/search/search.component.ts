@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Helpers} from '../../helpers';
 import {Subscription} from 'rxjs';
+import {SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'app-search',
@@ -18,13 +19,14 @@ export class SearchComponent implements OnInit, OnDestroy {
         private fb: FormBuilder,
         private router: Router,
         private route: ActivatedRoute,
+        private serviceSearch: SearchService,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init serachComponent');
 
-        const s = this.route.queryParams.subscribe(
+        const s1 = this.route.queryParams.subscribe(
             params => {
                 const q = params['q'];
 
@@ -36,11 +38,14 @@ export class SearchComponent implements OnInit, OnDestroy {
             () => {
             }
         );
-        this.subscriptions.push(s);
+        this.subscriptions.push(s1);
 
         this.form = this.fb.group({
             q: new FormControl('')
         });
+
+        const s2 = this.serviceSearch.watchForReset.subscribe(x => this.reset());
+        this.subscriptions.push(s2);
     }
 
     ngOnDestroy(): void {
@@ -52,5 +57,9 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.router.navigate(['/search'], {
             queryParams: this.form.value
         });
+    }
+
+    reset(): void {
+        this.form.reset();
     }
 }

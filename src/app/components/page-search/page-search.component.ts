@@ -4,6 +4,7 @@ import {AdInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
 import {Helpers} from '../../helpers';
+import {SearchService} from '../../services/search.service';
 
 @Component({
     selector: 'app-page-search',
@@ -21,6 +22,7 @@ export class PageSearchComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private serviceAd: AdService,
+        private serviceSearch: SearchService,
     ) {
     }
 
@@ -38,8 +40,9 @@ export class PageSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy searchCopm');
+        console.log('destroy searchPage');
         this.subscriptions.forEach(x => x.unsubscribe());
+        this.serviceSearch.watchForReset.next(true);
     }
 
     send(): void {
