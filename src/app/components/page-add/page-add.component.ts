@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Subscription} from 'rxjs';
@@ -13,7 +13,8 @@ import {SettingsInterface} from '../../interfaces/response/settings';
 @Component({
     selector: 'app-page-add',
     templateUrl: './page-add.component.html',
-    styleUrls: ['./page-add.component.less']
+    styleUrls: ['./page-add.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

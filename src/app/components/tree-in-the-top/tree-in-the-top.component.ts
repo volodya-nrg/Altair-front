@@ -1,10 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 
 @Component({
     selector: 'app-tree-in-the-top',
     templateUrl: './tree-in-the-top.component.html',
-    styleUrls: ['./tree-in-the-top.component.less']
+    styleUrls: ['./tree-in-the-top.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class TreeInTheTopComponent {
     @Input() catTree: CatTreeInterface;

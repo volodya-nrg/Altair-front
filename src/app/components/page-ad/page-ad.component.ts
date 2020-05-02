@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
@@ -9,19 +9,24 @@ import {BreadcrumbsService} from '../../services/breadcrumbs.service';
 import {SettingsService} from '../../services/settings.service';
 import {SettingsInterface} from '../../interfaces/response/settings';
 import {Helpers} from '../../helpers';
+import {ModalComponent} from '../modal/modal.component';
+import {CarouselComponent} from '../carousel/carousel.component';
 
 @Component({
     selector: 'app-page-ad',
     templateUrl: './page-ad.component.html',
-    styleUrls: ['./page-ad.component.less']
+    styleUrls: ['./page-ad.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class PageAdComponent implements OnInit, OnDestroy {
+export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     adFull: AdFullInterface;
     catFull: CatFullInterface;
     url: string = environment.apiUrl;
     adId: number;
     isLoading: boolean = false;
+    @ViewChild(ModalComponent) modal: ModalComponent;
+    @ViewChild(CarouselComponent) carousel: CarouselComponent;
 
     constructor(
         private adService: AdService,
@@ -44,7 +49,8 @@ export class PageAdComponent implements OnInit, OnDestroy {
                 this.start(x);
             },
             err => Helpers.handleErr(err.error),
-            () => {}
+            () => {
+            }
         );
         this.subscriptions.push(s);
     }
@@ -52,6 +58,9 @@ export class PageAdComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         console.log('destroy pageAd');
         this.subscriptions.forEach(x => x.unsubscribe());
+    }
+
+    ngAfterViewInit(): void {
     }
 
     start(settings: SettingsInterface): void {
@@ -76,5 +85,10 @@ export class PageAdComponent implements OnInit, OnDestroy {
             }
         );
         this.subscriptions.push(s);
+    }
+
+    showPhotos(indexPhoto: number): void {
+        this.modal.show();
+        setTimeout(() => this.carousel.seek(indexPhoto), 0);
     }
 }

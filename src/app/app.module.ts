@@ -24,6 +24,7 @@ import {MyCurrencyPipe} from './pipes/my-currency.pipe';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import { TreeInTheTopComponent } from './components/tree-in-the-top/tree-in-the-top.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 @NgModule({
     declarations: [
@@ -46,6 +47,7 @@ import { ModalComponent } from './components/modal/modal.component';
         NotFoundComponent,
         TreeInTheTopComponent,
         ModalComponent,
+        CarouselComponent,
     ],
     imports: [
         BrowserModule,

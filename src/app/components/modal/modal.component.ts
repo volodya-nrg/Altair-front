@@ -1,12 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
     selector: 'app-modal',
     templateUrl: './modal.component.html',
-    styleUrls: ['./modal.component.less']
+    styleUrls: ['./modal.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class ModalComponent implements OnInit, OnDestroy {
-    private isShowModal: boolean = false;
+export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
+    private isDisabled: boolean = true;
 
     constructor() {
     }
@@ -17,15 +18,18 @@ export class ModalComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
     }
 
-    isActive(): boolean {
-        return this.isShowModal;
+    ngAfterViewInit(): void {
+    }
+
+    isHidden(): boolean {
+        return this.isDisabled;
     }
 
     show(): void {
-        this.isShowModal = true;
+        this.isDisabled = false;
     }
 
     hide(): void {
-        this.isShowModal = false;
+        this.isDisabled = true;
     }
 }

@@ -26,8 +26,8 @@
         box-sizing: border-box;
         width: @maxWidth;
         height: auto;
-        overflow: hidden;
-        padding: 1em; // 16px / 16px
+        // overflow: hidden;
+        padding: @paddingModal; // 16px / 16px
         background-color: white;
         border-radius: 0.2em; // 3.2px // 16px
         z-index: 2;
@@ -45,12 +45,13 @@
         height: 1em; // 32px / 32px
         background-color: whitesmoke;
         cursor: pointer;
+        z-index: 1;
     }
 
     &_content {
-        width: 100%;
-        height: auto;
-        max-height: 10em; // 160px / 16px
-        overflow-y: auto;
+        //width: inherit;
+        //height: auto;
+        //min-height: 10em; // 160px / 16px
+        //overflow-y: auto;
     }
 }

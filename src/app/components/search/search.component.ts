@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Helpers} from '../../helpers';
@@ -7,7 +7,8 @@ import {Subscription} from 'rxjs';
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
-    styleUrls: ['./search.component.less']
+    styleUrls: ['./search.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class SearchComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

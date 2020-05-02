@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
@@ -12,7 +12,8 @@ import {Helpers} from '../../helpers';
 @Component({
     selector: 'app-page-cat',
     templateUrl: './page-cat.component.html',
-    styleUrls: ['./page-cat.component.less']
+    styleUrls: ['./page-cat.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

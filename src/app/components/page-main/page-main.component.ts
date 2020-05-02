@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
 import {Helpers} from '../../helpers';
@@ -11,6 +11,7 @@ import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
     selector: 'app-page-main',
     templateUrl: './page-main.component.html',
     styleUrls: ['./page-main.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageMainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
@@ -45,7 +46,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
 
     start(settings: SettingsInterface): void {
         this.isLoading = true;
-        const s = this.servicePages.pageMain(4).subscribe(
+        const s = this.servicePages.pageMain(10).subscribe(
             x => {
                 this.lastAdsFull = x.last.adsFull;
 

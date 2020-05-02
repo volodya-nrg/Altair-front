@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
@@ -7,7 +7,8 @@ import {Helpers} from '../../helpers';
 @Component({
     selector: 'app-breadcrumbs',
     templateUrl: './breadcrumbs.component.html',
-    styleUrls: ['./breadcrumbs.component.less']
+    styleUrls: ['./breadcrumbs.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

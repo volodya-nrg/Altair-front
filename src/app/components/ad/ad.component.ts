@@ -1,11 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'app-ad',
     templateUrl: './ad.component.html',
-    styleUrls: ['./ad.component.less']
+    styleUrls: ['./ad.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class AdComponent implements OnInit, OnDestroy {
     url: string = environment.apiUrl;

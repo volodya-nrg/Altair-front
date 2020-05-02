@@ -1,21 +1,21 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="page-ad">
     <app-preloader *ngIf="isLoading"></app-preloader>
-    <ng-container *ngIf="adFull && catFull">
+    <div *ngIf="adFull && catFull">
         <h1>{{ adFull.title }}</h1>
-
         <div class="page-ad_row">
             <div class="page-ad_basic">
                 <div>
                     <div class="page-ad_photo">
                         <img *ngIf="adFull.images && adFull.images.length"
-                             [src]="url + '/resample/320/320/' + adFull.images[0].filepath"
+                             (click)="showPhotos(0)"
+                             [src]="url + '/resample/320/0/' + adFull.images[0].filepath"
                              title="{{ adFull.title }}"/>
                     </div>
                     <div *ngIf="adFull.images && adFull.images.length > 1" class="page-ad_mini-photos">
-                        <ng-container *ngFor="let image of adFull.images.slice(1)">
-                            <span class="page-ad_mini-photo">
-                                <img [src]="url + '/resample/56/56/' + image.filepath" title="{{ adFull.title }}"/>
+                        <ng-container *ngFor="let img of adFull.images; let i = index">
+                            <span *ngIf="i" (click)="showPhotos(i)" class="page-ad_mini-photo">
+                                <img [src]="url + '/resample/56/0/' + img.filepath" title="{{ adFull.title }}"/>
                             </span>
                         </ng-container>
                     </div>
@@ -68,5 +68,12 @@
             <span class="text-mute">Созданно:</span> {{ adFull.createdAt | date }} /
             <span class="text-mute">Изменено:</span> {{ adFull.updatedAt | date }}
         </div>
-    </ng-container>
+        <app-modal>
+            <app-carousel [isByOne]="true">
+                <div *ngFor="let img of adFull.images" class="page-ad_modal-photo">
+                    <img [src]="url + '/resample/900/0/' + img.filepath" title="{{ adFull.title }}"/>
+                </div>
+            </app-carousel>
+        </app-modal>
+    </div>
 </div>
