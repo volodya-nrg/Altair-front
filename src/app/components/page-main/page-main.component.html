@@ -6,7 +6,6 @@
         recusandae saepe.
         Voluptatum.</p>
     <div>
-        <app-preloader></app-preloader>
         <h3 *ngIf="lastChainBC.length" class="page-main_last-chain-cats">
             <ng-container *ngFor="let bc of lastChainBC; let i = index">
                 <a [routerLink]="bc.url">{{ bc.name }}</a>
