@@ -6,6 +6,7 @@ import {HttpClient} from '@angular/common/http';
 import {CatTreeInterface} from '../interfaces/response/cat';
 import {PropInterface} from '../interfaces/response/prop';
 import {Helpers} from '../helpers';
+import {JwtPayloadInterface} from '../interfaces/jwt-payload';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,9 @@ export class SettingsService {
     private url = environment.apiUrl;
     private conf: SettingsInterface;
     private settings$: Observable<SettingsInterface>;
+    private jwt: string = '';
     settings: AsyncSubject<SettingsInterface>;
+    jwtPayload: JwtPayloadInterface;
 
     constructor(
         private http: HttpClient,
@@ -29,6 +32,15 @@ export class SettingsService {
 
     get props(): PropInterface[] {
         return this.conf.props;
+    }
+
+    get JWT(): string {
+        return this.jwt;
+    }
+
+    set JWT(jwtSrc: string) {
+        this.jwt = jwtSrc;
+        this.jwtPayload = this.parseJWT(this.jwt);
     }
 
     load(): void {
@@ -47,5 +59,10 @@ export class SettingsService {
             },
             () => this.settings.complete()
         );
+    }
+
+    parseJWT(str: string): JwtPayloadInterface {
+        const part: string = str.substring(0, str.indexOf('.'));
+        return JSON.parse(atob(part));
     }
 }

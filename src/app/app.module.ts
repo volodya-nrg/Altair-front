@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -25,6 +25,11 @@ import {NotFoundComponent} from './components/not-found/not-found.component';
 import {TreeInTheTopComponent} from './components/tree-in-the-top/tree-in-the-top.component';
 import {ModalComponent} from './components/modal/modal.component';
 import {CarouselComponent} from './components/carousel/carousel.component';
+import {PageRegisterComponent} from './components/page-register/page-register.component';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {ErrorInterceptor} from './interceptors/error.interceptor';
+import {PageLoginComponent} from './components/page-login/page-login.component';
+import { PageProfileComponent } from './components/page-profile/page-profile.component';
 
 @NgModule({
     declarations: [
@@ -48,6 +53,9 @@ import {CarouselComponent} from './components/carousel/carousel.component';
         TreeInTheTopComponent,
         ModalComponent,
         CarouselComponent,
+        PageRegisterComponent,
+        PageLoginComponent,
+        PageProfileComponent,
     ],
     imports: [
         BrowserModule,
@@ -61,7 +69,9 @@ import {CarouselComponent} from './components/carousel/carousel.component';
             useFactory: (settings: SettingsService) => () => settings.load(),
             deps: [SettingsService],
             multi: true
-        }
+        },
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+        {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ],
     bootstrap: [AppComponent]
 })

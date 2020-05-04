@@ -16,6 +16,7 @@ import {Helpers} from '../../helpers';
     encapsulation: ViewEncapsulation.None,
 })
 export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
+    private subscribeCats: Subscription;
     private subscriptions: Subscription[] = [];
     private catId: number = 0;
     private limit: number = 4;
@@ -112,7 +113,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     send(): void {
         this.isLoading = true;
-        const s = this.serviceAd.getFromCat(this.catId, this.limit, this.offset).subscribe(
+        this.subscribeCats = this.serviceAd.getFromCat(this.catId, this.limit, this.offset).subscribe(
             x => {
                 this.ads.push(...x);
                 this.offset += this.limit;
@@ -133,7 +134,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isLoading = false;
             }
         );
-        this.subscriptions.push(s);
+        this.subscriptions.push(this.subscribeCats);
 
         this.renderBC();
     }
@@ -164,5 +165,9 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isLoadAll = false;
         this.isPathRootCat = false;
         this.isPathNotFound = false;
+
+        if (this.subscribeCats) {
+            this.subscribeCats.unsubscribe();
+        }
     }
 }
