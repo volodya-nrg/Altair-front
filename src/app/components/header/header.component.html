@@ -2,10 +2,11 @@
     <div class="container">
         <div class="header">
             <div>
-                <div class="header_left">
+                <div class="header_flexbox">
                     <div>
                         <app-nav></app-nav>
                     </div>
+                    <div></div>
                     <div>
                         <a class="header_logo" routerLink="/main"><img src="/assets/images/logo.png"/></a>
                     </div>
@@ -15,7 +16,15 @@
                 <app-search></app-search>
             </div>
             <div>
-                <button routerLink="/add">Добавить</button>
+                <div class="header_flexbox">
+                    <div>
+                        <a href="javascript:void(0);" routerLink="/login">Вход</a>
+                    </div>
+                    <div></div>
+                    <div>
+                        <button routerLink="/add">Добавить</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

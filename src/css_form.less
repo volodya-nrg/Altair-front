@@ -9,6 +9,10 @@
 }
 
 .form {
+    &_title {
+        margin-bottom: 0.4em; // 4px / 16px
+    }
+
     &_row {
         & + & {
             margin-top: 1em; // 16px / 16px
@@ -135,6 +139,7 @@ input[type="button"], input[type="submit"], button {
             background: linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
             filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0);
         }
+
         // \для Safari
     }
 }

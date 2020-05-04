@@ -10,8 +10,8 @@ header {
 
 .header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
 
     & > * {
         flex-basis: 100%;
@@ -20,8 +20,29 @@ header {
             margin-left: 1em; // 16px / 16px
         }
 
-        &:last-child {
-            text-align: right;
+        &:nth-child(1) {
+
+        }
+
+        &:nth-child(2) {
+
+        }
+
+        &:nth-child(3) {
+            .header_flexbox {
+                justify-content: flex-end;
+            }
+        }
+    }
+
+    &_flexbox {
+        display: flex;
+        align-items: center;
+
+        & > * {
+            &:not(:first-child) {
+                margin-left: 1em; // 16px / 16px
+            }
         }
     }
 
@@ -29,15 +50,6 @@ header {
         img {
             display: block;
             height: 1.5em; // 24px / 16px
-        }
-    }
-
-    &_left {
-        display: flex;
-        align-items: center;
-
-        & > *:not(:first-child) {
-            margin-left: 1em; // 16px / 16px
         }
     }
 }

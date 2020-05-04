@@ -29,7 +29,8 @@ import {PageRegisterComponent} from './components/page-register/page-register.co
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {PageLoginComponent} from './components/page-login/page-login.component';
-import { PageProfileComponent } from './components/page-profile/page-profile.component';
+import {PageProfileComponent} from './components/page-profile/page-profile.component';
+import {PageRegisterOkComponent} from './components/page-register/ok/ok.component';
 
 @NgModule({
     declarations: [
@@ -56,6 +57,7 @@ import { PageProfileComponent } from './components/page-profile/page-profile.com
         PageRegisterComponent,
         PageLoginComponent,
         PageProfileComponent,
+        PageRegisterOkComponent,
     ],
     imports: [
         BrowserModule,

@@ -5,19 +5,19 @@
                 <h1>Вход</h1>
             </div>
             <div class="form_row">
-                <div>Е-мэйл:</div>
+                <div class="form_title">Е-мэйл:</div>
                 <div>
                     <input formControlName="email" class="form_100" type="email"/>
                 </div>
             </div>
             <div class="form_row">
-                <div>Пароль:</div>
+                <div class="form_title">Пароль:</div>
                 <div>
                     <input formControlName="password" class="form_100" type="password"/>
                 </div>
-                <div class="page-login_recover align-right">
-                    <a href="javascript:void(0);" routerLink="/recover">Забыли пароль?</a>
-                </div>
+            </div>
+            <div class="form_row align-right">
+                <a href="javascript:void(0);" routerLink="/recover">Забыли пароль?</a>
             </div>
             <div class="form_row sx-submit">
                 <input type="submit" [disabled]="form.invalid" value="Отправить"/>

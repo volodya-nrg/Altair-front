@@ -9,6 +9,7 @@ import {PageSearchComponent} from './components/page-search/page-search.componen
 import {PageRegisterComponent} from './components/page-register/page-register.component';
 import {PageLoginComponent} from './components/page-login/page-login.component';
 import {PageProfileComponent} from './components/page-profile/page-profile.component';
+import {PageRegisterOkComponent} from './components/page-register/ok/ok.component';
 
 const routes: Routes = [
     {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -21,6 +22,7 @@ const routes: Routes = [
     {path: 'ad/:slug', component: PageAdComponent},
     {path: 'add', component: PageAddComponent},
     {path: 'search', component: PageSearchComponent},
+    {path: 'register/ok', component: PageRegisterOkComponent},
     {path: 'register', component: PageRegisterComponent},
     {path: 'login', component: PageLoginComponent},
     {path: 'profile', component: PageProfileComponent},

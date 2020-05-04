@@ -1,3 +1,40 @@
 <div class="page-register">
-    test
+    <div class="page-register_box">
+        <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+            <div class="form_row align-center">
+                <h1>Регистрация</h1>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Е-мэйл:</div>
+                <div>
+                    <input formControlName="email" class="form_100" type="email"/>
+                </div>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Пароль:</div>
+                <div>
+                    <input formControlName="password" class="form_100" type="password"/>
+                </div>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Пароль (повтор):</div>
+                <div>
+                    <input formControlName="passwordConfirm" class="form_100" type="password"/>
+                </div>
+            </div>
+            <div class="form_row">
+                <label>
+                    <input type="checkbox" formControlName="agreeOffer"/> Я принимаю условия оферты
+                </label>
+            </div>
+            <div class="form_row">
+                <label>
+                    <input type="checkbox" formControlName="agreePolicy"/> Я принимаю политику конфиденциальности
+                </label>
+            </div>
+            <div class="form_row sx-submit align-right">
+                <input type="submit" [disabled]="form.invalid" value="Отправить"/>
+            </div>
+        </form>
+    </div>
 </div>
