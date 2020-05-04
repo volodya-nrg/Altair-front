@@ -1,7 +1,7 @@
 <div class="ad" [class.sx-horiz]=" viewOpt === 'line' ">
     <a class="ad_cover" [routerLink]=" '/ad/' + ad.slug ">
         <img *ngIf="ad.images && ad.images.length"
-             [src]="url + '/resample/224/0/' + ad.images[0].filepath"
+             [src]="url + '/api/v1/resample/224/0/' + ad.images[0].filepath"
              title="{{ ad.title }}"
         />
     </a>
