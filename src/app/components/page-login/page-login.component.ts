@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../helpers';
 import {Subscription} from 'rxjs';
@@ -11,9 +11,10 @@ import {Router} from '@angular/router';
     templateUrl: './page-login.component.html',
     styleUrls: ['./page-login.component.less']
 })
-export class PageLoginComponent implements OnInit, OnDestroy {
+export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
+    @ViewChild('submit', {static: true}) submit: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -35,8 +36,11 @@ export class PageLoginComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    onSubmit({target}): void {
-        if (this.form.invalid) {
+    ngAfterViewInit(): void {
+    }
+
+    onSubmit(): void {
+        if (this.form.invalid === true) {
             for (let key in this.form.controls) {
                 const formControl = this.form.get(key);
 
@@ -47,20 +51,20 @@ export class PageLoginComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const btnSubmit = target.querySelector('[type="submit"]');
-        btnSubmit.disabled = true;
+        this.submit.nativeElement.disabled = true;
         const s = this.serviceAuth.login(this.form.value).subscribe(
             x => {
-                this.serviceSettings.JWT = x.JWT;
+                this.serviceAuth.JWT = x.JWT;
+                this.serviceAuth.profileBhSubject.next(x.user);
                 this.router.navigate(['/profile']).then(r => {
                 });
             },
             err => {
-                btnSubmit.disabled = false;
+                this.submit.nativeElement.disabled = false;
                 Helpers.handleErr(err.error);
             },
             () => {
-                btnSubmit.disabled = false;
+                this.submit.nativeElement.disabled = false;
             }
         );
         this.subscriptions.push(s);

@@ -10,6 +10,9 @@ import {PageRegisterComponent} from './components/page-register/page-register.co
 import {PageLoginComponent} from './components/page-login/page-login.component';
 import {PageProfileComponent} from './components/page-profile/page-profile.component';
 import {PageRegisterOkComponent} from './components/page-register/ok/ok.component';
+import {PageProfileInfoComponent} from './components/page-profile/info/info.component';
+import {PageProfileSettingsComponent} from './components/page-profile/settings/settings.component';
+import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 
 const routes: Routes = [
     {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -25,7 +28,20 @@ const routes: Routes = [
     {path: 'register/ok', component: PageRegisterOkComponent},
     {path: 'register', component: PageRegisterComponent},
     {path: 'login', component: PageLoginComponent},
-    {path: 'profile', component: PageProfileComponent},
+    {path: 'profile', redirectTo: 'profile/info', pathMatch: 'full'},
+    {
+        path: 'profile', component: PageProfileComponent, children: [
+            {
+                path: 'info', component: PageProfileInfoComponent
+            },
+            {
+                path: 'settings', component: PageProfileSettingsComponent
+            },
+            {
+                path: 'ads', component: PageProfileAdsComponent
+            },
+        ]
+    },
     {path: '**', component: PageNotFoundComponent},
 ];
 

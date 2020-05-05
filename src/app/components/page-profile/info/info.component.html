@@ -1,0 +1,15 @@
+<div class="page-profile-info">
+    <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+        <div class="form_row">
+            <div class="form_title">Е-мэйл:</div>
+            <input type="text" [value]="profile?.email" disabled="disabled"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Имя:</div>
+            <input formControlName="name" type="text"/>
+        </div>
+        <div class="form_row sx-submit">
+            <input type="submit" value="Отправить"/>
+        </div>
+    </form>
+</div>

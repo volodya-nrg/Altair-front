@@ -6,7 +6,6 @@
                     <div>
                         <app-nav></app-nav>
                     </div>
-                    <div></div>
                     <div>
                         <a class="header_logo" routerLink="/main"><img src="/assets/images/logo.png"/></a>
                     </div>
@@ -18,9 +17,9 @@
             <div>
                 <div class="header_flexbox">
                     <div>
-                        <a href="javascript:void(0);" routerLink="/login">Вход</a>
+                        <a *ngIf="!profile" href="javascript:void(0);" routerLink="/login">Вход</a>
+                        <a *ngIf="profile" href="javascript:void(0);" routerLink="/profile">Профиль</a>
                     </div>
-                    <div></div>
                     <div>
                         <button routerLink="/add">Добавить</button>
                     </div>

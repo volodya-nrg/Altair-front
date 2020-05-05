@@ -31,6 +31,10 @@ import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {PageLoginComponent} from './components/page-login/page-login.component';
 import {PageProfileComponent} from './components/page-profile/page-profile.component';
 import {PageRegisterOkComponent} from './components/page-register/ok/ok.component';
+import {PageProfileInfoComponent} from './components/page-profile/info/info.component';
+import {PageProfileSettingsComponent} from './components/page-profile/settings/settings.component';
+import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
+import {AuthService} from './services/auth.service';
 
 @NgModule({
     declarations: [
@@ -58,6 +62,9 @@ import {PageRegisterOkComponent} from './components/page-register/ok/ok.componen
         PageLoginComponent,
         PageProfileComponent,
         PageRegisterOkComponent,
+        PageProfileInfoComponent,
+        PageProfileSettingsComponent,
+        PageProfileAdsComponent,
     ],
     imports: [
         BrowserModule,
@@ -68,8 +75,25 @@ import {PageRegisterOkComponent} from './components/page-register/ok/ok.componen
     providers: [
         {
             provide: APP_INITIALIZER,
-            useFactory: (settings: SettingsService) => () => settings.load(),
-            deps: [SettingsService],
+            useFactory: (settings: SettingsService, auth: AuthService) => () => {
+                settings.load();
+
+                if (auth.JWT) {
+                    console.log('есть JWT. Инициализируем.', auth.JWT);
+                    const s = auth.refreshTokens().subscribe(
+                        x => {
+                            auth.JWT = x.JWT;
+                            auth.profileBhSubject.next(x.user);
+                        },
+                        err => {
+                            console.log(err);
+                        },
+                        () => {
+                            s.unsubscribe();
+                        });
+                }
+            },
+            deps: [SettingsService, AuthService],
             multi: true
         },
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
