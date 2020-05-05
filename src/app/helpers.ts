@@ -199,8 +199,7 @@ export class Helpers {
     }
 
     static handleErr(err: any): void {
-        console.log(err);
-        alert(err);
+        console.log("handleErr:", err);
     }
 
     static masonry(parent: HTMLBaseElement, selectorChildes: string, margin: number = 10): boolean {

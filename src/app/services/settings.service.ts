@@ -15,9 +15,8 @@ export class SettingsService {
     private url = environment.apiUrl;
     private conf: SettingsInterface;
     private settings$: Observable<SettingsInterface>;
-    private jwt: string = '';
+    JWT: string = '';
     settings: AsyncSubject<SettingsInterface>;
-    jwtPayload: JwtPayloadInterface;
 
     constructor(
         private http: HttpClient,
@@ -32,15 +31,6 @@ export class SettingsService {
 
     get props(): PropInterface[] {
         return this.conf.props;
-    }
-
-    get JWT(): string {
-        return this.jwt;
-    }
-
-    set JWT(jwtSrc: string) {
-        this.jwt = jwtSrc;
-        this.jwtPayload = this.parseJWT(this.jwt);
     }
 
     load(): void {
