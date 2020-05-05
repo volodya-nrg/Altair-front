@@ -7,8 +7,7 @@ import {PropFullInterface} from '../../interfaces/response/prop';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
-import {SettingsService} from '../../services/settings.service';
-import {SettingsInterface} from '../../interfaces/response/settings';
+import {ManagerService} from '../../services/manager.service';
 
 @Component({
     selector: 'app-page-add',
@@ -39,16 +38,17 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         private serviceCat: CatService,
         private serviceProp: PropService,
         private serviceAd: AdService,
-        private serviceSettings: SettingsService,
+        private managerSettings: ManagerService,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init pageAdd');
         this.reset();
-        const s = this.serviceSettings.settings.subscribe(
+        const s = this.managerSettings.catsTree.subscribe(
             x => {
-                this.start(x);
+                this.catTree = x;
+                this.aCols.push(x);
             },
             err => Helpers.handleErr(err.error),
             () => {
@@ -64,11 +64,6 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit(): void {
     };
-
-    start(settings: SettingsInterface): void {
-        this.catTree = settings.catsTree;
-        this.aCols.push(this.catTree);
-    }
 
     showSubCat({target}, cat: CatTreeInterface): void {
         const curDeepLevel = this.getDeepLevel(cat.catId);
@@ -201,7 +196,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
             x => {
                 target.reset(); // на всякий случай и нативную форму сбросим
                 this.reset();
-                alert("Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!");
+                alert('Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!');
             },
             err => {
                 Helpers.handleErr(err.error);
@@ -219,7 +214,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     resetActiveItems(): void {
-        let items = this.catCols.nativeElement.querySelectorAll('.sx-active');
+        let items: HTMLBaseElement[] = Array.from(this.catCols.nativeElement.querySelectorAll('.sx-active'));
 
         for (let item of items) {
             item.classList.remove('sx-active');

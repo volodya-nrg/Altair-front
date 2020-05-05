@@ -18,7 +18,6 @@ import {AdComponent} from './components/ad/ad.component';
 import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
 import {PageSearchComponent} from './components/page-search/page-search.component';
-import {SettingsService} from './services/settings.service';
 import {PreloaderComponent} from './components/preloader/preloader.component';
 import {MyCurrencyPipe} from './pipes/my-currency.pipe';
 import {NotFoundComponent} from './components/not-found/not-found.component';
@@ -35,6 +34,7 @@ import {PageProfileInfoComponent} from './components/page-profile/info/info.comp
 import {PageProfileSettingsComponent} from './components/page-profile/settings/settings.component';
 import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 import {AuthService} from './services/auth.service';
+import {ManagerService} from './services/manager.service';
 
 @NgModule({
     declarations: [
@@ -75,25 +75,15 @@ import {AuthService} from './services/auth.service';
     providers: [
         {
             provide: APP_INITIALIZER,
-            useFactory: (settings: SettingsService, auth: AuthService) => () => {
-                settings.load();
+            useFactory: (serviceManager: ManagerService, auth: AuthService) => () => {
+                serviceManager.getFirstSettings();
 
+                // если страницу обновили, то сразу же и проверим сессию
                 if (auth.JWT) {
-                    console.log('есть JWT. Инициализируем.', auth.JWT);
-                    const s = auth.refreshTokens().subscribe(
-                        x => {
-                            auth.JWT = x.JWT;
-                            auth.profileBhSubject.next(x.user);
-                        },
-                        err => {
-                            console.log(err);
-                        },
-                        () => {
-                            s.unsubscribe();
-                        });
+                    auth.check();
                 }
             },
-            deps: [SettingsService, AuthService],
+            deps: [ManagerService, AuthService],
             multi: true
         },
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},

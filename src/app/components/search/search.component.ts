@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init serachComponent');
+        console.log('init search Component');
 
         const s1 = this.route.queryParams.subscribe(
             params => {
@@ -44,19 +44,19 @@ export class SearchComponent implements OnInit, OnDestroy {
             q: new FormControl('')
         });
 
-        const s2 = this.serviceSearch.watchForReset.subscribe(x => this.reset());
+        const s2 = this.serviceSearch.watchForReset.subscribe(_ => this.reset());
         this.subscriptions.push(s2);
     }
 
     ngOnDestroy(): void {
-        console.log('destroy searchCopm');
+        console.log('destroy search comp');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    onSubmit({target}) {
+    onSubmit() {
         this.router.navigate(['/search'], {
             queryParams: this.form.value
-        });
+        }).then();
     }
 
     reset(): void {

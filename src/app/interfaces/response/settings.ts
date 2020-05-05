@@ -6,5 +6,4 @@ export interface SettingsInterface {
     catsTree: CatTreeInterface,
     kindProps: KindPropInterface[],
     props: PropInterface[],
-    JWT: string,
 }

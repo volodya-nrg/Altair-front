@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {JwtInterface} from '../interfaces/response/jwt';
 import {UserInterface} from '../interfaces/response/user';
 import {JwtPayloadInterface} from '../interfaces/jwt-payload';
+import {Helpers} from '../helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -14,6 +15,11 @@ export class AuthService {
     profileBhSubject: BehaviorSubject<UserInterface>;
 
     set JWT(data: string) {
+        if (data === '') {
+            localStorage.removeItem('JWT');
+            return;
+        }
+
         localStorage.setItem('JWT', data);
     }
 
@@ -42,5 +48,17 @@ export class AuthService {
     parseJWT(str: string): JwtPayloadInterface {
         const part: string = str.substring(0, str.indexOf('.'));
         return JSON.parse(atob(part));
+    }
+
+    check() {
+        const s = this.refreshTokens().subscribe(
+            x => {
+                this.JWT = x.JWT;
+                this.profileBhSubject.next(x.user);
+            },
+            err => Helpers.handleErr(err),
+            () => {
+                s.unsubscribe();
+            });
     }
 }

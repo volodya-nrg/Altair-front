@@ -4,13 +4,12 @@ import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
 import {PagesService} from '../../services/pages.service';
-import {CatFullInterface, CatInterface} from '../../interfaces/response/cat';
+import {CatFullInterface, CatInterface, CatTreeInterface} from '../../interfaces/response/cat';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
-import {SettingsService} from '../../services/settings.service';
-import {SettingsInterface} from '../../interfaces/response/settings';
 import {Helpers} from '../../helpers';
 import {ModalComponent} from '../modal/modal.component';
 import {CarouselComponent} from '../carousel/carousel.component';
+import {ManagerService} from '../../services/manager.service';
 
 @Component({
     selector: 'app-page-ad',
@@ -32,7 +31,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
         private adService: AdService,
         private servicePages: PagesService,
         private serviceBreadcrumbs: BreadcrumbsService,
-        private settingsService: SettingsService,
+        private serviceManager: ManagerService,
     ) {
         this.adId = Helpers.getAdIdFromUrl();
 
@@ -44,10 +43,8 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         console.log('init pageAd');
-        const s = this.settingsService.settings.subscribe(
-            x => {
-                this.start(x);
-            },
+        const s = this.serviceManager.catsTree.subscribe(
+            x => this.start(x),
             err => Helpers.handleErr(err.error),
             () => {
             }
@@ -63,7 +60,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     ngAfterViewInit(): void {
     }
 
-    start(settings: SettingsInterface): void {
+    start(catsTree: CatTreeInterface): void {
         this.isLoading = true;
         const s = this.servicePages.pageAd(this.adId).subscribe(
             x => {
@@ -71,7 +68,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.catFull = x.catFull;
 
                 let cats: CatInterface[] = [];
-                Helpers.getDescendants(settings.catsTree.childes, this.adFull.catId, cats, 0);
+                Helpers.getDescendants(catsTree.childes, this.adFull.catId, cats, 0);
 
                 const bcItems = Helpers.buildBCFromCats(cats);
                 this.serviceBreadcrumbs.bhSubject.next(bcItems);

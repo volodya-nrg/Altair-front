@@ -2,9 +2,9 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, View
 import {Router} from '@angular/router';
 import {CatService} from '../../services/cat.service';
 import {Subscription} from 'rxjs';
-import {SettingsService} from '../../services/settings.service';
 import {Helpers} from '../../helpers';
 import {CatTreeInterface} from '../../interfaces/response/cat';
+import {ManagerService} from '../../services/manager.service';
 
 @Component({
     selector: 'app-nav',
@@ -23,14 +23,14 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
         private renderer: Renderer2,
         private router: Router,
         private serviceCat: CatService,
-        private settingsService: SettingsService,
+        private serviceManager: ManagerService,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init navComponent');
-        const s = this.settingsService.settings.subscribe(
-            x => this.catTree = x.catsTree,
+        const s = this.serviceManager.catsTree.subscribe(
+            x => this.catTree = x,
             err => Helpers.handleErr(err.error),
             () => {
             }

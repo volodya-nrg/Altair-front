@@ -1,15 +1,15 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../helpers';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
-import {SettingsService} from '../../services/settings.service';
 import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-page-login',
     templateUrl: './page-login.component.html',
-    styleUrls: ['./page-login.component.less']
+    styleUrls: ['./page-login.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
@@ -19,7 +19,6 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private fb: FormBuilder,
         private serviceAuth: AuthService,
-        private serviceSettings: SettingsService,
         private router: Router,
     ) {
     }
@@ -56,8 +55,7 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
             x => {
                 this.serviceAuth.JWT = x.JWT;
                 this.serviceAuth.profileBhSubject.next(x.user);
-                this.router.navigate(['/profile']).then(r => {
-                });
+                this.router.navigate(['/profile']).then();
             },
             err => {
                 this.submit.nativeElement.disabled = false;

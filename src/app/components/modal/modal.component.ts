@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
     selector: 'app-modal',
@@ -6,19 +6,18 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewEncapsulation} from '@a
     styleUrls: ['./modal.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ModalComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ModalComponent implements OnInit, OnDestroy {
     private isDisabled: boolean = true;
 
     constructor() {
     }
 
     ngOnInit(): void {
+        console.log('init modal');
     }
 
     ngOnDestroy(): void {
-    }
-
-    ngAfterViewInit(): void {
+        console.log('destroy modal');
     }
 
     isHidden(): boolean {

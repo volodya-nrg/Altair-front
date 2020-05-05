@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../../interfaces/response/ad';
 import {UserService} from '../../../services/user.service';
 import {AuthService} from '../../../services/auth.service';
@@ -9,7 +9,8 @@ import {UserInterface} from '../../../interfaces/response/user';
 @Component({
     selector: 'app-page-profile-ads',
     templateUrl: './ads.component.html',
-    styleUrls: ['./ads.component.less']
+    styleUrls: ['./ads.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

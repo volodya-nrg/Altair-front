@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {SettingsService} from '../services/settings.service';
 import {environment} from '../../environments/environment';
 import {AuthService} from '../services/auth.service';
 
@@ -10,7 +9,6 @@ export class AuthInterceptor implements HttpInterceptor {
     private minOffsetTimeLifeAccessToken: number = 10;
 
     constructor(
-        private serviceSettings: SettingsService,
         private serviceAuth: AuthService,
     ) {
     }
@@ -19,7 +17,7 @@ export class AuthInterceptor implements HttpInterceptor {
         const url = environment.apiUrl;
         const api = url + '/api/v1';
         const allowUrlsForCookie = [api + '/auth/login', api + '/auth/logout', api + '/auth/refresh-tokens'];
-        const urlsForAuth = [api + '/auth/refresh-tokens', api + '/auth/logout', api + '/users/7/ads'];
+        const urlsForAuth = [api + '/auth/logout', api + '/auth/refresh-tokens']; // api + '/users/7/ads',
         let req = request.clone();
 
         // разрешаем принятие кук на определенные страницы

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {UserInterface} from '../../interfaces/response/user';
 import {AuthService} from '../../services/auth.service';
 import {Subscription} from 'rxjs';
@@ -8,7 +8,8 @@ import {Helpers} from '../../helpers';
 @Component({
     selector: 'app-page-profile',
     templateUrl: './page-profile.component.html',
-    styleUrls: ['./page-profile.component.less']
+    styleUrls: ['./page-profile.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
@@ -31,15 +32,14 @@ export class PageProfileComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        const s = this.serviceAuth.logout().subscribe(x => {
-                console.log('====>', x);
+        const s = this.serviceAuth.logout().subscribe(
+            _ => {
                 localStorage.clear();
                 this.serviceAuth.profileBhSubject.next(null);
-                this.router.navigate(['/main']).then(r => {
-                });
-            }, err => {
-                Helpers.handleErr(err);
-            }, () => {
+                this.router.navigate(['/main']).then();
+            },
+            err => Helpers.handleErr(err),
+            () => {
             }
         );
         this.subscriptions.push(s);

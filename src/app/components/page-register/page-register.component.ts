@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {SettingsService} from '../../services/settings.service';
 import {Router} from '@angular/router';
 import {Helpers} from '../../helpers';
 import {UserService} from '../../services/user.service';
@@ -10,16 +9,17 @@ import {UserService} from '../../services/user.service';
 @Component({
     selector: 'app-page-register',
     templateUrl: './page-register.component.html',
-    styleUrls: ['./page-register.component.less']
+    styleUrls: ['./page-register.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class PageRegisterComponent implements OnInit {
+export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
+    @ViewChild('submit', {static: true}) submit: ElementRef;
 
     constructor(
         private fb: FormBuilder,
         private serviceAuth: AuthService,
-        private serviceSettings: SettingsService,
         private serviceUser: UserService,
         private router: Router,
     ) {
@@ -40,7 +40,10 @@ export class PageRegisterComponent implements OnInit {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    onSubmit({target}): void {
+    ngAfterViewInit(): void {
+    }
+
+    onSubmit(): void {
         if (this.form.invalid) {
             for (let key in this.form.controls) {
                 const formControl = this.form.get(key);
@@ -52,19 +55,17 @@ export class PageRegisterComponent implements OnInit {
             return;
         }
 
-        const btnSubmit = target.querySelector('[type="submit"]');
-        btnSubmit.disabled = true;
+        this.submit.nativeElement.disabled = true;
         const s = this.serviceUser.create(this.form.value).subscribe(
-            x => {
-                this.router.navigate(['/register/ok']).then(r => {
-                });
+            _ => {
+                this.router.navigate(['/register/ok']).then();
             },
             err => {
-                btnSubmit.disabled = false;
+                this.submit.nativeElement.disabled = false;
                 Helpers.handleErr(err.error);
             },
             () => {
-                btnSubmit.disabled = false;
+                this.submit.nativeElement.disabled = false;
             }
         );
         this.subscriptions.push(s);

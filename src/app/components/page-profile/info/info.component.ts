@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
@@ -9,7 +9,8 @@ import {AuthService} from '../../../services/auth.service';
 @Component({
     selector: 'app-page-profile-info',
     templateUrl: './info.component.html',
-    styleUrls: ['./info.component.less']
+    styleUrls: ['./info.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileInfoComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

@@ -1,8 +1,10 @@
 @import "../../../css_variables";
 
 .page-ad {
-    &_row + &_row {
-        margin-top: 0.5em; // 8px / 16px
+    &_row {
+        & + & {
+            margin-top: 0.5em; // 8px / 16px
+        }
     }
 
     &_basic {

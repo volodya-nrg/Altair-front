@@ -1,9 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 
 @Component({
     selector: 'app-page-profile-settings',
     templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.less']
+    styleUrls: ['./settings.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileSettingsComponent implements OnInit, OnDestroy {
 
@@ -17,5 +18,4 @@ export class PageProfileSettingsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         console.log('destroy page profile settings');
     }
-
 }

@@ -3,9 +3,9 @@ import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
 import {Helpers} from '../../helpers';
 import {PagesService} from '../../services/pages.service';
-import {SettingsService} from '../../services/settings.service';
-import {SettingsInterface} from '../../interfaces/response/settings';
 import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
+import {ManagerService} from '../../services/manager.service';
+import {CatTreeInterface} from '../../interfaces/response/cat';
 
 @Component({
     selector: 'app-page-main',
@@ -21,17 +21,15 @@ export class PageMainComponent implements OnInit, OnDestroy {
 
     constructor(
         private servicePages: PagesService,
-        private settingsService: SettingsService,
+        private serviceManager: ManagerService,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init pageMain');
 
-        const s = this.settingsService.settings.subscribe(
-            x => {
-                this.start(x);
-            },
+        const s = this.serviceManager.catsTree.subscribe(
+            x => this.start(x),
             err => Helpers.handleErr(err.error),
             () => {
             }
@@ -44,7 +42,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    start(settings: SettingsInterface): void {
+    start(catsTree: CatTreeInterface): void {
         this.isLoading = true;
         const s = this.servicePages.pageMain(10).subscribe(
             x => {
@@ -52,7 +50,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
 
                 if (this.lastAdsFull.length) {
                     const needCatId = this.lastAdsFull[0].catId;
-                    let listCat = Helpers.getAncestors(settings.catsTree.childes, needCatId);
+                    let listCat = Helpers.getAncestors(catsTree.childes, needCatId);
                     this.lastChainBC = Helpers.buildBCFromCats(listCat);
                 }
             },

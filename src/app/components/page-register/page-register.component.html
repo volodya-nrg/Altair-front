@@ -1,6 +1,6 @@
 <div class="page-register">
     <div class="page-register_box">
-        <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
             <div class="form_row align-center">
                 <h1>Регистрация</h1>
             </div>
@@ -33,7 +33,7 @@
                 </label>
             </div>
             <div class="form_row sx-submit align-right">
-                <input type="submit" [disabled]="form.invalid" value="Отправить"/>
+                <input #submit type="submit" [disabled]="form.invalid" value="Отправить"/>
             </div>
         </form>
     </div>

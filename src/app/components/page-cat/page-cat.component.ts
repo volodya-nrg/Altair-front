@@ -3,11 +3,10 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
-import {SettingsService} from '../../services/settings.service';
 import {CatInterface, CatTreeInterface} from '../../interfaces/response/cat';
-import {SettingsInterface} from '../../interfaces/response/settings';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
 import {Helpers} from '../../helpers';
+import {ManagerService} from '../../services/manager.service';
 
 @Component({
     selector: 'app-page-cat',
@@ -39,7 +38,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private serviceAd: AdService,
-        private serviceSettings: SettingsService,
+        private serviceManager: ManagerService,
         private serviceBreadcrumbs: BreadcrumbsService,
         private router: Router,
         private route: ActivatedRoute,
@@ -51,10 +50,10 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.loadMoreForScroll = this.loadMore.bind(this);
 
-        const s = this.serviceSettings.settings.subscribe(
+        const s = this.serviceManager.catsTree.subscribe(
             x => {
                 this.start(x);
-                this.pointerOnCatTree = x.catsTree;
+                this.pointerOnCatTree = x;
             },
             err => Helpers.handleErr(err.error),
             () => {
@@ -81,17 +80,17 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         window.removeEventListener('scroll', this.loadMoreForScroll);
     }
 
-    start(settings: SettingsInterface): void {
+    start(catsTree: CatTreeInterface): void {
         const s = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 console.log('смена роутинга, тут на странице');
                 this.reset();
-                this.start(settings);
+                this.start(catsTree);
             }
         });
         this.subscriptions.push(s);
 
-        this.catId = Helpers.findCatIdFromSlugs(settings.catsTree.childes, this.route.snapshot.url);
+        this.catId = Helpers.findCatIdFromSlugs(catsTree.childes, this.route.snapshot.url);
 
         // если находимся в /cat
         if (this.catId === 0 && this.route.snapshot.url.length === 0) {
@@ -140,8 +139,12 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     renderBC(): void {
+        if (!this.pointerOnCatTree) {
+            return;
+        }
+
         let cats: CatInterface[] = [];
-        Helpers.getDescendants(this.serviceSettings.catsTree.childes, this.catId, cats, 0);
+        Helpers.getDescendants(this.pointerOnCatTree.childes, this.catId, cats, 0);
         this.serviceBreadcrumbs.bhSubject.next(Helpers.buildBCFromCats(cats));
     }
 

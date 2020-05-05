@@ -22,7 +22,6 @@ export class CarouselComponent implements OnInit, AfterViewInit, AfterContentIni
     private sideCenter: HTMLBaseElement[] = [];
     private sideRight: HTMLBaseElement[] = [];
     private items: HTMLBaseElement[] = [];
-    private x: number = 0;
     @Input() isByOne: boolean = false;
     @ViewChild('btnLeft', {static: true}) btnLeft: ElementRef;
     @ViewChild('btnRight', {static: true}) btnRight: ElementRef;
