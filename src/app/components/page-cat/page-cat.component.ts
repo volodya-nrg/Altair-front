@@ -29,7 +29,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     isPathNotFound: boolean = false;
     pointerOnCatTree: CatTreeInterface;
     @ViewChild('preloader', {static: true}) preloader: ElementRef;
-
     @ViewChild('masonry') set content(content: ElementRef) {
         if (content) {
             this.masonry = content;

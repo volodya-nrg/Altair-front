@@ -24,8 +24,13 @@ export class UserService {
         return this.http.get<UserInterface>(`${this.url}/api/v1/users/` + userId);
     }
 
-    getUserAds(userId: number): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/users/` + userId + '/ads');
+    getUserAds(userId: number, limit: number, offset: number): Observable<AdFullInterface[]> {
+        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/users/` + userId + '/ads', {
+            params: {
+                limit: limit.toString(),
+                offset: offset.toString(),
+            }
+        });
     }
 
     create(data: any): Observable<UserInterface> {

@@ -18,36 +18,27 @@ export class AuthInterceptor implements HttpInterceptor {
         const api = url + '/api/v1';
         const allowUrlsForCookie = [api + '/auth/login', api + '/auth/logout', api + '/auth/refresh-tokens'];
         const urlsForAuth = [api + '/auth/logout', api + '/auth/refresh-tokens']; // api + '/users/7/ads',
-        let req = request.clone();
+        let req = request.clone({
+            withCredentials: true
+        });
 
-        // разрешаем принятие кук на определенные страницы
-        if (allowUrlsForCookie.indexOf(req.url) != -1) {
-            req = req.clone({
-                withCredentials: true
-            });
-        }
         // если это комманда на изменение или спец. страницы, то подставляем авторизацию
-        if (this.serviceAuth.JWT && (req.method.toUpperCase() != 'GET' || urlsForAuth.indexOf(req.url) != -1)) {
+        if (this.serviceAuth.JWT) {
             req = req.clone({
                 setHeaders: {Authorization: 'Bearer ' + this.serviceAuth.JWT}
             });
-            this.serviceAuth.JWT = '';
-        }
 
-        if (this.serviceAuth.JWT) {
             const jwt = this.serviceAuth.parseJWT(this.serviceAuth.JWT);
+            const timeDiff = new Date(jwt.Exp * 1000).getTime() - new Date().getTime();
+            const diffSec = Math.ceil(timeDiff / 1000);
 
-            if (jwt && jwt.Exp) {
-                const timeDiff = new Date(jwt.Exp * 1000).getTime() - new Date().getTime();
-                const diffSec = Math.ceil(timeDiff / 1000);
-
-                // если осталось 10 секунд до окончания access-token-а
-                if (diffSec < this.minOffsetTimeLifeAccessToken) {
-                    this.serviceAuth.refreshTokens().subscribe(x => {
-                        this.serviceAuth.JWT = x.JWT;
-                        this.serviceAuth.profileBhSubject.next(x.user);
-                    });
-                }
+            // если осталось 10 секунд до окончания access-token-а
+            if (diffSec < this.minOffsetTimeLifeAccessToken) {
+                this.serviceAuth.JWT = ''; // т.к. заголовок выставлен, то можно удалить, чтоб не было повторных вызовов
+                this.serviceAuth.refreshTokens().subscribe(x => {
+                    this.serviceAuth.JWT = x.JWT;
+                    this.serviceAuth.profileBhSubject.next(x.user);
+                });
             }
         }
 
