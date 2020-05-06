@@ -1,6 +1,7 @@
 import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {environment} from '../../../environments/environment';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-ad',
@@ -10,10 +11,13 @@ import {environment} from '../../../environments/environment';
 })
 export class AdComponent implements OnInit, OnDestroy {
     url: string = environment.apiUrl;
-    @Input() viewOpt: string;
     @Input() ad: AdFullInterface;
+    @Input() viewOpt: string;
+    @Input() inProfile: boolean = false;
 
-    constructor() {
+    constructor(
+        private router: Router,
+    ) {
     }
 
     ngOnInit(): void {
@@ -22,5 +26,13 @@ export class AdComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         console.log('destroy adComponent');
+    }
+
+    edit(): void {
+        this.router.navigate(['/add'], {
+            queryParams: {
+                adId: this.ad.adId.toString()
+            }
+        }).then();
     }
 }

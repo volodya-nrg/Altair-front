@@ -33,6 +33,10 @@ export class UserService {
         });
     }
 
+    getUserAdsAdId(userId: number, adId: number): Observable<AdFullInterface> {
+        return this.http.get<AdFullInterface>(`${this.url}/api/v1/users/` + userId + '/ads/' + adId);
+    }
+
     create(data: any): Observable<UserInterface> {
         return this.http.post<UserInterface>(`${this.url}/api/v1/users`, data);
     }

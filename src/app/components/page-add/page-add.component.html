@@ -4,7 +4,7 @@
     <h2>Каталог:</h2>
     <div #catCols class="page-add_cats">
         <ul *ngFor="let subCat of aCols" class="page-add_cats_col">
-            <li *ngFor="let cat of subCat.childes" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
+            <li *ngFor="let cat of subCat.childes" class="page-add_cats_col_{{ cat.catId }}" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
         </ul>
     </div>
 
@@ -121,8 +121,9 @@
             </div>
         </div>
         <div class="form_row align-right">
-            <!--            <input type="submit" [disabled]="form.invalid" value="Создать"/>-->
-            <input type="submit" value="Создать"/>
+            <input type="submit" [disabled]="form.invalid" value="Создать"/>
+            <input type="submit" [disabled]="form.invalid" value="Изменить"/>
+            <!--<input type="submit" value="Создать"/>-->
         </div>
     </form>
 </div>
