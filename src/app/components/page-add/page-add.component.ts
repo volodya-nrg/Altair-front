@@ -4,7 +4,7 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Subscription} from 'rxjs';
 import {PropService} from '../../services/prop.service';
 import {PropFullInterface} from '../../interfaces/response/prop';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
 import {ManagerService} from '../../services/manager.service';
@@ -12,6 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {UserService} from '../../services/user.service';
 import {AuthService} from '../../services/auth.service';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'app-page-add',
@@ -23,6 +24,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private catTree: CatTreeInterface;
     private previousTitleHelp: string;
+    private attentionText: string = 'Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
     aCols: CatTreeInterface[] = []; // динамическая переменная
     form: FormGroup;
     defaultFormControls: {
@@ -36,7 +38,9 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
     isLoadingProps: boolean = false;
     editAd: AdFullInterface;
+    url: string = environment.apiUrl;
     @ViewChild('catCols', {static: true}) catCols: ElementRef;
+    @ViewChild('formTag', {static: true}) formTag: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -54,7 +58,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         console.log('init pageAdd');
-        this.reset();
+        this.resetToDefault();
         const s1 = this.managerSettings.catsTree.subscribe(
             x => {
                 this.catTree = x;
@@ -70,23 +74,33 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         console.log('destroy pageAdd');
         this.subscriptions.forEach(x => x.unsubscribe());
-        this.editAd = null;
     }
 
     ngAfterViewInit(): void {
         const adId = this.getQueryAdId();
+
+        if (!adId) {
+            return;
+        }
+
         const s2 = this.serviceAuth.profileBhSubject.subscribe(x => {
-            if (x && adId && this.catTree) {
-                this.serviceUser.getUserAdsAdId(x.userId, adId).subscribe(
-                    x => {
-                        this.editAd = x;
-                        this.fastOpenCols(x.catId);
-                    },
-                    err => Helpers.handleErr(err),
-                    () => {
-                    }
-                );
+            if (!x || !this.catTree) {
+                return;
             }
+
+            const s3 = this.serviceUser.getUserAdsAdId(x.userId, adId).subscribe(
+                x => {
+                    this.editAd = x;
+                    this.fastOpenCols(x.catId);
+                },
+                err => {
+                    Helpers.handleErr(err);
+                    s3.unsubscribe();
+                },
+                () => {
+                    s3.unsubscribe();
+                }
+            );
         });
         this.subscriptions.push(s2);
     };
@@ -101,120 +115,51 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
             this.aCols.push(cat);
         }
 
-        let items: HTMLBaseElement[] = Array.from(target.parentElement.querySelectorAll('.sx-active'));
-        for (let item of items) {
-            item.classList.remove('sx-active');
-        }
+        target.parentElement
+            .querySelectorAll('.sx-active')
+            .forEach(x => x.classList.remove('sx-active'));
         target.classList.add('sx-active');
 
         if (!hasChildes) {
             this.editAd = null; // сотрем если было что
             this.leaf = cat;
-            this.loadParams(cat);
+            this.loadParams();
         }
-    }
-
-    getDeepLevel(catId: number): number {
-        let result = 0;
-
-        for (let i = 0; i < this.aCols.length; i++) {
-            const col = this.aCols[i];
-            result = i;
-
-            for (let j = 0; j < col.childes.length; j++) {
-                var cat = col.childes[j];
-
-                if (cat.catId === catId) {
-                    return result;
-                }
-            }
-        }
-
-        return result;
     }
 
     onSubmit({target}): void {
-        // if (this.form.invalid) {
-        //     for (let key in this.form.controls) {
-        //         const formControl = this.form.get(key);
-        //
-        //         if (formControl.status === 'INVALID') {
-        //             console.log('INVALID:', key);
-        //         }
-        //     }
-        //     return;
-        // }
+        if (this.form.invalid) {
+            for (let key in this.form.controls) {
+                const formControl = this.form.get(key);
+
+                if (formControl.status === 'INVALID') {
+                    console.log('INVALID:', key);
+                }
+            }
+            return;
+        }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
         const s = this.serviceAd.create(newFormData).subscribe(
             x => {
                 target.reset(); // на всякий случай и нативную форму сбросим
-                this.reset();
-                alert('Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!');
+                this.resetToDefault();
+                alert(this.attentionText);
             },
             err => {
                 Helpers.handleErr(err.error);
+                s.unsubscribe();
             },
             () => {
+                s.unsubscribe();
             }
         );
-        this.subscriptions.push(s);
     }
 
     addPhoto({target}): void {
         this.form.patchValue({
             files: target.files
         });
-    }
-
-    resetActiveItems(): void {
-        let items: HTMLBaseElement[] = Array.from(this.catCols.nativeElement.querySelectorAll('.sx-active'));
-
-        for (let item of items) {
-            item.classList.remove('sx-active');
-        }
-    }
-
-    reset(): void {
-        this.defaultFormControls = {
-            catId: new FormControl('', Validators.required),
-            title: new FormControl(''),
-            description: new FormControl('', Validators.required),
-            price: new FormControl(0),
-            youtube: new FormControl(''),
-        };
-        this.form = this.fb.group(this.defaultFormControls);
-        this.aDynamicPropsFull.length = 0;
-        this.leaf = null;
-        this.isLoadingProps = false;
-        this.aCols.length = 0;
-
-        if (this.catTree) {
-            this.resetActiveItems();
-            this.aCols.push(this.catTree);
-        }
-    }
-
-    getQueryAdId(): number {
-        let result: number = 0;
-        let adId = this.route.snapshot.queryParams['adId'] || '';
-
-        if (!adId) {
-            return result;
-        }
-
-        adId = parseInt(adId);
-
-        if (!adId) {
-            return result;
-        }
-        if (typeof adId !== 'number') {
-            return result;
-        }
-
-        result = Math.abs(adId);
-
-        return result;
     }
 
     private fastOpenCols(catId: number): void {
@@ -244,11 +189,163 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.leaf = leaf.pop();
         leaf.length = 0;
-        this.loadParams(this.leaf);
+        this.loadParams();
+    }
 
-        if (this.editAd) {
-            // тут необходимо вставить данные в форму
+    private loadParams(): void {
+        if (this.leaf.childes && this.leaf.childes.length) {
+            return;
         }
+
+        // подтягиваем доп. параметры
+        this.isLoadingProps = true;
+        const s = this.serviceProp.getPropsFullForCat(this.leaf.catId).subscribe(
+            x => this.successAnswerOnPropsFull(x),
+            err => {
+                this.isLoadingProps = false;
+                Helpers.handleErr(err.error);
+                s.unsubscribe();
+            },
+            () => {
+                this.isLoadingProps = false;
+                s.unsubscribe();
+            }
+        );
+    }
+
+    private successAnswerOnPropsFull(x: PropFullInterface[]): void {
+        let cat: CatTreeInterface = this.leaf;
+        let newFormGroup = this.fb.group({});
+        const hasEditedAdProps = this.editAd && this.editAd.detailsExt.length > 0;
+        const tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+
+        // выставим св-ва. Если новое объявление и что-то указали, либо редактируемое.
+        for (let i = 0; i < x.length; i++) {
+            let newProp = x[i];
+            let oldValue = (tagKindNumber.indexOf(newProp.kindPropName) !== -1) ? 0 : '';
+            let aValidators = [];
+
+            // если данное св-во обязательно, то подключим валидатор
+            if (newProp.propIsRequire) {
+                aValidators.push(Validators.required);
+            }
+
+            if (hasEditedAdProps) {
+                for (let j = 0; j < this.editAd.detailsExt.length; j++) {
+                    const prop = this.editAd.detailsExt[j];
+
+                    if (newProp.name === prop.propName) {
+                        if (tagKindNumber.indexOf(prop.kindPropName) !== -1) {
+                            const tmp = parseInt(prop.value);
+
+                            // если валидное число, то примем
+                            if (!isNaN(tmp)) {
+                                oldValue = tmp;
+                            }
+
+                        } else if (newProp.name === 'files') {
+                            if (this.editAd.images.length) {
+                                let images = new FormArray([]);
+
+                                for (let k = 0; k < this.editAd.images.length; k++) {
+                                    let img = this.editAd.images[k];
+                                    images.push(new FormControl(img.filepath));
+                                }
+
+                                newFormGroup.addControl('filesAlreadyHas', images);
+                                oldValue = prop.value;
+                            }
+
+                        } else {
+                            oldValue = prop.value;
+                        }
+
+                        break;
+                    }
+                }
+
+            } else {
+                // посмотрим в текущих контролах введеные уже значения. Его и зафиксируем.
+                Object.keys(this.form.controls).forEach(key => {
+                    if (key === newProp.name) {
+                        oldValue = this.form.controls[key].value;
+                        return false;
+                    }
+                });
+            }
+
+            newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
+        }
+
+        // обновим значения те что по дефолку. Не теряем старые введенные значени.
+        this.form.controls.catId.setValue(cat.catId);
+        if (this.editAd) {
+            Object.keys(this.defaultFormControls).forEach(defKey => {
+                Object.keys(this.editAd).forEach(curKey => {
+                    if (defKey === curKey) {
+                        this.form.controls[defKey].setValue(this.editAd[curKey]);
+                        newFormGroup.addControl(defKey, this.form.controls[defKey]); // валидатор (нужный) тоже подставится
+                        return false;
+                    }
+                });
+            });
+        } else {
+            Object.keys(this.defaultFormControls).forEach(defKey => {
+                Object.keys(this.form.controls).forEach(curKey => {
+                    if (defKey === curKey) {
+                        newFormGroup.addControl(defKey, this.form.controls[defKey]);
+                        return false;
+                    }
+                });
+            });
+        }
+
+        // если предыдущей заголовок был со вспомогательным текстом, то обновим заголовок
+        if (this.previousTitleHelp) {
+            let oldTitleValue = newFormGroup.controls.title.value;
+            oldTitleValue = oldTitleValue.replace(new RegExp(this.previousTitleHelp, 'gi'), '');
+            newFormGroup.controls.title.setValue(oldTitleValue.trim());
+            this.previousTitleHelp = '';
+        }
+
+        // если есть вспомогательный текст, то вставим его
+        if (cat.titleHelp) {
+            let oldTitleValue = newFormGroup.controls.title.value;
+            oldTitleValue = oldTitleValue.replace(new RegExp(cat.titleHelp, 'gi'), '');
+            oldTitleValue = cat.titleHelp + ' ' + oldTitleValue.trim();
+            newFormGroup.controls.title.setValue(oldTitleValue);
+            this.previousTitleHelp = cat.titleHelp;
+        }
+
+        // сделаем не обязательным заголовок и скроем его
+        if (cat.isAutogenerateTitle) {
+            newFormGroup.controls.title.clearValidators();
+        }
+
+        this.form = newFormGroup;
+        this.aDynamicPropsFull = x;
+    }
+
+    private getQueryAdId(): number {
+        let result: number = 0;
+        let adId = this.route.snapshot.queryParams['adId'] || '';
+
+        if (!adId) {
+            return result;
+        }
+
+        adId = parseInt(adId);
+
+        if (!adId) {
+            return result;
+        }
+        if (typeof adId !== 'number') {
+            return result;
+        }
+
+        result = Math.abs(adId);
+
+        return result;
     }
 
     private getArrayAncestorsCatTree(catTree: CatTreeInterface, catId: number, receiverCat: CatTreeInterface[]): CatTreeInterface[] {
@@ -275,82 +372,65 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         return result;
     }
 
-    private loadParams(cat: CatTreeInterface): void {
-        if (cat.childes && cat.childes.length) {
-            return;
+    private getDeepLevel(catId: number): number {
+        let result = 0;
+
+        for (let i = 0; i < this.aCols.length; i++) {
+            const col = this.aCols[i];
+            result = i;
+
+            for (let j = 0; j < col.childes.length; j++) {
+                var cat = col.childes[j];
+
+                if (cat.catId === catId) {
+                    return result;
+                }
+            }
         }
 
-        // подтягиваем доп. параметры
-        this.isLoadingProps = true;
-        const s = this.serviceProp.getPropsFullForCat(cat.catId).subscribe(
-            x => {
-                let newFormGroup = this.fb.group({});
+        return result;
+    }
 
-                for (let i = 0; i < x.length; i++) {
-                    let newProp = x[i];
-                    let oldValue = newProp.kindPropName === 'input_number' ? 0 : '';
-                    let aValidators = [];
+    private resetActiveItems(): void {
+        this.catCols.nativeElement
+            .querySelectorAll('.sx-active')
+            .forEach(x => x.classList.remove('sx-active'));
+    }
 
-                    // если данное св-во обязательно, то подключим валидатор
-                    if (newProp.propIsRequire) {
-                        aValidators.push(Validators.required);
-                    }
+    private resetToDefault(): void {
+        this.previousTitleHelp = '';
+        this.aCols.length = 0;
+        this.aDynamicPropsFull.length = 0;
+        this.leaf = null;
+        this.editAd = null;
+        this.isLoadingProps = false;
 
-                    // посмотрим в текущих контролах введеные уже значения. Его и зафиксируем.
-                    Object.keys(this.form.controls).forEach(key => {
-                        if (key === newProp.name) {
-                            oldValue = this.form.controls[key].value;
-                            return false;
-                        }
-                    });
+        this.defaultFormControls = {
+            catId: new FormControl('', Validators.required),
+            title: new FormControl(''),
+            description: new FormControl('', Validators.required),
+            price: new FormControl(0),
+            youtube: new FormControl(''),
+        };
+        this.form = this.fb.group(this.defaultFormControls);
 
-                    newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
-                }
+        if (this.catTree) {
+            this.resetActiveItems();
+            this.aCols.push(this.catTree);
+        }
+    }
 
-                // обновим значения те что по дефолку. Не теряем старые введенные значени.
-                this.form.controls.catId.setValue(cat.catId);
-                for (let defKey in this.defaultFormControls) {
-                    for (let curKey in this.form.controls) {
-                        if (defKey === curKey) {
-                            newFormGroup.addControl(defKey, this.form.controls[defKey]);
-                            break;
-                        }
-                    }
-                }
+    removeImage({target}): void {
+        let owner = target.parentNode;
+        let x = this.form.get('filesAlreadyHas') as FormArray;
+        const files = this.form.get('files');
 
-                // если предыдущей заголовок был со вспомогательным текстом, то обновим заголовок
-                if (this.previousTitleHelp) {
-                    let oldTitleValue = newFormGroup.controls.title.value;
-                    oldTitleValue = oldTitleValue.replace(new RegExp(this.previousTitleHelp, 'gi'), '');
-                    newFormGroup.controls.title.setValue(oldTitleValue.trim());
-                    this.previousTitleHelp = '';
-                }
+        const index = [...owner.parentElement.childNodes].indexOf(owner);
+        x.removeAt(index);
+        owner.remove();
 
-                // если есть вспомогательный текст, то вставим его
-                if (cat.titleHelp) {
-                    let oldTitleValue = newFormGroup.controls.title.value;
-                    oldTitleValue = oldTitleValue.replace(new RegExp(cat.titleHelp, 'gi'), '');
-                    oldTitleValue = cat.titleHelp + ' ' + oldTitleValue.trim();
-                    newFormGroup.controls.title.setValue(oldTitleValue);
-                    this.previousTitleHelp = cat.titleHelp;
-                }
-
-                // сделаем не обязательным заголовок и скроем его
-                if (cat.isAutogenerateTitle) {
-                    newFormGroup.controls.title.clearValidators();
-                }
-
-                this.form = newFormGroup;
-                this.aDynamicPropsFull = x;
-            },
-            err => {
-                this.isLoadingProps = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.isLoadingProps = false;
-            }
-        );
-        this.subscriptions.push(s);
+        if (!x.length && typeof files.value === 'string') {
+            files.setValue({});
+        }
     }
 }

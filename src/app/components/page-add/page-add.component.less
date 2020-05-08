@@ -79,4 +79,43 @@
             }
         }
     }
+
+    &_images {
+    }
+
+    &_image {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 3em; // 48px / 16px
+        height: 3em; // 48px / 16px
+        overflow: hidden;
+        background-color: whitesmoke;
+        margin: 0.5em 0.5em 0 0;
+
+        &_close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 1em; // 16px / 16px
+            height: 1em; // 16px / 16px
+            background-color: white;
+            opacity: 0.7;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
 }

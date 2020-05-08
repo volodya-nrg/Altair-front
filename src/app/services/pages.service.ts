@@ -16,7 +16,7 @@ export class PagesService {
     }
 
     pageAd(adId: number): Observable<PagesAdInterface> {
-        return this.http.get<PagesAdInterface>(`${this.url}/api/v1/pages/ad/` + adId);
+        return this.http.get<PagesAdInterface>(`${this.url}/api/v1/pages/ad/${adId}`);
     }
 
     pageMain(limit: number): Observable<PagesMainInterface> {

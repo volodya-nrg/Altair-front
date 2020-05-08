@@ -4,12 +4,14 @@
     <h2>Каталог:</h2>
     <div #catCols class="page-add_cats">
         <ul *ngFor="let subCat of aCols" class="page-add_cats_col">
-            <li *ngFor="let cat of subCat.childes" class="page-add_cats_col_{{ cat.catId }}" (click)="showSubCat($event, cat)">{{ cat.name }}</li>
+            <li *ngFor="let cat of subCat.childes" class="page-add_cats_col_{{ cat.catId }}"
+                (click)="showSubCat($event, cat)">{{ cat.name }}</li>
         </ul>
     </div>
 
     <h2>Параметры:</h2>
-    <form [formGroup]="form"
+    <form #formTag
+          [formGroup]="form"
           class="form"
           [class.sx-loading]="isLoadingProps"
           (ngSubmit)="onSubmit($event)"
@@ -68,9 +70,17 @@
                             {{ propFull.suffix }}
                         </div>
                     </div>
+
                     <p *ngIf="propFull.propComment && propFull.kindPropName !== 'photo' "
                        class="form_comment text-mute">{{ propFull.propComment }}</p>
                     <p *ngIf="propFull.comment" class="form_comment text-mute">{{ propFull.comment }}</p>
+
+                    <div *ngIf="propFull.kindPropName === 'photo' && editAd?.images.length" class="page-add_images">
+                        <div *ngFor="let img of editAd.images" class="page-add_image">
+                            <span class="page-add_image_close" title="удалить" (click)="removeImage($event)">&times;</span>
+                            <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -121,9 +131,11 @@
             </div>
         </div>
         <div class="form_row align-right">
-            <input type="submit" [disabled]="form.invalid" value="Создать"/>
-            <input type="submit" [disabled]="form.invalid" value="Изменить"/>
-            <!--<input type="submit" value="Создать"/>-->
+            <input *ngIf="!editAd" type="submit" [disabled]="form.invalid" value="Создать"/>
+            <input *ngIf="editAd" type="submit" [disabled]="form.invalid" value="Изменить"/>
+        </div>
+        <div>
+            {{ form.value | json }}
         </div>
     </form>
 </div>

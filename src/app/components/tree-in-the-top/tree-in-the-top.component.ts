@@ -20,10 +20,8 @@ export class TreeInTheTopComponent {
     }
 
     closeAll(target: HTMLBaseElement): void {
-        const grandFather = target.closest('ul');
-        const matches: HTMLBaseElement[] = Array.from(grandFather.querySelectorAll('.sx-active'));
-        for (let elem of matches) {
-            elem.classList.remove('sx-active');
-        }
+        target.closest('ul')
+              .querySelectorAll('.sx-active')
+              .forEach(x => x.classList.remove('sx-active'));
     }
 }

@@ -21,11 +21,11 @@ export class UserService {
     }
 
     getUser(userId: number): Observable<UserInterface> {
-        return this.http.get<UserInterface>(`${this.url}/api/v1/users/` + userId);
+        return this.http.get<UserInterface>(`${this.url}/api/v1/users/${userId}`);
     }
 
     getUserAds(userId: number, limit: number, offset: number): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/users/` + userId + '/ads', {
+        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/users/${userId}/ads`, {
             params: {
                 limit: limit.toString(),
                 offset: offset.toString(),
@@ -34,7 +34,7 @@ export class UserService {
     }
 
     getUserAdsAdId(userId: number, adId: number): Observable<AdFullInterface> {
-        return this.http.get<AdFullInterface>(`${this.url}/api/v1/users/` + userId + '/ads/' + adId);
+        return this.http.get<AdFullInterface>(`${this.url}/api/v1/users/${userId}/ads/${adId}`);
     }
 
     create(data: any): Observable<UserInterface> {
@@ -42,6 +42,6 @@ export class UserService {
     }
 
     update(userId: number, data: any): Observable<UserInterface> {
-        return this.http.put<UserInterface>(`${this.url}/api/v1/users/` + userId, data);
+        return this.http.put<UserInterface>(`${this.url}/api/v1/users/${userId}`, data);
     }
 }
