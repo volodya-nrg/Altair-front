@@ -1,6 +1,21 @@
-main {
-    display: table;
-    width: 100%;
-    background-color: white;
-    padding-bottom: 1em;
+@import "../css_variables";
+
+.app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    &_top {
+    }
+
+    &_mid {
+        display: table;
+        width: 100%;
+    }
+
+    &_bot {
+        flex: 1 0 auto;
+        margin-top: 1em;
+        background-color: @color_dark;
+    }
 }

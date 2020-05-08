@@ -7,7 +7,5 @@ export interface PagesAdInterface {
 }
 
 export interface PagesMainInterface {
-    last: {
-        adsFull: AdFullInterface[],
-    };
+    lastAdsFull: AdFullInterface[]
 }

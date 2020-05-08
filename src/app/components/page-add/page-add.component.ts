@@ -1,7 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {PropService} from '../../services/prop.service';
 import {PropFullInterface} from '../../interfaces/response/prop';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -10,9 +10,9 @@ import {Helpers} from '../../helpers';
 import {ManagerService} from '../../services/manager.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
-import {UserService} from '../../services/user.service';
 import {AuthService} from '../../services/auth.service';
 import {environment} from '../../../environments/environment';
+import {ProfileService} from '../../services/profile.service';
 
 @Component({
     selector: 'app-page-add',
@@ -24,12 +24,13 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private catTree: CatTreeInterface;
     private previousTitleHelp: string;
-    private attentionText: string = 'Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
+    private attentionTextCreate: string = 'Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
+    private attentionTextUpdate: string = 'Объявление отредактированно.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
     aCols: CatTreeInterface[] = []; // динамическая переменная
     form: FormGroup;
     defaultFormControls: {
-        catId: FormControl,
         title: FormControl,
+        catId: FormControl,
         description: FormControl,
         price: FormControl,
         youtube: FormControl,
@@ -39,6 +40,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     isLoadingProps: boolean = false;
     editAd: AdFullInterface;
     url: string = environment.apiUrl;
+    isSendData: boolean = false;
     @ViewChild('catCols', {static: true}) catCols: ElementRef;
     @ViewChild('formTag', {static: true}) formTag: ElementRef;
 
@@ -47,7 +49,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         private serviceCat: CatService,
         private serviceProp: PropService,
         private serviceAd: AdService,
-        private serviceUser: UserService,
+        private serviceProfile: ProfileService,
         private managerSettings: ManagerService,
         private router: Router,
         private route: ActivatedRoute,
@@ -88,7 +90,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
 
-            const s3 = this.serviceUser.getUserAdsAdId(x.userId, adId).subscribe(
+            const s3 = this.serviceProfile.getAd(adId).subscribe(
                 x => {
                     this.editAd = x;
                     this.fastOpenCols(x.catId);
@@ -140,17 +142,30 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        const s = this.serviceAd.create(newFormData).subscribe(
+        let exec: Observable<AdFullInterface>;
+        const isUpdate: boolean = this.form.contains('adId') && this.form.get('adId').value > 0;
+
+        if (isUpdate) {
+            exec = this.serviceAd.update(this.editAd.adId, newFormData);
+
+        } else {
+            exec = this.serviceAd.create(newFormData);
+        }
+
+        this.isSendData = true;
+        const s = exec.subscribe(
             x => {
                 target.reset(); // на всякий случай и нативную форму сбросим
                 this.resetToDefault();
-                alert(this.attentionText);
+                alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
             },
             err => {
+                this.isSendData = false;
                 Helpers.handleErr(err.error);
                 s.unsubscribe();
             },
             () => {
+                this.isSendData = false;
                 s.unsubscribe();
             }
         );
@@ -253,7 +268,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
                                 }
 
                                 newFormGroup.addControl('filesAlreadyHas', images);
-                                oldValue = prop.value;
+                                oldValue = this.editAd.images.length; // что-то нужно вставить, если картинки есть
                             }
 
                         } else {
@@ -279,6 +294,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // обновим значения те что по дефолку. Не теряем старые введенные значени.
         this.form.controls.catId.setValue(cat.catId);
+
         if (this.editAd) {
             Object.keys(this.defaultFormControls).forEach(defKey => {
                 Object.keys(this.editAd).forEach(curKey => {
@@ -289,6 +305,9 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                 });
             });
+
+            newFormGroup.addControl('adId', new FormControl(this.editAd.adId, Validators.required));
+
         } else {
             Object.keys(this.defaultFormControls).forEach(defKey => {
                 Object.keys(this.form.controls).forEach(curKey => {
@@ -328,7 +347,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     private getQueryAdId(): number {
         let result: number = 0;
-        let adId = this.route.snapshot.queryParams['adId'] || '';
+        let adId = this.route.snapshot.queryParams['edit'] || '';
 
         if (!adId) {
             return result;
@@ -406,7 +425,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isLoadingProps = false;
 
         this.defaultFormControls = {
-            catId: new FormControl('', Validators.required),
+            catId: new FormControl(0, Validators.required),
             title: new FormControl(''),
             description: new FormControl('', Validators.required),
             price: new FormControl(0),

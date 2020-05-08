@@ -31,7 +31,7 @@ export class AdComponent implements OnInit, OnDestroy {
     edit(): void {
         this.router.navigate(['/add'], {
             queryParams: {
-                adId: this.ad.adId.toString()
+                edit: this.ad.adId.toString()
             }
         }).then();
     }

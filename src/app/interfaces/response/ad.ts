@@ -11,6 +11,7 @@ export interface AdInterface {
     price: number;
     ip: string;
     isDisabled: boolean;
+    isApproved: boolean;
     hasPhoto: boolean;
     youtube: string;
     createdAt: string;

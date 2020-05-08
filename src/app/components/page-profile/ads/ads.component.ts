@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../../interfaces/response/ad';
-import {UserService} from '../../../services/user.service';
 import {AuthService} from '../../../services/auth.service';
 import {Helpers} from '../../../helpers';
 import {Subscription} from 'rxjs';
 import {UserInterface} from '../../../interfaces/response/user';
+import {ProfileService} from '../../../services/profile.service';
 
 @Component({
     selector: 'app-page-profile-ads',
@@ -15,7 +15,7 @@ import {UserInterface} from '../../../interfaces/response/user';
 export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private profile: UserInterface;
-    private limit: number = 1;
+    private limit: number = 3;
     private offset: number = 0;
     private loadMoreForScroll: () => void;
     ads: AdFullInterface[] = [];
@@ -24,7 +24,7 @@ export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit
     @ViewChild('preloader', {static: true}) preloader: ElementRef;
 
     constructor(
-        private serviceUser: UserService,
+        private serviceProfile: ProfileService,
         private serviceAuth: AuthService,
     ) {
     }
@@ -65,7 +65,7 @@ export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit
 
     send(): void {
         this.isLoading = true;
-        const s = this.serviceUser.getUserAds(this.profile.userId, this.limit, this.offset).subscribe(
+        const s = this.serviceProfile.getAds(this.limit, this.offset).subscribe(
             x => {
                 this.ads.push(...x);
                 this.offset += this.limit;

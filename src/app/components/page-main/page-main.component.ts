@@ -46,7 +46,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         const s = this.servicePages.pageMain(10).subscribe(
             x => {
-                this.lastAdsFull = x.last.adsFull;
+                this.lastAdsFull = x.lastAdsFull;
 
                 if (this.lastAdsFull.length) {
                     const needCatId = this.lastAdsFull[0].catId;

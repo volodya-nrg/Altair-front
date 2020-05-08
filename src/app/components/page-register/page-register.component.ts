@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
 import {Helpers} from '../../helpers';
-import {UserService} from '../../services/user.service';
+import {ProfileService} from '../../services/profile.service';
 
 @Component({
     selector: 'app-page-register',
@@ -20,7 +20,7 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     constructor(
         private fb: FormBuilder,
         private serviceAuth: AuthService,
-        private serviceUser: UserService,
+        private serviceProfile: ProfileService,
         private router: Router,
     ) {
     }
@@ -56,7 +56,7 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.submit.nativeElement.disabled = true;
-        const s = this.serviceUser.create(this.form.value).subscribe(
+        const s = this.serviceProfile.create(this.form.value).subscribe(
             _ => {
                 this.router.navigate(['/register/ok']).then();
             },

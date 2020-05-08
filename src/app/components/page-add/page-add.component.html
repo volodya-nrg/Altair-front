@@ -1,5 +1,5 @@
 <div class="page-add">
-    <h1>Добавить объявление</h1>
+    <h1>{{ editAd ? 'Редактировать объявление' : 'Добавить объявление' }}</h1>
 
     <h2>Каталог:</h2>
     <div #catCols class="page-add_cats">
@@ -16,7 +16,9 @@
           [class.sx-loading]="isLoadingProps"
           (ngSubmit)="onSubmit($event)"
           enctype="multipart/form-data">
+
         <input type="hidden" formControlName="catId" value="0"/>
+
         <div *ngFor="let propFull of aDynamicPropsFull" class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
@@ -77,13 +79,15 @@
 
                     <div *ngIf="propFull.kindPropName === 'photo' && editAd?.images.length" class="page-add_images">
                         <div *ngFor="let img of editAd.images" class="page-add_image">
-                            <span class="page-add_image_close" title="удалить" (click)="removeImage($event)">&times;</span>
+                            <span class="page-add_image_close" title="удалить"
+                                  (click)="removeImage($event)">&times;</span>
                             <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <div *ngIf="!leaf || leaf && !leaf.isAutogenerateTitle" class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
@@ -131,8 +135,7 @@
             </div>
         </div>
         <div class="form_row align-right">
-            <input *ngIf="!editAd" type="submit" [disabled]="form.invalid" value="Создать"/>
-            <input *ngIf="editAd" type="submit" [disabled]="form.invalid" value="Изменить"/>
+            <input type="submit" [disabled]="form.invalid || isSendData" [value]=" editAd ? 'Изменить':'Создать' "/>
         </div>
         <div>
             {{ form.value | json }}

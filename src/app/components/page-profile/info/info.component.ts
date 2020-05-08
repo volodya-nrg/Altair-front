@@ -5,6 +5,7 @@ import {Helpers} from '../../../helpers';
 import {UserService} from '../../../services/user.service';
 import {UserInterface} from '../../../interfaces/response/user';
 import {AuthService} from '../../../services/auth.service';
+import {ProfileService} from '../../../services/profile.service';
 
 @Component({
     selector: 'app-page-profile-info',
@@ -19,7 +20,7 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private serviceUser: UserService,
+        private serviceProfile: ProfileService,
         private serviceAuth: AuthService,
     ) {
         this.form = this.fb.group({
@@ -64,7 +65,7 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
         const newFormData = Helpers.getNewFormData(this.form.value);
         const btnSubmit = target.querySelector('[type="submit"]');
         btnSubmit.disabled = true;
-        const s = this.serviceUser.update(this.profile.userId, newFormData).subscribe(
+        const s = this.serviceProfile.update(newFormData).subscribe(
             x => {
                 this.serviceAuth.profileBhSubject.next(x);
             },
