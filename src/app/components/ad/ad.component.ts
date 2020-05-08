@@ -28,11 +28,7 @@ export class AdComponent implements OnInit, OnDestroy {
         console.log('destroy adComponent');
     }
 
-    edit(): void {
-        this.router.navigate(['/add'], {
-            queryParams: {
-                edit: this.ad.adId.toString()
-            }
-        }).then();
-    }
+    // edit(): void {
+    //     this.router.navigate(['/profile/edit/' + this.ad.adId]).then();
+    // }
 }

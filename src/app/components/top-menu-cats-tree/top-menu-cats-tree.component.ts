@@ -7,12 +7,12 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
 import {ManagerService} from '../../services/manager.service';
 
 @Component({
-    selector: 'app-nav',
-    templateUrl: './nav.component.html',
-    styleUrls: ['./nav.component.less'],
+    selector: 'app-top-menu-cats-tree',
+    templateUrl: './top-menu-cats-tree.component.html',
+    styleUrls: ['./top-menu-cats-tree.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
+export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private detachClick: () => void;
     isActive: boolean = false;
@@ -28,7 +28,7 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        console.log('init navComponent');
+        console.log('init top-menu-cats-tree comp');
         const s = this.serviceManager.catsTree.subscribe(
             x => this.catTree = x,
             err => Helpers.handleErr(err.error),
@@ -39,7 +39,7 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy navComponent');
+        console.log('destroy top-menu-cats-tree component');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
@@ -53,7 +53,7 @@ export class NavComponent implements OnInit, OnDestroy, AfterViewInit {
     openMenu(): void {
         this.isActive = true;
         this.detachClick = this.renderer.listen('document', 'click', (e) => {
-            const inZone = e.target.closest('.nav_tree');
+            const inZone = e.target.closest('.top-menu-cats-tree_tree');
 
             if (e.target != this.button.nativeElement && !inZone || e.target.classList.contains('tree-in-the-top_go')) {
                 this.hideMenu();

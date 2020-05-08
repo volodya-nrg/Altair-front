@@ -8,11 +8,11 @@ import {AppComponent} from './app.component';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {PageMainComponent} from './components/page-main/page-main.component';
 import {PageCatComponent} from './components/page-cat/page-cat.component';
-import {PageAddComponent} from './components/page-add/page-add.component';
 import {PageAdComponent} from './components/page-ad/page-ad.component';
+import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-ad-create-edit.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
-import {NavComponent} from './components/nav/nav.component';
+import {TopMenuCatsTreeComponent} from './components/top-menu-cats-tree/top-menu-cats-tree.component';
 import {SearchComponent} from './components/search/search.component';
 import {AdComponent} from './components/ad/ad.component';
 import {SafeHtmlPipe} from './pipes/safe-html.pipe';
@@ -42,11 +42,10 @@ import {ManagerService} from './services/manager.service';
         PageNotFoundComponent,
         PageMainComponent,
         PageCatComponent,
-        PageAddComponent,
         PageAdComponent,
         FooterComponent,
         HeaderComponent,
-        NavComponent,
+        TopMenuCatsTreeComponent,
         SearchComponent,
         AdComponent,
         SafeHtmlPipe,
@@ -65,6 +64,7 @@ import {ManagerService} from './services/manager.service';
         PageProfileInfoComponent,
         PageProfileSettingsComponent,
         PageProfileAdsComponent,
+        PageAdCreateEditComponent
     ],
     imports: [
         BrowserModule,

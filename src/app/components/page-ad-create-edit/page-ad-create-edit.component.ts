@@ -15,17 +15,19 @@ import {environment} from '../../../environments/environment';
 import {ProfileService} from '../../services/profile.service';
 
 @Component({
-    selector: 'app-page-add',
-    templateUrl: './page-add.component.html',
-    styleUrls: ['./page-add.component.less'],
+    selector: 'app-page-ad-create-edit',
+    templateUrl: './page-ad-create-edit.component.html',
+    styleUrls: ['./page-ad-create-edit.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
+export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private catTree: CatTreeInterface;
     private previousTitleHelp: string;
     private attentionTextCreate: string = 'Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
     private attentionTextUpdate: string = 'Объявление отредактированно.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
+    private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+    adId: number = 0;
     aCols: CatTreeInterface[] = []; // динамическая переменная
     form: FormGroup;
     defaultFormControls: {
@@ -60,7 +62,9 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         console.log('init pageAdd');
+
         this.resetToDefault();
+
         const s1 = this.managerSettings.catsTree.subscribe(
             x => {
                 this.catTree = x;
@@ -71,6 +75,16 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         );
         this.subscriptions.push(s1);
+
+        let sAdIdTmp: string = this.route.snapshot.paramMap.get('adId');
+
+        if (sAdIdTmp) {
+            let adIdTmp: number = parseInt(sAdIdTmp);
+
+            if (!isNaN(adIdTmp)) {
+                this.adId = adIdTmp;
+            }
+        }
     }
 
     ngOnDestroy(): void {
@@ -79,30 +93,22 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const adId = this.getQueryAdId();
-
-        if (!adId) {
-            return;
-        }
-
         const s2 = this.serviceAuth.profileBhSubject.subscribe(x => {
-            if (!x || !this.catTree) {
-                return;
+            if (this.adId && x && this.catTree) {
+                const s3 = this.serviceProfile.getAd(this.adId).subscribe(
+                    x => {
+                        this.editAd = x;
+                        this.fastOpenCols(x.catId);
+                    },
+                    err => {
+                        Helpers.handleErr(err);
+                        s3.unsubscribe();
+                    },
+                    () => {
+                        s3.unsubscribe();
+                    }
+                );
             }
-
-            const s3 = this.serviceProfile.getAd(adId).subscribe(
-                x => {
-                    this.editAd = x;
-                    this.fastOpenCols(x.catId);
-                },
-                err => {
-                    Helpers.handleErr(err);
-                    s3.unsubscribe();
-                },
-                () => {
-                    s3.unsubscribe();
-                }
-            );
         });
         this.subscriptions.push(s2);
     };
@@ -123,6 +129,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         target.classList.add('sx-active');
 
         if (!hasChildes) {
+            this.adId = 0;
             this.editAd = null; // сотрем если было что
             this.leaf = cat;
             this.loadParams();
@@ -131,29 +138,27 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
     onSubmit({target}): void {
         if (this.form.invalid) {
-            for (let key in this.form.controls) {
-                const formControl = this.form.get(key);
-
-                if (formControl.status === 'INVALID') {
+            Object.keys(this.form.controls).forEach(key => {
+                if (this.form.get(key).status === 'INVALID') {
                     console.log('INVALID:', key);
                 }
-            }
+            });
             return;
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        let exec: Observable<AdFullInterface>;
+        let fnExec: Observable<AdFullInterface>;
         const isUpdate: boolean = this.form.contains('adId') && this.form.get('adId').value > 0;
 
         if (isUpdate) {
-            exec = this.serviceAd.update(this.editAd.adId, newFormData);
+            fnExec = this.serviceAd.update(this.editAd.adId, newFormData);
 
         } else {
-            exec = this.serviceAd.create(newFormData);
+            fnExec = this.serviceAd.create(newFormData);
         }
 
         this.isSendData = true;
-        const s = exec.subscribe(
+        const s = fnExec.subscribe(
             x => {
                 target.reset(); // на всякий случай и нативную форму сбросим
                 this.resetToDefault();
@@ -183,24 +188,24 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         let aCats: CatTreeInterface[] = this.getArrayAncestorsCatTree(this.catTree, catId, leaf).reverse();
         let ids: number[] = [];
 
-        for (let i = 0; i < aCats.length; i++) {
-            const cat = aCats[i];
+        aCats.forEach(cat => {
             this.aCols.push(cat);
 
             // на нулевом уровне catId=0
             if (cat.catId) {
                 ids.push(cat.catId);
             }
-        }
+        });
+
         ids.push(catId);
 
         this.changeDetection.detectChanges();
 
-        for (let i = 0; i < ids.length; i++) {
-            const id = ids[i];
-            const el = this.catCols.nativeElement.querySelector('.page-add_cats_col_' + id);
-            el.classList.add('sx-active');
-        }
+        ids.forEach(id => {
+            this.catCols.nativeElement
+                .querySelector('.page-ad-create-edit_cats_col_' + id)
+                .classList.add('sx-active');
+        });
 
         this.leaf = leaf.pop();
         leaf.length = 0;
@@ -232,12 +237,10 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
         let cat: CatTreeInterface = this.leaf;
         let newFormGroup = this.fb.group({});
         const hasEditedAdProps = this.editAd && this.editAd.detailsExt.length > 0;
-        const tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
 
         // выставим св-ва. Если новое объявление и что-то указали, либо редактируемое.
-        for (let i = 0; i < x.length; i++) {
-            let newProp = x[i];
-            let oldValue = (tagKindNumber.indexOf(newProp.kindPropName) !== -1) ? 0 : '';
+        x.forEach(newProp => {
+            let oldValue = (this.tagKindNumber.indexOf(newProp.kindPropName) !== -1) ? 0 : '';
             let aValidators = [];
 
             // если данное св-во обязательно, то подключим валидатор
@@ -246,11 +249,9 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             if (hasEditedAdProps) {
-                for (let j = 0; j < this.editAd.detailsExt.length; j++) {
-                    const prop = this.editAd.detailsExt[j];
-
+                this.editAd.detailsExt.forEach(prop => {
                     if (newProp.name === prop.propName) {
-                        if (tagKindNumber.indexOf(prop.kindPropName) !== -1) {
+                        if (this.tagKindNumber.indexOf(prop.kindPropName) !== -1) {
                             const tmp = parseInt(prop.value);
 
                             // если валидное число, то примем
@@ -261,12 +262,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
                         } else if (newProp.name === 'files') {
                             if (this.editAd.images.length) {
                                 let images = new FormArray([]);
-
-                                for (let k = 0; k < this.editAd.images.length; k++) {
-                                    let img = this.editAd.images[k];
-                                    images.push(new FormControl(img.filepath));
-                                }
-
+                                this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
                                 newFormGroup.addControl('filesAlreadyHas', images);
                                 oldValue = this.editAd.images.length; // что-то нужно вставить, если картинки есть
                             }
@@ -274,33 +270,31 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
                         } else {
                             oldValue = prop.value;
                         }
-
-                        break;
                     }
-                }
+                });
 
             } else {
                 // посмотрим в текущих контролах введеные уже значения. Его и зафиксируем.
                 Object.keys(this.form.controls).forEach(key => {
                     if (key === newProp.name) {
-                        oldValue = this.form.controls[key].value;
+                        oldValue = this.form.get(key).value;
                         return false;
                     }
                 });
             }
 
             newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
-        }
+        });
 
         // обновим значения те что по дефолку. Не теряем старые введенные значени.
-        this.form.controls.catId.setValue(cat.catId);
+        this.form.get('catId').setValue(cat.catId);
 
         if (this.editAd) {
             Object.keys(this.defaultFormControls).forEach(defKey => {
                 Object.keys(this.editAd).forEach(curKey => {
                     if (defKey === curKey) {
-                        this.form.controls[defKey].setValue(this.editAd[curKey]);
-                        newFormGroup.addControl(defKey, this.form.controls[defKey]); // валидатор (нужный) тоже подставится
+                        this.form.get(defKey).setValue(this.editAd[curKey]);
+                        newFormGroup.addControl(defKey, this.form.get(defKey)); // валидатор (нужный) тоже подставится
                         return false;
                     }
                 });
@@ -343,28 +337,6 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.form = newFormGroup;
         this.aDynamicPropsFull = x;
-    }
-
-    private getQueryAdId(): number {
-        let result: number = 0;
-        let adId = this.route.snapshot.queryParams['edit'] || '';
-
-        if (!adId) {
-            return result;
-        }
-
-        adId = parseInt(adId);
-
-        if (!adId) {
-            return result;
-        }
-        if (typeof adId !== 'number') {
-            return result;
-        }
-
-        result = Math.abs(adId);
-
-        return result;
     }
 
     private getArrayAncestorsCatTree(catTree: CatTreeInterface, catId: number, receiverCat: CatTreeInterface[]): CatTreeInterface[] {
@@ -417,6 +389,7 @@ export class PageAddComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private resetToDefault(): void {
+        this.adId = 0;
         this.previousTitleHelp = '';
         this.aCols.length = 0;
         this.aDynamicPropsFull.length = 0;

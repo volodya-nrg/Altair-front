@@ -1,0 +1,6 @@
+<nav class="top-menu-cats-tree">
+    <div #button (click)="toggleMenu()" class="top-menu-cats-tree_emblem"></div>
+    <div [hidden]="!isActive" class="top-menu-cats-tree_tree">
+        <app-tree-in-the-top *ngIf="catTree" [catTree]="catTree" url="/cat"></app-tree-in-the-top>
+    </div>
+</nav>

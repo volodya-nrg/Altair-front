@@ -13,7 +13,7 @@
         <small class="ad_city">Ташкент</small>
         <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
         <div *ngIf="inProfile" class="align-right">
-            <a (click)="edit()" href="javascript:void(0);">Изменить</a>
+            <a [routerLink]="['/ad/edit/', ad.adId]" href="javascript:void(0);">Изменить</a>
         </div>
     </div>
 </div>
