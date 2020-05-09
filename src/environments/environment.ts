@@ -9,6 +9,7 @@ export const environment = {
     curYear: 2020,
     dirImages: '/api/v1/images',
     dirResample: '/api/v1/resample',
+    minLenPassword: 6,
 };
 
 /*

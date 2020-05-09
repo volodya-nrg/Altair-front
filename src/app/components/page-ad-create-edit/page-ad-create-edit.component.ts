@@ -117,6 +117,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                 target.reset(); // на всякий случай и нативную форму сбросим
                 this.resetToDefault();
                 this.catsHorizAccordion.reset();
+                this.router.navigate(['/profile/ads']).then();
             },
             err => {
                 this.isSendData = false;
@@ -131,6 +132,21 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     addPhoto({target}): void {
+        if (!target.files.length) {
+            let val = null;
+
+            if (this.form.contains('filesAlreadyHas')) {
+                const totalOldFiles = this.form.get('filesAlreadyHas').value.length;
+
+                if (totalOldFiles) {
+                    val = totalOldFiles; // добавим цифру, чтоб не было деления на массив
+                }
+            }
+
+            this.form.get('files').setValue(val);
+            return;
+        }
+
         this.form.patchValue({
             files: target.files
         });
@@ -140,7 +156,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         let cat: CatTreeInterface = this.leaf;
         let newFormGroup = this.fb.group({});
         const hasEditedAdProps = this.editAd && this.editAd.detailsExt.length > 0;
-        console.log(hasEditedAdProps, this.editAd);
+
         // выставим св-ва. Если новое объявление и что-то указали, либо редактируемое.
         x.forEach(newProp => {
             let oldValue = (this.tagKindNumber.indexOf(newProp.kindPropName) !== -1) ? 0 : '';

@@ -1,15 +1,53 @@
 <div class="page-profile-info">
-    <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
-        <div class="form_row">
-            <div class="form_title">Е-мэйл:</div>
-            <input type="text" [value]="profile?.email" disabled="disabled"/>
+    <div class="page-profile-info_flexbox">
+        <div>
+            <div class="page-profile-info_avatar">
+                <img *ngIf="profile && profile.avatar" [src]="url + '/api/v1/resample/240/320/' + profile.avatar"/>
+            </div>
         </div>
-        <div class="form_row">
-            <div class="form_title">Имя:</div>
-            <input formControlName="name" type="text"/>
+        <div>
+            <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+                <div class="form_row">
+                    <div class="form_title">Аватар:</div>
+                    <input type="hidden" formControlName="files"/>
+                    <input type="file" accept="image/jpeg,image/png" (change)="addPhoto($event)"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">Е-мэйл:</div>
+                    <input type="email" [value]="profile?.email" disabled="disabled"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">Имя:</div>
+                    <input formControlName="name" type="text"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">Пароль:</div>
+                    <input formControlName="passwordOld" type="text"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">Новый пароль:</div>
+                    <input formControlName="passwordNew" type="text"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">Новый пароль (повтор):</div>
+                    <input formControlName="passwordConfirm" type="text"/>
+                </div>
+                <div class="form_row">
+                    <input type="submit" [disabled]="form.invalid || form.pristine" value="Сохранить"/>
+                </div>
+                <div class="align-right">
+                    <span class="text-mute">Дата регистрации</span>: {{ profile?.createdAt | date }}
+                </div>
+            </form>
         </div>
-        <div class="form_row sx-submit">
-            <input type="submit" value="Отправить"/>
-        </div>
-    </form>
+    </div>
+    <br/>
+    <hr class="hr"/>
+    <br/>
+    <div class="align-right">
+        <button (click)="deleteProfile($event)">Удалить</button>
+    </div>
+    <!--    <div>-->
+    <!--        {{ form.value | json }}-->
+    <!--    </div>-->
 </div>

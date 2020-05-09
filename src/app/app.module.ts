@@ -66,7 +66,7 @@ import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cat
         PageProfileSettingsComponent,
         PageProfileAdsComponent,
         PageAdCreateEditComponent,
-        CatsHorizAccordionComponent
+        CatsHorizAccordionComponent,
     ],
     imports: [
         BrowserModule,
