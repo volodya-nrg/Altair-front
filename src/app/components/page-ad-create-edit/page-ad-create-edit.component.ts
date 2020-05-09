@@ -13,6 +13,8 @@ import {AdFullInterface} from '../../interfaces/response/ad';
 import {AuthService} from '../../services/auth.service';
 import {environment} from '../../../environments/environment';
 import {ProfileService} from '../../services/profile.service';
+import {CatsHorizAccordionComponent} from '../cats-horiz-accordion/cats-horiz-accordion.component';
+import {EmitCatsHorizAccordionInterface} from '../../interfaces/emit-cats-horiz-accordion';
 
 @Component({
     selector: 'app-page-ad-create-edit',
@@ -22,13 +24,11 @@ import {ProfileService} from '../../services/profile.service';
 })
 export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
-    private catTree: CatTreeInterface;
     private previousTitleHelp: string;
-    private attentionTextCreate: string = 'Объявление добавлено.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
-    private attentionTextUpdate: string = 'Объявление отредактированно.\nОно появится после проверки модератора.\nСпасибо что вы с нами!';
+    private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
+    private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
-    adId: number = 0;
-    aCols: CatTreeInterface[] = []; // динамическая переменная
+    adId: number = 0; // это через param приходит
     form: FormGroup;
     defaultFormControls: {
         title: FormControl,
@@ -44,8 +44,8 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     editAd: AdFullInterface;
     url: string = environment.apiUrl;
     isSendData: boolean = false;
-    @ViewChild('catCols', {static: true}) catCols: ElementRef;
     @ViewChild('formTag', {static: true}) formTag: ElementRef;
+    @ViewChild(CatsHorizAccordionComponent) catsHorizAccordion: CatsHorizAccordionComponent;
 
     constructor(
         private fb: FormBuilder,
@@ -63,19 +63,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
     ngOnInit(): void {
         console.log('init pageAdd');
-
         this.resetToDefault();
-
-        const s1 = this.managerSettings.catsTree.subscribe(
-            x => {
-                this.catTree = x;
-                this.aCols.push(x);
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
-        this.subscriptions.push(s1);
 
         let sAdIdTmp: string = this.route.snapshot.paramMap.get('adId');
 
@@ -94,48 +82,12 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngAfterViewInit(): void {
-        const s2 = this.serviceAuth.profileBhSubject.subscribe(x => {
-            if (this.adId && x && this.catTree) {
-                const s3 = this.serviceProfile.getAd(this.adId).subscribe(
-                    x => {
-                        this.editAd = x;
-                        this.fastOpenCols(x.catId);
-                    },
-                    err => {
-                        Helpers.handleErr(err);
-                        s3.unsubscribe();
-                    },
-                    () => {
-                        s3.unsubscribe();
-                    }
-                );
-            }
-        });
-        this.subscriptions.push(s2);
+        if (this.adId) {
+            this.loadAd(this.adId, () => {
+                this.catsHorizAccordion.render(this.editAd.catId, false);
+            });
+        }
     };
-
-    showSubCat({target}, cat: CatTreeInterface): void {
-        const curDeepLevel = this.getDeepLevel(cat.catId);
-        const hasChildes = cat.childes && cat.childes.length;
-        this.aCols.length = curDeepLevel + 1; // обрежим массив до нужного состояния
-
-        // childes может быть null-ом
-        if (hasChildes) {
-            this.aCols.push(cat);
-        }
-
-        target.parentElement
-            .querySelectorAll('.sx-active')
-            .forEach(x => x.classList.remove('sx-active'));
-        target.classList.add('sx-active');
-
-        if (!hasChildes) {
-            this.adId = 0;
-            this.editAd = null; // сотрем если было что
-            this.leaf = cat;
-            this.loadParams();
-        }
-    }
 
     onSubmit({target}): void {
         if (this.form.invalid) {
@@ -161,9 +113,10 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.isSendData = true;
         const s = fnExec.subscribe(
             x => {
+                alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
                 target.reset(); // на всякий случай и нативную форму сбросим
                 this.resetToDefault();
-                alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
+                this.catsHorizAccordion.reset();
             },
             err => {
                 this.isSendData = false;
@@ -183,62 +136,11 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         });
     }
 
-    private fastOpenCols(catId: number): void {
-        this.aCols.length = 0;
-        let leaf: CatTreeInterface[] = []; // сосуд для найденной категории
-        let aCats: CatTreeInterface[] = this.getArrayAncestorsCatTree(this.catTree, catId, leaf).reverse();
-        let ids: number[] = [];
-
-        aCats.forEach(cat => {
-            this.aCols.push(cat);
-
-            // на нулевом уровне catId=0
-            if (cat.catId) {
-                ids.push(cat.catId);
-            }
-        });
-
-        ids.push(catId);
-
-        this.changeDetection.detectChanges();
-
-        ids.forEach(id => {
-            this.catCols.nativeElement
-                .querySelector('.page-ad-create-edit_cats_col_' + id)
-                .classList.add('sx-active');
-        });
-
-        this.leaf = leaf.pop();
-        leaf.length = 0;
-        this.loadParams();
-    }
-
-    private loadParams(): void {
-        if (this.leaf.childes && this.leaf.childes.length) {
-            return;
-        }
-
-        // подтягиваем доп. параметры
-        this.isLoadingProps = true;
-        const s = this.serviceProp.getPropsFullForCat(this.leaf.catId).subscribe(
-            x => this.successAnswerOnPropsFull(x),
-            err => {
-                this.isLoadingProps = false;
-                Helpers.handleErr(err.error);
-                s.unsubscribe();
-            },
-            () => {
-                this.isLoadingProps = false;
-                s.unsubscribe();
-            }
-        );
-    }
-
     private successAnswerOnPropsFull(x: PropFullInterface[]): void {
         let cat: CatTreeInterface = this.leaf;
         let newFormGroup = this.fb.group({});
         const hasEditedAdProps = this.editAd && this.editAd.detailsExt.length > 0;
-
+        console.log(hasEditedAdProps, this.editAd);
         // выставим св-ва. Если новое объявление и что-то указали, либо редактируемое.
         x.forEach(newProp => {
             let oldValue = (this.tagKindNumber.indexOf(newProp.kindPropName) !== -1) ? 0 : '';
@@ -265,13 +167,23 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                         return true;
                     }
 
-                    if (newProp.name === 'files' && this.editAd.images && this.editAd.images.length) { // images может и не быть
-                        let images = new FormArray([]);
-                        this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
-                        newFormGroup.addControl('filesAlreadyHas', images);
+                    oldValue = prop.value;
+
+                    /*
+                    * Если тип "картинки" есть и если файлов нет, то явно обнулим значение.
+                    * Должно отрабатываться после "oldValue = prop.value;"
+                    * */
+                    if (newProp.name === 'files') {
+                        oldValue = null;
+
+                        if (this.editAd.images && this.editAd.images.length) { // images может и не быть
+                            let images = new FormArray([]);
+                            this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
+                            newFormGroup.addControl('filesAlreadyHas', images);
+                            oldValue = prop.value;
+                        }
                     }
 
-                    oldValue = prop.value;
                     return false; // уже нашли что нужно, можно выйти
                 });
 
@@ -302,6 +214,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                 });
             });
 
+            // добавим доп. данные
             newFormGroup.addControl('adId', new FormControl(this.editAd.adId, Validators.required));
             newFormGroup.addControl('userId', new FormControl(this.editAd.userId, Validators.required));
 
@@ -342,61 +255,11 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.aDynamicPropsFull = x;
     }
 
-    private getArrayAncestorsCatTree(catTree: CatTreeInterface, catId: number, receiverCat: CatTreeInterface[]): CatTreeInterface[] {
-        let result: CatTreeInterface[] = [];
-
-        for (let i = 0; i < catTree.childes.length; i++) {
-            const cat = catTree.childes[i];
-
-            if (cat.catId === catId) {
-                result.push(catTree);
-                receiverCat.push(Object.assign({}, cat));
-                return result;
-            }
-            if (cat.childes && cat.childes.length) {
-                result = this.getArrayAncestorsCatTree(cat, catId, receiverCat);
-
-                if (result.length) {
-                    result.push(catTree);
-                    return result;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private getDeepLevel(catId: number): number {
-        let result = 0;
-
-        for (let i = 0; i < this.aCols.length; i++) {
-            const col = this.aCols[i];
-            result = i;
-
-            for (let j = 0; j < col.childes.length; j++) {
-                var cat = col.childes[j];
-
-                if (cat.catId === catId) {
-                    return result;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private resetActiveItems(): void {
-        this.catCols.nativeElement
-            .querySelectorAll('.sx-active')
-            .forEach(x => x.classList.remove('sx-active'));
-    }
-
     private resetToDefault(): void {
+        this.leaf = null;
         this.adId = 0;
         this.previousTitleHelp = '';
-        this.aCols.length = 0;
         this.aDynamicPropsFull.length = 0;
-        this.leaf = null;
         this.editAd = null;
         this.isLoadingProps = false;
 
@@ -409,11 +272,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             isDisabled: new FormControl(false),
         };
         this.form = this.fb.group(this.defaultFormControls);
-
-        if (this.catTree) {
-            this.resetActiveItems();
-            this.aCols.push(this.catTree);
-        }
     }
 
     removeImage({target}): void {
@@ -425,8 +283,52 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         x.removeAt(index);
         owner.remove();
 
-        if (!x.length && typeof files.value === 'string') {
-            files.setValue({});
+        if (!x.length) {
+            files.setValue(null); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
         }
+    }
+
+    selectLeaf(signal: EmitCatsHorizAccordionInterface): void {
+        if (signal.reset) {
+            this.resetToDefault();
+        }
+
+        this.leaf = signal.cat;
+        this.loadParams(signal.cat.catId);
+    }
+
+    private loadParams(catId: number): void {
+        this.isLoadingProps = true;
+        const s = this.serviceProp.getPropsFullForCat(catId).subscribe(
+            x => this.successAnswerOnPropsFull(x),
+            err => {
+                this.isLoadingProps = false;
+                Helpers.handleErr(err.error);
+                s.unsubscribe();
+            },
+            () => {
+                this.isLoadingProps = false;
+                s.unsubscribe();
+            }
+        );
+    }
+
+    private loadAd(adId: number, cb: Function): void {
+        const s = this.serviceProfile.getAd(adId).subscribe(
+            x => {
+                this.editAd = x;
+
+                if (cb) {
+                    cb();
+                }
+            },
+            err => {
+                Helpers.handleErr(err);
+                s.unsubscribe();
+            },
+            () => {
+                s.unsubscribe();
+            }
+        );
     }
 }

@@ -35,6 +35,7 @@ import {PageProfileSettingsComponent} from './components/page-profile/settings/s
 import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 import {AuthService} from './services/auth.service';
 import {ManagerService} from './services/manager.service';
+import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cats-horiz-accordion.component';
 
 @NgModule({
     declarations: [
@@ -64,7 +65,8 @@ import {ManagerService} from './services/manager.service';
         PageProfileInfoComponent,
         PageProfileSettingsComponent,
         PageProfileAdsComponent,
-        PageAdCreateEditComponent
+        PageAdCreateEditComponent,
+        CatsHorizAccordionComponent
     ],
     imports: [
         BrowserModule,

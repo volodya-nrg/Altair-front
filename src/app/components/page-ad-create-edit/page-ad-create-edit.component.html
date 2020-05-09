@@ -1,13 +1,9 @@
 <div class="page-ad-create-edit">
-    <h1>{{ adId ? 'Редактировать объявление' : 'Добавить объявление' }}</h1>
+    <h1 *ngIf="adId">Редактирование объявления</h1>
+    <h1 *ngIf="!adId">Добавить объявление</h1>
 
     <h2>Каталог:</h2>
-    <div #catCols class="page-ad-create-edit_cats">
-        <ul *ngFor="let subCat of aCols" class="page-ad-create-edit_cats_col">
-            <li *ngFor="let cat of subCat.childes" class="page-ad-create-edit_cats_col_{{ cat.catId }}"
-                (click)="showSubCat($event, cat)">{{ cat.name }}</li>
-        </ul>
-    </div>
+    <app-cats-horiz-accordion (onSelectLeaf)="selectLeaf($event)"></app-cats-horiz-accordion>
 
     <h2>Параметры:</h2>
     <form #formTag
@@ -77,7 +73,8 @@
                        class="form_comment text-mute">{{ propFull.propComment }}</p>
                     <p *ngIf="propFull.comment" class="form_comment text-mute">{{ propFull.comment }}</p>
 
-                    <div *ngIf="propFull.kindPropName === 'photo' && editAd?.images.length" class="page-ad-create-edit_images">
+                    <div *ngIf="propFull.kindPropName === 'photo' && editAd?.images?.length"
+                         class="page-ad-create-edit_images">
                         <div *ngFor="let img of editAd.images" class="page-ad-create-edit_image">
                             <span class="page-ad-create-edit_image_close" title="удалить"
                                   (click)="removeImage($event)">&times;</span>
