@@ -36,6 +36,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         description: FormControl,
         price: FormControl,
         youtube: FormControl,
+        isDisabled: FormControl,
     };
     aDynamicPropsFull: PropFullInterface[] = [];
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
@@ -250,27 +251,28 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
             if (hasEditedAdProps) {
                 this.editAd.detailsExt.forEach(prop => {
-                    if (newProp.name === prop.propName) {
-                        if (this.tagKindNumber.indexOf(prop.kindPropName) !== -1) {
-                            const tmp = parseInt(prop.value);
-
-                            // если валидное число, то примем
-                            if (!isNaN(tmp)) {
-                                oldValue = tmp;
-                            }
-
-                        } else if (newProp.name === 'files') {
-                            if (this.editAd.images.length) {
-                                let images = new FormArray([]);
-                                this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
-                                newFormGroup.addControl('filesAlreadyHas', images);
-                                oldValue = this.editAd.images.length; // что-то нужно вставить, если картинки есть
-                            }
-
-                        } else {
-                            oldValue = prop.value;
-                        }
+                    if (newProp.name !== prop.propName) {
+                        return true;
                     }
+
+                    if (this.tagKindNumber.indexOf(prop.kindPropName) !== -1) {
+                        const tmp = parseInt(prop.value);
+
+                        // если валидное число, то примем
+                        if (!isNaN(tmp)) {
+                            oldValue = tmp;
+                        }
+                        return true;
+                    }
+
+                    if (newProp.name === 'files' && this.editAd.images && this.editAd.images.length) { // images может и не быть
+                        let images = new FormArray([]);
+                        this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
+                        newFormGroup.addControl('filesAlreadyHas', images);
+                    }
+
+                    oldValue = prop.value;
+                    return false; // уже нашли что нужно, можно выйти
                 });
 
             } else {
@@ -301,6 +303,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             });
 
             newFormGroup.addControl('adId', new FormControl(this.editAd.adId, Validators.required));
+            newFormGroup.addControl('userId', new FormControl(this.editAd.userId, Validators.required));
 
         } else {
             Object.keys(this.defaultFormControls).forEach(defKey => {
@@ -403,6 +406,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             description: new FormControl('', Validators.required),
             price: new FormControl(0),
             youtube: new FormControl(''),
+            isDisabled: new FormControl(false),
         };
         this.form = this.fb.group(this.defaultFormControls);
 

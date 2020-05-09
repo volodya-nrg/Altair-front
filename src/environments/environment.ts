@@ -7,6 +7,8 @@ export const environment = {
     apiUrl: 'http://localhost:8080',
     emailSupport: 'support@altair.uz',
     curYear: 2020,
+    dirImages: '/api/v1/images',
+    dirResample: '/api/v1/resample',
 };
 
 /*
