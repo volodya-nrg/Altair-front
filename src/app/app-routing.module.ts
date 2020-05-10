@@ -14,6 +14,20 @@ import {PageProfileSettingsComponent} from './components/page-profile/settings/s
 import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-ad-create-edit.component';
 
+// Пример:
+// path: 'admin',
+//     component: AdminComponent,
+//     children: [
+//     {
+//         path: '',
+//         children: [
+//             { path: 'crises', component: ManageCrisesComponent },
+//             { path: 'heroes', component: ManageHeroesComponent },
+//             { path: '', component: AdminDashboardComponent }
+//         ]
+//     }
+// ]
+
 const routes: Routes = [
     {path: '', redirectTo: 'main', pathMatch: 'full'},
     {path: 'main', component: PageMainComponent},
@@ -22,12 +36,20 @@ const routes: Routes = [
             {path: '**', component: PageCatComponent},
         ]
     },
-    {path: 'ad/create', component: PageAdCreateEditComponent},
-    {path: 'ad/edit/:adId', component: PageAdCreateEditComponent},
-    {path: 'ad/:slug', component: PageAdComponent},
+    {
+        path: 'ad', children: [
+            {path: 'create', component: PageAdCreateEditComponent},
+            {path: 'edit/:adId', component: PageAdCreateEditComponent},
+            {path: ':slug', component: PageAdComponent},
+        ]
+    },
     {path: 'search', component: PageSearchComponent},
-    {path: 'register/ok', component: PageRegisterOkComponent},
-    {path: 'register', component: PageRegisterComponent},
+    {
+        path: 'register', children: [
+            {path: 'ok', component: PageRegisterOkComponent},
+            {path: '', component: PageRegisterComponent},
+        ]
+    },
     {path: 'login', component: PageLoginComponent},
     {path: 'profile', redirectTo: 'profile/info', pathMatch: 'full'},
     {
@@ -43,6 +65,7 @@ const routes: Routes = [
             },
         ]
     },
+    {path: 'info', loadChildren: () => import('./modules/info/info.module').then(m => m.InfoModule)},
     {path: '**', component: PageNotFoundComponent},
 ];
 

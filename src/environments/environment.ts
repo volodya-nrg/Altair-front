@@ -10,6 +10,7 @@ export const environment = {
     dirImages: '/api/v1/images',
     dirResample: '/api/v1/resample',
     minLenPassword: 6,
+    domain: 'https://www.altair.uz',
 };
 
 /*
