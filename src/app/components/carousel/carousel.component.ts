@@ -22,6 +22,7 @@ export class CarouselComponent implements OnInit, AfterViewInit, AfterContentIni
     private sideCenter: HTMLBaseElement[] = [];
     private sideRight: HTMLBaseElement[] = [];
     private items: HTMLBaseElement[] = [];
+    private animationTimeMS: number = 500;
     @Input() isByOne: boolean = false;
     @ViewChild('btnLeft', {static: true}) btnLeft: ElementRef;
     @ViewChild('btnRight', {static: true}) btnRight: ElementRef;
@@ -145,7 +146,9 @@ export class CarouselComponent implements OnInit, AfterViewInit, AfterContentIni
             }
         }
 
+        this.row.nativeElement.classList.remove('sx-transition');
         this.render();
+        setTimeout(() => this.row.nativeElement.classList.add('sx-transition'), this.animationTimeMS);
     }
 
     render(): void {

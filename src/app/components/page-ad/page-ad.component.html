@@ -19,6 +19,13 @@
                             </span>
                         </ng-container>
                     </div>
+                    <app-modal *ngIf="isShowModalPhotos" (onClose)="isShowModalPhotos = false">
+                        <app-carousel [isByOne]="true">
+                            <div *ngFor="let img of adFull.images" class="page-ad_modal-photo">
+                                <img [src]="url + '/api/v1/resample/900/0/' + img.filepath" title="{{ adFull.title }}"/>
+                            </div>
+                        </app-carousel>
+                    </app-modal>
                 </div>
                 <div>
                     <ul class="page-ad_props">
@@ -68,12 +75,5 @@
             <span class="text-mute">Созданно:</span> {{ adFull.createdAt | date }} /
             <span class="text-mute">Изменено:</span> {{ adFull.updatedAt | date }}
         </div>
-        <app-modal>
-            <app-carousel [isByOne]="true">
-                <div *ngFor="let img of adFull.images" class="page-ad_modal-photo">
-                    <img [src]="url + '/api/v1/resample/900/0/' + img.filepath" title="{{ adFull.title }}"/>
-                </div>
-            </app-carousel>
-        </app-modal>
     </div>
 </div>

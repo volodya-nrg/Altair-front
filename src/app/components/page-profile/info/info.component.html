@@ -2,7 +2,7 @@
     <div class="page-profile-info_flexbox">
         <div>
             <div class="page-profile-info_avatar">
-                <img *ngIf="profile && profile.avatar" [src]="url + '/api/v1/resample/240/320/' + profile.avatar"/>
+                <img *ngIf="profile && profile.avatar" [src]="url + '/api/v1/resample/0/320/' + profile.avatar"/>
             </div>
         </div>
         <div>
@@ -47,7 +47,4 @@
     <div class="align-right">
         <button (click)="deleteProfile($event)">Удалить</button>
     </div>
-    <!--    <div>-->
-    <!--        {{ form.value | json }}-->
-    <!--    </div>-->
 </div>

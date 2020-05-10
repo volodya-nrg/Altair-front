@@ -1,16 +1,15 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Observable, Subscription} from 'rxjs';
 import {PropService} from '../../services/prop.service';
 import {PropFullInterface} from '../../interfaces/response/prop';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
 import {ManagerService} from '../../services/manager.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
-import {AuthService} from '../../services/auth.service';
 import {environment} from '../../../environments/environment';
 import {ProfileService} from '../../services/profile.service';
 import {CatsHorizAccordionComponent} from '../cats-horiz-accordion/cats-horiz-accordion.component';
@@ -56,8 +55,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         private managerSettings: ManagerService,
         private router: Router,
         private route: ActivatedRoute,
-        private serviceAuth: AuthService,
-        private changeDetection: ChangeDetectorRef,
     ) {
     }
 
@@ -88,69 +85,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             });
         }
     };
-
-    onSubmit({target}): void {
-        if (this.form.invalid) {
-            Object.keys(this.form.controls).forEach(key => {
-                if (this.form.get(key).status === 'INVALID') {
-                    console.log('INVALID:', key);
-                }
-            });
-            return;
-        }
-
-        const newFormData = Helpers.getNewFormData(this.form.value);
-        let fnExec: Observable<AdFullInterface>;
-        const isUpdate: boolean = this.form.contains('adId') && this.form.get('adId').value > 0;
-
-        if (isUpdate) {
-            fnExec = this.serviceAd.update(this.editAd.adId, newFormData);
-
-        } else {
-            fnExec = this.serviceAd.create(newFormData);
-        }
-
-        this.isSendData = true;
-        const s = fnExec.subscribe(
-            x => {
-                alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
-                target.reset(); // на всякий случай и нативную форму сбросим
-                this.resetToDefault();
-                this.catsHorizAccordion.reset();
-                this.router.navigate(['/profile/ads']).then();
-            },
-            err => {
-                this.isSendData = false;
-                Helpers.handleErr(err.error);
-                s.unsubscribe();
-            },
-            () => {
-                this.isSendData = false;
-                s.unsubscribe();
-            }
-        );
-    }
-
-    addPhoto({target}): void {
-        if (!target.files.length) {
-            let val = null;
-
-            if (this.form.contains('filesAlreadyHas')) {
-                const totalOldFiles = this.form.get('filesAlreadyHas').value.length;
-
-                if (totalOldFiles) {
-                    val = totalOldFiles; // добавим цифру, чтоб не было деления на массив
-                }
-            }
-
-            this.form.get('files').setValue(val);
-            return;
-        }
-
-        this.form.patchValue({
-            files: target.files
-        });
-    }
 
     private successAnswerOnPropsFull(x: PropFullInterface[]): void {
         let cat: CatTreeInterface = this.leaf;
@@ -193,9 +127,9 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                         oldValue = null;
 
                         if (this.editAd.images && this.editAd.images.length) { // images может и не быть
-                            let images = new FormArray([]);
-                            this.editAd.images.forEach(img => images.push(new FormControl(img.filepath)));
-                            newFormGroup.addControl('filesAlreadyHas', images);
+                            this.editAd.images.forEach((img, i) => {
+                                newFormGroup.addControl('filesAlreadyHas[' + i + ']', new FormControl(img.filepath));
+                            });
                             oldValue = prop.value;
                         }
                     }
@@ -290,29 +224,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.form = this.fb.group(this.defaultFormControls);
     }
 
-    removeImage({target}): void {
-        let owner = target.parentNode;
-        let x = this.form.get('filesAlreadyHas') as FormArray;
-        const files = this.form.get('files');
-
-        const index = [...owner.parentElement.childNodes].indexOf(owner);
-        x.removeAt(index);
-        owner.remove();
-
-        if (!x.length) {
-            files.setValue(null); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
-        }
-    }
-
-    selectLeaf(signal: EmitCatsHorizAccordionInterface): void {
-        if (signal.reset) {
-            this.resetToDefault();
-        }
-
-        this.leaf = signal.cat;
-        this.loadParams(signal.cat.catId);
-    }
-
     private loadParams(catId: number): void {
         this.isLoadingProps = true;
         const s = this.serviceProp.getPropsFullForCat(catId).subscribe(
@@ -346,5 +257,93 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                 s.unsubscribe();
             }
         );
+    }
+
+    onSubmit({target}): void {
+        if (this.form.invalid) {
+            Object.keys(this.form.controls).forEach(key => {
+                if (this.form.get(key).status === 'INVALID') {
+                    console.log('INVALID:', key);
+                }
+            });
+            return;
+        }
+
+        const newFormData = Helpers.getNewFormData(this.form.value);
+        let fnExec: Observable<AdFullInterface>;
+        const isUpdate: boolean = this.form.contains('adId') && this.form.get('adId').value > 0;
+
+        if (isUpdate) {
+            fnExec = this.serviceAd.update(this.editAd.adId, newFormData);
+
+        } else {
+            fnExec = this.serviceAd.create(newFormData);
+        }
+
+        this.isSendData = true;
+        const s = fnExec.subscribe(
+            x => {
+                alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
+                target.reset(); // на всякий случай и нативную форму сбросим
+                this.resetToDefault();
+                this.catsHorizAccordion.reset();
+                this.router.navigate(['/profile/ads']).then();
+            },
+            err => {
+                this.isSendData = false;
+                Helpers.handleErr(err.error);
+                s.unsubscribe();
+            },
+            () => {
+                this.isSendData = false;
+                s.unsubscribe();
+            }
+        );
+    }
+
+    addPhoto({target}): void {
+        if (!target.files.length) {
+            let val = null; // если ни чего нет, то нужен null, иначе любая цифра
+            let filesAlreadyHas: string[] = [];
+
+            for (let controlsKey in this.form.controls) {
+                if (controlsKey.substr(0, 'filesAlreadyHas'.length) === 'filesAlreadyHas') {
+                    filesAlreadyHas.push(this.form.get(controlsKey).value);
+                }
+            }
+
+            if (filesAlreadyHas.length) {
+                val = filesAlreadyHas.length; // добавим цифру, чтоб не было деления на массив
+            }
+
+            this.form.get('files').setValue(val);
+            return;
+        }
+
+        this.form.patchValue({
+            files: target.files
+        });
+    }
+
+    removeImage({target}): void {
+        let owner = target.parentNode;
+        let grandFather = owner.parentElement;
+        const index = [...grandFather.childNodes].indexOf(owner);
+        this.form.removeControl('filesAlreadyHas[' + index + ']');
+
+        owner.remove();
+
+        if (!grandFather.querySelectorAll('.page-ad-create-edit_image').length) {
+            this.form.get('files').setValue(null); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
+        }
+    }
+
+    selectLeaf(signal: EmitCatsHorizAccordionInterface): void {
+        if (signal.reset) {
+            this.resetToDefault();
+        }
+
+        this.leaf = signal.cat;
+        this.loadParams(signal.cat.catId);
     }
 }

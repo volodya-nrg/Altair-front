@@ -46,11 +46,15 @@
     &_frame {
         width: inherit;
         height: auto;
+        min-height: 3em; // 48px / 16px
         overflow: hidden;
     }
 
     &_row {
         display: flex;
-        transition: transform 500ms ease 0s;
+
+        &.sx-transition {
+            transition: transform 500ms ease 0s;
+        }
     }
 }

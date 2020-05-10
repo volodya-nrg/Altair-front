@@ -2,7 +2,7 @@
     <div #btnLeft class="carousel_btn sx-left" (click)="move($event, false)"></div>
     <div #btnRight class="carousel_btn sx-right" (click)="move($event, true)"></div>
     <div #frame class="carousel_frame">
-        <div #row class="carousel_row">
+        <div #row class="carousel_row sx-transition">
             <ng-content></ng-content>
         </div>
     </div>

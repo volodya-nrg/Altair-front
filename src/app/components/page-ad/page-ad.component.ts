@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
@@ -24,6 +24,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     url: string = environment.apiUrl;
     adId: number;
     isLoading: boolean = false;
+    isShowModalPhotos: boolean = false;
     @ViewChild(ModalComponent) modal: ModalComponent;
     @ViewChild(CarouselComponent) carousel: CarouselComponent;
 
@@ -32,6 +33,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
         private servicePages: PagesService,
         private serviceBreadcrumbs: BreadcrumbsService,
         private serviceManager: ManagerService,
+        private changeDetection: ChangeDetectorRef,
     ) {
         this.adId = Helpers.getAdIdFromUrl();
 
@@ -85,7 +87,8 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     showPhotos(indexPhoto: number): void {
-        this.modal.show();
-        setTimeout(() => this.carousel.seek(indexPhoto), 0);
+        this.isShowModalPhotos = true;
+        this.changeDetection.detectChanges();
+        this.carousel.seek(indexPhoto);
     }
 }

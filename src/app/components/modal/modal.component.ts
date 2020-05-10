@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 
 @Component({
     selector: 'app-modal',
@@ -7,28 +7,25 @@ import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
     encapsulation: ViewEncapsulation.None,
 })
 export class ModalComponent implements OnInit, OnDestroy {
-    private isDisabled: boolean = true;
+    @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
     constructor() {
     }
 
     ngOnInit(): void {
         console.log('init modal');
+        document.body.classList.add('sx-modal');
     }
 
     ngOnDestroy(): void {
         console.log('destroy modal');
-    }
 
-    isHidden(): boolean {
-        return this.isDisabled;
-    }
-
-    show(): void {
-        this.isDisabled = false;
+        if (!document.body.querySelector('.modal')) {
+            document.body.classList.remove('sx-modal');
+        }
     }
 
     hide(): void {
-        this.isDisabled = true;
+        this.onClose.emit(true);
     }
 }

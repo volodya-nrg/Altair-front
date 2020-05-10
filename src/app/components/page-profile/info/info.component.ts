@@ -31,9 +31,9 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
             files: new FormControl(''),
             avatar: new FormControl(''),
             name: new FormControl(''),
-            passwordOld: new FormControl('', Validators.minLength(6)),
-            passwordNew: new FormControl('', Validators.minLength(6)),
-            passwordConfirm: new FormControl('', Validators.minLength(6)),
+            passwordOld: new FormControl('', Validators.minLength(environment.minLenPassword)),
+            passwordNew: new FormControl('', Validators.minLength(environment.minLenPassword)),
+            passwordConfirm: new FormControl('', Validators.minLength(environment.minLenPassword)),
         }, {validators: PasswordsValidator});
     }
 
