@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
 import {UserInterface} from '../../../interfaces/response/user';
 import {AuthService} from '../../../services/auth.service';
@@ -28,25 +28,28 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
         private router: Router,
     ) {
         this.form = this.fb.group({
-            files: new FormControl(''),
-            avatar: new FormControl(''),
-            name: new FormControl(''),
-            passwordOld: new FormControl('', Validators.minLength(environment.minLenPassword)),
-            passwordNew: new FormControl('', Validators.minLength(environment.minLenPassword)),
-            passwordConfirm: new FormControl('', Validators.minLength(environment.minLenPassword)),
+            files: '',
+            avatar: '',
+            email: '',
+            name: '',
+            passwordOld: ['', Validators.minLength(environment.minLenPassword)],
+            passwordNew: ['', Validators.minLength(environment.minLenPassword)],
+            passwordConfirm: ['', Validators.minLength(environment.minLenPassword)],
         }, {validators: PasswordsValidator});
     }
 
     ngOnInit(): void {
         console.log('init page profile info');
-        this.serviceAuth.profileBhSubject.subscribe(x => {
-            this.profile = x;
 
+        this.serviceAuth.profileBhSubject.subscribe(x => {
             if (!x) {
                 return;
             }
 
+            this.profile = x;
+
             this.form.patchValue({
+                email: this.profile.email,
                 avatar: this.profile.avatar,
                 name: this.profile.name,
             });
@@ -80,8 +83,9 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
         btnSubmit.disabled = true;
         const s = this.serviceProfile.update(newFormData).subscribe(
             x => {
+                target.reset();
+                this.form.reset();
                 this.serviceAuth.profileBhSubject.next(x);
-                this.form.markAsPristine();
             },
             err => {
                 btnSubmit.disabled = false;
@@ -117,7 +121,6 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
             );
             this.subscriptions.push(s);
         }
-
     }
 
     addPhoto({target}): void {
@@ -131,9 +134,19 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
 }
 
 export const PasswordsValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-    const passwordOld = control.get('passwordOld').value.trim();
-    const passwordNew = control.get('passwordNew').value.trim();
-    const passwordConfirm = control.get('passwordConfirm').value.trim();
+    let passwordOld = control.get('passwordOld').value;
+    let passwordNew = control.get('passwordNew').value;
+    let passwordConfirm = control.get('passwordConfirm').value;
+
+    if (passwordOld) {
+        passwordOld = passwordOld.trim();
+    }
+    if (passwordNew) {
+        passwordNew = passwordNew.trim();
+    }
+    if (passwordConfirm) {
+        passwordConfirm = passwordConfirm.trim();
+    }
 
     if (!passwordOld && !passwordNew && !passwordConfirm || passwordOld && passwordNew === passwordConfirm) {
         return null;

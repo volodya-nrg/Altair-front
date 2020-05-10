@@ -13,6 +13,8 @@ import {PageProfileInfoComponent} from './components/page-profile/info/info.comp
 import {PageProfileSettingsComponent} from './components/page-profile/settings/settings.component';
 import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-ad-create-edit.component';
+import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
+import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
 
 // Пример:
 // path: 'admin',
@@ -54,15 +56,16 @@ const routes: Routes = [
     {path: 'profile', redirectTo: 'profile/info', pathMatch: 'full'},
     {
         path: 'profile', component: PageProfileComponent, children: [
-            {
-                path: 'info', component: PageProfileInfoComponent
-            },
-            {
-                path: 'settings', component: PageProfileSettingsComponent
-            },
-            {
-                path: 'ads', component: PageProfileAdsComponent
-            },
+            {path: 'info', component: PageProfileInfoComponent},
+            {path: 'settings', component: PageProfileSettingsComponent},
+            {path: 'ads', component: PageProfileAdsComponent},
+        ]
+    },
+    {path: 'recover', redirectTo: 'recover/sender', pathMatch: 'full'},
+    {
+        path: 'recover', children: [
+            {path: 'sender', component: PageRecoverSenderComponent}, // страница отправления хеша
+            {path: 'check/:hash', component: PageRecoverCheckHashComponent}, // стр. смены пароля
         ]
     },
     {path: 'info', loadChildren: () => import('./modules/info/info.module').then(m => m.InfoModule)},

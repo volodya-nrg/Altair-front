@@ -36,6 +36,8 @@ import {PageProfileAdsComponent} from './components/page-profile/ads/ads.compone
 import {AuthService} from './services/auth.service';
 import {ManagerService} from './services/manager.service';
 import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cats-horiz-accordion.component';
+import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
+import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
 
 @NgModule({
     declarations: [
@@ -67,6 +69,8 @@ import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cat
         PageProfileAdsComponent,
         PageAdCreateEditComponent,
         CatsHorizAccordionComponent,
+        PageRecoverSenderComponent,
+        PageRecoverCheckHashComponent,
     ],
     imports: [
         BrowserModule,
