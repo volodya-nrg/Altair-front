@@ -14,6 +14,10 @@ export interface AdInterface {
     isApproved: boolean;
     hasPhoto: boolean;
     youtube: string;
+    latitude: number;
+    longitude: number;
+    cityName: string;
+    countryName: string;
     createdAt: string;
     updatedAt: string;
 }

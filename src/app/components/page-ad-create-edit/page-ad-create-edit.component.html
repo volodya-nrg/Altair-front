@@ -50,18 +50,18 @@
                             <textarea *ngIf=" propFull.kindPropName === 'textarea' "
                                       formControlName="{{propFull.name}}"></textarea>
                             <div *ngIf=" propFull.kindPropName === 'photo' ">
-                                <!-- тут именно name, иначе Ангуляр пытается воспринять как строку -->
                                 <input type="hidden" formControlName="files"/>
                                 <input type="file"
                                        accept="image/jpeg,image/png"
                                        [multiple]=" propFull.privateComment !== '0' "
-                                       (change)="addPhoto($event)"
-                                />
+                                       (change)="addPhoto($event)"/>
                             </div>
                             <div *ngIf=" propFull.kindPropName === 'ymaps' ">
-                                <input formControlName="{{propFull.kindPropName}}"
-                                       class="form_100"
-                                       type="text"/>
+                                <input formControlName="{{propFull.kindPropName}}" class="form_100" type="text"/>
+                                <div class="page-ad-create-edit_map">
+                                    <span class="text-mute">Кликнете по карте, чтоб определить координаты</span>
+                                    <div id="map"></div>
+                                </div>
                             </div>
                         </div>
                         <div *ngIf="propFull.suffix">

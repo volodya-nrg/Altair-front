@@ -10,7 +10,7 @@
         </a>
         <div *ngIf="ad.price === 0" class="ad_price"><strong>Бесплатно</strong></div>
         <div *ngIf="ad.price > 0" class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
-        <small class="ad_city">Ташкент</small>
+        <small *ngIf="ad.cityName" class="ad_city">{{ ad.cityName }}</small>
         <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
         <div *ngIf="inProfile" class="align-right">
             <a [routerLink]="['/ad/edit/', ad.adId]" href="javascript:void(0);">Изменить</a>

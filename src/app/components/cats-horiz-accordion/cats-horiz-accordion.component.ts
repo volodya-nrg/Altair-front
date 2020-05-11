@@ -58,7 +58,11 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     ngAfterViewInit(): void {
     };
 
-    render(catId: number, isResetFormOnParent: boolean): void {
+    render(catId: number, isResetFormOnParent: boolean, event): void {
+        if (event && event.target.classList.contains('sx-active')) {
+            return;
+        }
+
         this.reset();
         this.aCols.length = 0;
         this.aCols = [this.catTree];

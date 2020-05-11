@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Observable, Subscription} from 'rxjs';
@@ -27,15 +27,22 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+    private ymapKey: string = environment.ymapKey;
+    private ym: any;
+    private map: any;
     adId: number = 0; // это через param приходит
     form: FormGroup;
-    defaultFormControls: {
-        title: FormControl,
-        catId: FormControl,
-        description: FormControl,
-        price: FormControl,
-        youtube: FormControl,
-        isDisabled: FormControl,
+    defaultFormControls: Object = {
+        catId: new FormControl(0, Validators.required),
+        title: new FormControl(''),
+        description: new FormControl('', Validators.required),
+        price: new FormControl(0),
+        youtube: new FormControl(''),
+        isDisabled: new FormControl(false),
+        latitude: new FormControl(0),
+        longitude: new FormControl(0),
+        cityName: new FormControl(''),
+        countryName: new FormControl(''),
     };
     aDynamicPropsFull: PropFullInterface[] = [];
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
@@ -55,6 +62,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         private managerSettings: ManagerService,
         private router: Router,
         private route: ActivatedRoute,
+        private changeDetection: ChangeDetectorRef,
     ) {
     }
 
@@ -71,17 +79,26 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                 this.adId = adIdTmp;
             }
         }
+
+        this.addScript('https://api-maps.yandex.ru/2.1/?apikey=' + this.ymapKey + '&lang=ru_RU&mode=debug');
     }
 
     ngOnDestroy(): void {
         console.log('destroy pageAdd');
         this.subscriptions.forEach(x => x.unsubscribe());
+
+        if (this.map) {
+            this.map.destroy();// Деструктор карты
+        }
+
+        this.map = null;
+        this.ym = null;
     }
 
     ngAfterViewInit(): void {
         if (this.adId) {
             this.loadAd(this.adId, () => {
-                this.catsHorizAccordion.render(this.editAd.catId, false);
+                this.catsHorizAccordion.render(this.editAd.catId, false, null);
             });
         }
     };
@@ -203,6 +220,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.form = newFormGroup;
         this.aDynamicPropsFull = x;
+        this.createYmap();
     }
 
     private resetToDefault(): void {
@@ -212,15 +230,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.aDynamicPropsFull.length = 0;
         this.editAd = null;
         this.isLoadingProps = false;
-
-        this.defaultFormControls = {
-            catId: new FormControl(0, Validators.required),
-            title: new FormControl(''),
-            description: new FormControl('', Validators.required),
-            price: new FormControl(0),
-            youtube: new FormControl(''),
-            isDisabled: new FormControl(false),
-        };
         this.form = this.fb.group(this.defaultFormControls);
     }
 
@@ -345,5 +354,99 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
         this.leaf = signal.cat;
         this.loadParams(signal.cat.catId);
+    }
+
+    addScript(src): void {
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = false; // чтобы гарантировать порядок
+        document.head.appendChild(script);
+    }
+
+    createYmap(): void {
+        if (typeof window['ymaps'] === 'undefined') {
+            return;
+        }
+
+        window['ymaps'].ready().done(ym => {
+            this.ym = ym;
+            this.map = new this.ym.Map('map', {
+                center: [55.76, 37.64],
+                zoom: 10,
+            });
+            this.addEventClickForYmapForListen(null);
+        });
+    }
+
+    addEventClickForYmapForListen(myPlacemark: any): void {
+        // Слушаем клик на карте.
+        this.map.events.add('click', (e) => {
+            var coords = e.get('coords');
+
+            // Если метка уже создана – просто передвигаем ее.
+            if (myPlacemark) {
+                myPlacemark.geometry.setCoordinates(coords);
+            }
+            // Если нет – создаем.
+            else {
+                myPlacemark = this.createPlacemark(coords);
+                this.map.geoObjects.add(myPlacemark);
+                // Слушаем событие окончания перетаскивания на метке.
+                myPlacemark.events.add('dragend', () => {
+                    this.getAddress(myPlacemark.geometry.getCoordinates(), myPlacemark);
+                });
+            }
+
+            this.getAddress(coords, myPlacemark);
+        });
+    }
+
+    // Создание метки.
+    createPlacemark(coords): void {
+        return new this.ym.Placemark(coords, {
+            iconCaption: 'поиск...'
+        }, {
+            preset: 'islands#violetDotIconWithCaption',
+            draggable: true
+        });
+    }
+
+    // Определяем адрес по координатам (обратное геокодирование).
+    getAddress(coords, myPlacemark): void {
+        myPlacemark.properties.set('iconCaption', 'поиск...');
+        this.ym.geocode(coords).then(res => {
+            const firstGeoObject = res.geoObjects.get(0);
+            const country = firstGeoObject.getCountry();
+            const city = firstGeoObject.getLocalities().length && firstGeoObject.getLocalities()[0] || null;
+            const coord = firstGeoObject.geometry.getCoordinates();
+
+            myPlacemark.properties
+                .set({
+                    // Формируем строку с данными об объекте.
+                    iconCaption: [
+                        // Название населенного пункта или вышестоящее административно-территориальное образование.
+                        firstGeoObject.getLocalities().length ? firstGeoObject.getLocalities() : firstGeoObject.getAdministrativeAreas(),
+                        // Получаем путь до топонима, если метод вернул null, запрашиваем наименование здания.
+                        firstGeoObject.getThoroughfare() || firstGeoObject.getPremise()
+                    ].filter(Boolean).join(', '),
+                    // В качестве контента балуна задаем строку с адресом объекта.
+                    balloonContent: firstGeoObject.getAddressLine()
+                });
+
+            this.updateMapDataInForm(coord, firstGeoObject.getAddressLine(), city, country);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
+
+    updateMapDataInForm(coord: number[], address: string, city: string | null, country: string | null): void {
+        this.form.patchValue({
+            ymaps: address, // главное св-во
+            latitude: coord[0],
+            longitude: coord[1],
+            cityName: city,
+            countryName: country,
+        });
+        this.changeDetection.detectChanges();
     }
 }
