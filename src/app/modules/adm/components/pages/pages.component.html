@@ -1,0 +1,24 @@
+<h3>GET: /api/v1/pages/ad/:adId</h3>
+<div>
+    <form class="form" action="/api/v1/pages/ad/:adId" method="get">
+        <div class="form_row">
+            <div class="form_title">id объявления *</div>
+            <input type="number" formControlName="adId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/pages/main</h3>
+<div>
+    <form class="form" action="/api/v1/pages/main" method="get">
+        <div class="form_row">
+            <div class="form_title">лимит</div>
+            <input type="number" formControlName="limit" min="0" value="4"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>

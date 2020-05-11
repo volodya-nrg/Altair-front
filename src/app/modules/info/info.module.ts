@@ -5,11 +5,14 @@ import {PageAgreementComponent} from './components/page-agreement/page-agreement
 import {PageAboutComponent} from './components/page-about/page-about.component';
 
 @NgModule({
+    declarations: [
+        PageAgreementComponent,
+        PageAboutComponent
+    ],
     imports: [
         CommonModule,
         InfoRoutingModule
     ],
-    declarations: [PageAgreementComponent, PageAboutComponent]
 })
 export class InfoModule {
 }

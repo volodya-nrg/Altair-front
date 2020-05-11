@@ -1,0 +1,52 @@
+@import "../../../../../css_variables";
+
+.adm-main {
+    margin-top: 1em;
+
+    &_columns {
+        display: flex;
+
+        & > * {
+            flex-basis: 100%;
+
+            &:first-child {
+                flex: 0 0 20em;
+            }
+
+            &:not(:first-child) {
+                margin-left: 1em;
+            }
+        }
+    }
+
+    &_json-result {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        padding: 0;
+        margin: 0;
+    }
+
+    &_box {
+        border: whitesmoke solid @1px;
+
+        & + & {
+            margin-top: 0.5em;
+        }
+        & > &_title {
+            background-color: ghostwhite;
+            cursor: pointer;
+            padding: 0.5em 1em;
+            box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        & > &_title.sx-active + &_body {
+            display: block;
+        }
+
+        & > &_body {
+            display: none;
+            padding: 0.5em;
+        }
+    }
+}

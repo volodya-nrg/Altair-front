@@ -1,0 +1,167 @@
+<h3>GET: /api/v1/ads</h3>
+<div>
+    <form class="form" action="/api/v1/ads" method="get">
+        <div class="form_row">
+            <div class="form_title">id категории</div>
+            <div class="target_for_cats_tree" data-formControlName="catId"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">лимит</div>
+            <input type="number" formControlName="limit" min="0" value="0"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">offset</div>
+            <input type="number" formControlName="offset" min="0" value="0"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/ads/:adId</h3>
+<div>
+    <form class="form" action="/api/v1/ads/:adId" method="get">
+        <div class="form_row">
+            <div class="form_title">id объявления *</div>
+            <input type="number" formControlName="adId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>POST: /api/v1/ads</h3>
+<div>
+    <form class="form" action="/api/v1/ads" method="post" enctype="multipart/form-data">
+        <div class="form_row">
+            <div class="form_title">название</div>
+            <input type="text" formControlName="title"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">id категории *</div>
+            <div class="target_for_cats_tree" data-formControlName="catId"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">id пользователя</div>
+            <input type="number" formControlName="userId"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">описание *</div>
+            <textarea formControlName="description"></textarea>
+        </div>
+        <div class="form_row">
+            <div class="form_title">цена</div>
+            <input type="number" formControlName="price"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Youtube</div>
+            <input type="text" formControlName="youtube"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Широта</div>
+            <input type="text" formControlName="latitude"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Долгота</div>
+            <input type="text" formControlName="longitude"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Назнвание города</div>
+            <input type="text" formControlName="cityName"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Назнвание страны</div>
+            <input type="text" formControlName="countryName"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>PUT: /api/v1/ads</h3>
+<div>
+    <form class="form form-put-get-ads" action="/api/v1/ads/:adId" method="get">
+        <div class="form_row">
+            <div class="form_title">id объявления</div>
+            <input type="number" formControlName="adId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+    <form class="form form-put-put-ads hidden" action="/api/v1/ads/:adId" method="put"
+          enctype="multipart/form-data">
+        <input type="hidden" formControlName="adId"/>
+        <div class="form_row">
+            <div class="form_title">название</div>
+            <input type="text" formControlName="title"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">slug</div>
+            <input type="text" formControlName="slug" disabled="disabled"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">id категории *</div>
+            <div class="target_for_cats_tree"
+                 data-formControlName="catId"
+                 data-without_required="true"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">id пользователя</div>
+            <input type="number" formControlName="userId"/>
+        </div>
+        <div class="form_row">
+            <label>
+                <input type="checkbox" formControlName="isDisabled" value="true"/> если выбран, то выключен
+            </label>
+        </div>
+        <div class="form_row">
+            <label>
+                <input type="checkbox" formControlName="isApproved" value="true"/> если выбран, то заапрувлен
+            </label>
+        </div>
+        <div class="form_row">
+            <div class="form_title">описание *</div>
+            <textarea formControlName="description"></textarea>
+        </div>
+        <div class="form_row">
+            <div class="form_title">цена</div>
+            <input type="number" formControlName="price"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Youtube</div>
+            <input type="text" formControlName="youtube"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Широта</div>
+            <input type="text" formControlName="latitude"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Долгота</div>
+            <input type="text" formControlName="longitude"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Назнвание города</div>
+            <input type="text" formControlName="cityName"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Назнвание страны</div>
+            <input type="text" formControlName="countryName"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>DELETE: /api/v1/ads/:adId</h3>
+<div>
+    <form class="form" action="/api/v1/ads/:adId" method="delete">
+        <div class="form_row">
+            <div class="form_title">id объявления</div>
+            <input type="number" formControlName="adId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>

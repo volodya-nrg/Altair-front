@@ -1,0 +1,131 @@
+<h3>GET: /api/v1/profile/ads</h3>
+<div>
+    <form class="form" action="/api/v1/profile/ads" method="get">
+        <div class="form_row">
+            <div class="form_title">лимит</div>
+            <input type="number" formControlName="limit" min="0" value="0"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">offset</div>
+            <input type="number" formControlName="offset" min="0" value="0"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/profile/ads/:adId</h3>
+<div>
+    <form class="form" action="/api/v1/profile/ads/:adId" method="get">
+        <div class="form_row">
+            <div class="form_title">id объявления</div>
+            <input type="number" formControlName="adId" min="0" value="0"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/profile/settings</h3>
+<div>
+    <form class="form" action="/api/v1/profile/settings" method="get">
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/profile/info</h3>
+<div>
+    <form class="form" action="/api/v1/profile/info" method="get">
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/profile</h3>
+<div>
+    <form class="form" action="/api/v1/profile" method="get">
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>POST: /api/v1/profile</h3>
+<div>
+    <form class="form" action="/api/v1/profile" method="post">
+        <div class="form_row">
+            <div class="form_title">email</div>
+            <input type="email" formControlName="email"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">password</div>
+            <input type="text" formControlName="password"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">passwordConfirm</div>
+            <input type="text" formControlName="passwordConfirm"/>
+        </div>
+        <div class="form_row">
+            <label>
+                <input type="checkbox" formControlName="agreeOffer" value="true"/> agreeOffer
+            </label>
+            <label>
+                <input type="checkbox" formControlName="agreePolicy" value="true"/> agreePolicy
+            </label>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>PUT: /api/v1/profile</h3>
+<div>
+    <form class="form form-put-get-profile" action="/api/v1/profile" method="get">
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+    <form class="form form-put-put-profile hidden"
+          action="/api/v1/profile/:profileId"
+          method="put"
+          enctype="multipart/form-data">
+        <input type="hidden" formControlName="profileId"/>
+
+        <div class="form_row">
+            <div class="form_title">avatar</div>
+            <input type="file" formControlName="files"/>
+            <div class="form__files"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">name</div>
+            <input type="text" formControlName="name"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">email</div>
+            <input type="email" formControlName="email" readonly="readonly"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">password_old</div>
+            <input type="text" formControlName="passwordOld"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">password</div>
+            <input type="text" formControlName="password"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">password_c</div>
+            <input type="text" formControlName="passwordConfirm"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>DELETE: /api/v1/profile</h3>
+<div>
+    <form class="form" action="/api/v1/profile" method="get">
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>

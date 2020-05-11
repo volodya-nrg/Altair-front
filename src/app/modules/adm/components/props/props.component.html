@@ -1,0 +1,120 @@
+<h3>GET: /api/v1/props</h3>
+<div>
+    <form class="form" action="/api/v1/props" method="get">
+        <div class="form_row">
+            <div class="form_title">id каталога</div>
+            <input type="number" formControlName="catId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>GET: /api/v1/props/:propId</h3>
+<div>
+    <form class="form" action="/api/v1/props/:propId" method="get">
+        <div class="form_row">
+            <div class="form_title">id свойства</div>
+            <input type="number" formControlName="propId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>POST: /api/v1/props</h3>
+<div>
+    <form class="form sx-reload" action="/api/v1/props" method="post">
+        <div class="form_row">
+            <div class="form_title">заголовок *</div>
+            <input type="text" formControlName="title"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">[name=] *</div>
+            <input type="text" formControlName="name"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">суффикс</div>
+            <input type="text" formControlName="suffix"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">комментарий</div>
+            <input type="text" formControlName="comment"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">приватный комментарий</div>
+            <input type="text" formControlName="privateСomment"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">разновидность тега *</div>
+            <div class="target_for_kind_props" data-formControlName="kindPropId"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">значения для св-ва</div>
+            <div class="target_for_values_props"></div>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>PUT: /api/v1/props/:propId</h3>
+<div>
+    <form class="form form-put-get-props" action="/api/v1/props/:propId" method="get">
+        <div class="form_row">
+            <div class="form_title">id свойства</div>
+            <input type="number" formControlName="propId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+    <form class="form form-put-put-props sx-reload hidden"
+          action="/api/v1/props/:propId"
+          method="put">
+        <input type="hidden" formControlName="propId"/>
+        <div class="form_row">
+            <div class="form_title">заголовок *</div>
+            <input type="text" formControlName="title"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">[name=] *</div>
+            <input type="text" formControlName="name"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">суффикс</div>
+            <input type="text" formControlName="suffix"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">комментарий</div>
+            <input type="text" formControlName="comment"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">приватный комментарий</div>
+            <input type="text" formControlName="privateComment"/>
+        </div>
+        <div class="form_row">
+            <div class="form_title">разновидность тега *</div>
+            <div class="target_for_kind_props" data-formControlName="kindPropId"></div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">значения для св-ва</div>
+            <div class="target_for_values_props"></div>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
+<h3>DELETE: /api/v1/props/:propId</h3>
+<div>
+    <form class="form sx-reload" action="/api/v1/props/:propId" method="delete">
+        <div class="form_row">
+            <div class="form_title">id свойства</div>
+            <input type="number" formControlName="propId"/>
+        </div>
+        <div class="form_row">
+            <input type="submit"/>
+        </div>
+    </form>
+</div>
