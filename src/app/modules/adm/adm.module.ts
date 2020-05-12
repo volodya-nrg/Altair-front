@@ -12,6 +12,7 @@ import {PagesComponent} from './components/pages/pages.component';
 import {AuthComponent} from './components/auth/auth.component';
 import {SearchComponent} from './components/search/search.component';
 import {ProfileComponent} from './components/profile/profile.component';
+import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import {ProfileComponent} from './components/profile/profile.component';
         PagesComponent,
         AuthComponent,
         SearchComponent,
-        ProfileComponent
+        ProfileComponent,
+        PrettyJsonPipe,
     ],
     imports: [
         CommonModule,

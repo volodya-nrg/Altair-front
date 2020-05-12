@@ -1,7 +1,12 @@
 <div class="adm-main">
     <div class="adm-main_columns">
         <div>
-            <app-cats (json)="receiverJson($event)"></app-cats>
+            <ul class="adm-main_list">
+                <li>
+                    <app-cats (json)="jsonResult = $event"></app-cats>
+                </li>
+            </ul>
+
             <!--            <app-users (json)="receiverJson($event)"></app-users>-->
             <!--            <app-ads (json)="receiverJson($event)"></app-ads>-->
             <!--            <app-props (json)="receiverJson($event)"></app-props>-->
@@ -11,6 +16,6 @@
             <!--            <app-search (json)="receiverJson($event)"></app-search>-->
             <!--            <app-profile (json)="receiverJson($event)"></app-profile>-->
         </div>
-        <pre class="adm-main_json-result">asdasd</pre>
+        <pre class="adm-main_json-result">{{ jsonResult | prettyJson }}</pre>
     </div>
 </div>

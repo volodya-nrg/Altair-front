@@ -1,6 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
     selector: 'app-main',
@@ -10,12 +9,9 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 })
 export class MainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    formGetCats: FormGroup;
-    jsonResult: JSON;
+    jsonResult: Object;
 
-    constructor(
-        private fb: FormBuilder,
-    ) {
+    constructor() {
     }
 
     ngOnInit(): void {
@@ -25,9 +21,5 @@ export class MainComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         console.log('destroy adm');
         this.subscriptions.forEach(x => x.unsubscribe());
-    }
-
-    receiverJson(data: JSON): void {
-        this.jsonResult = data;
     }
 }

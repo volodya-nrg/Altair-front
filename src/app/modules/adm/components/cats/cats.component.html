@@ -1,11 +1,11 @@
 <div class="adm-main_box">
-    <div class="adm-main_box_title"
-         (click)="$event.target.classList.toggle('sx-active')">Категории
+    <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+        Категории
     </div>
     <div class="adm-main_box_body">
         <div class="adm-main_box">
-            <div class="adm-main_box_title"
-                 (click)="$event.target.classList.toggle('sx-active')">GET: /api/v1/cats
+            <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+                GET: /api/v1/cats
             </div>
             <div class="adm-main_box_body">
                 <form [formGroup]="formGetCats" (ngSubmit)="submitFormGetCats($event)" class="form">
@@ -17,12 +17,15 @@
                     <div class="form_row">
                         <input type="submit"/>
                     </div>
+                    <div class="form_row">
+                        {{ formGetCats.value | json }}
+                    </div>
                 </form>
             </div>
         </div>
         <div class="adm-main_box">
-            <div class="adm-main_box_title"
-                 (click)="$event.target.classList.toggle('sx-active')">GET: /api/v1/cats/:catId
+            <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+                GET: /api/v1/cats/:catId
             </div>
             <div class="adm-main_box_body">
                 <form [formGroup]="formGetCatsCatId" (ngSubmit)="submitFormGetCatsCatId($event)" class="form">
@@ -38,18 +41,21 @@
                     <div class="form_row">
                         <input type="submit"/>
                     </div>
+                    <div class="form_row">
+                        {{ formGetCatsCatId.value | json }}
+                    </div>
                 </form>
             </div>
         </div>
         <div class="adm-main_box">
-            <div class="adm-main_box_title"
-                 (click)="$event.target.classList.toggle('sx-active')">POST: /api/v1/cats
+            <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+                POST: /api/v1/cats
             </div>
             <div class="adm-main_box_body">
                 <form [formGroup]="formPostCats" (ngSubmit)="submitFormPostCats($event)" class="form">
                     <div class="form_row">
                         <div class="form_title">название</div>
-                        <input type="text" formControlName="name"/>
+                        <input formControlName="name" class="form_100" type="text"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">parentId</div>
@@ -57,23 +63,23 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">позиция</div>
-                        <input type="number" formControlName="pos"/>
+                        <input type="number" formControlName="pos" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">алиас для цены</div>
-                        <input type="text" formControlName="priceAlias"/>
+                        <input type="text" formControlName="priceAlias" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">суффик на цену</div>
-                        <input type="text" formControlName="priceSuffix"/>
+                        <input type="text" formControlName="priceSuffix" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">вспомог-ый текст для заголовка</div>
-                        <input type="text" formControlName="titleHelp"/>
+                        <input type="text" formControlName="titleHelp" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">комментарий под заголовок</div>
-                        <input type="text" formControlName="titleComment"/>
+                        <input type="text" formControlName="titleComment" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <label>
@@ -87,12 +93,15 @@
                     <div class="form_row">
                         <input type="submit"/>
                     </div>
+                    <div class="form_row">
+                        {{ formPostCats.value | json }}
+                    </div>
                 </form>
             </div>
         </div>
         <div class="adm-main_box">
-            <div class="adm-main_box_title"
-                 (click)="$event.target.classList.toggle('sx-active')">PUT: /api/v1/cats/:catId
+            <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+                PUT: /api/v1/cats/:catId
             </div>
             <div class="adm-main_box_body">
                 <form [formGroup]="formGetCatsCatId" (ngSubmit)="submitFormGetCatsCatId($event)" class="form">
@@ -109,11 +118,11 @@
                     <input type="hidden" formControlName="catId"/>
                     <div class="form_row">
                         <div class="form_title">название</div>
-                        <input type="text" formControlName="name"/>
+                        <input type="text" formControlName="name" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">slug</div>
-                        <input type="text" formControlName="slug"/>
+                        <input type="text" formControlName="slug" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">id родителя</div>
@@ -121,23 +130,23 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">позиция</div>
-                        <input type="number" formControlName="pos"/>
+                        <input type="number" formControlName="pos" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">алиас для цены</div>
-                        <input type="text" formControlName="priceAlias"/>
+                        <input type="text" formControlName="priceAlias" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">суффик на цену</div>
-                        <input type="text" formControlName="priceSuffix"/>
+                        <input type="text" formControlName="priceSuffix" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">вспомог-ый текст для заголовока</div>
-                        <input type="text" formControlName="titleHelp"/>
+                        <input type="text" formControlName="titleHelp" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">комментарий под заголовок</div>
-                        <input type="text" formControlName="titleComment"/>
+                        <input type="text" formControlName="titleComment" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <label>
@@ -156,12 +165,15 @@
                     <div class="form_row">
                         <input type="submit"/>
                     </div>
+                    <div class="form_row">
+                        {{ formPutCatsCatId.value | json }}
+                    </div>
                 </form>
             </div>
         </div>
         <div class="adm-main_box">
-            <div class="adm-main_box_title"
-                 (click)="$event.target.classList.toggle('sx-active')">DELETE: /api/v1/cats/:catId
+            <div class="adm-main_box_title" (click)="$event.target.classList.toggle('sx-active')">
+                DELETE: /api/v1/cats/:catId
             </div>
             <div class="adm-main_box_body">
                 <form [formGroup]="formDeleteCatsCatId" (ngSubmit)="submitFormDeleteCatsCatId($event)" class="form">
@@ -171,6 +183,9 @@
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
+                    </div>
+                    <div class="form_row">
+                        {{ formDeleteCatsCatId.value | json }}
                     </div>
                 </form>
             </div>

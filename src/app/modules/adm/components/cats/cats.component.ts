@@ -43,7 +43,7 @@ export class CatsComponent implements OnInit {
             priceSuffix: '',
             titleHelp: '',
             titleComment: '',
-            isAutogenerateTitle: '',
+            isAutogenerateTitle: false,
         });
         this.formPutCatsCatId = this.fb.group({
             catId: 0,
@@ -83,9 +83,9 @@ export class CatsComponent implements OnInit {
         let fn: any;
 
         if (this.formGetCats.get('asTree').value) {
-            fn = this.serviceCats.getList();
-        } else {
             fn = this.serviceCats.getTree();
+        } else {
+            fn = this.serviceCats.getList();
         }
 
         const s = fn.subscribe(

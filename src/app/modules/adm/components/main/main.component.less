@@ -1,7 +1,7 @@
 @import "../../../../../css_variables";
 
 .adm-main {
-    margin-top: 1em;
+    margin-top: 1em; // 16px / 16px
 
     &_columns {
         display: flex;
@@ -10,11 +10,17 @@
             flex-basis: 100%;
 
             &:first-child {
-                flex: 0 0 20em;
+                box-sizing: border-box;
+                flex: 0 0 35em; // 560px / 16px
+                padding-right: 1em; // 16px / 16px
+                border-right: lightgray solid @1px;
             }
 
             &:not(:first-child) {
-                margin-left: 1em;
+                box-sizing: border-box;
+                padding: 1em; // 16px / 16px
+                margin-left: 1em; // 16px / 16px
+                background-color: lighten(whitesmoke, 2%);
             }
         }
     }
@@ -27,16 +33,12 @@
     }
 
     &_box {
-        border: whitesmoke solid @1px;
-
-        & + & {
-            margin-top: 0.5em;
-        }
         & > &_title {
-            background-color: ghostwhite;
+            box-sizing: border-box;
+            background-color: whitesmoke;
             cursor: pointer;
-            padding: 0.5em 1em;
-            box-shadow: 0 0 0.1em rgba(0, 0, 0, 0.3);
+            padding: 0.5em 1em; // 8px 16px / 16px
+            border: lightgray solid @1px;
             font-weight: bold;
         }
 
@@ -46,7 +48,37 @@
 
         & > &_body {
             display: none;
-            padding: 0.5em;
+            box-sizing: border-box;
+            padding-left: 1em; // 16px / 16px
+        }
+
+        & > &_body > & {
+            margin-top: 0.5em; // 8px / 16px
+        }
+
+        & > &_body &_title {
+            background-color: lighten(whitesmoke, 1%);
+        }
+
+        & > &_body &_body {
+            padding: 1em; // 16px / 16px
+            background-color: lighten(whitesmoke, 2%);
         }
     }
+
+    &_list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        & > li + li {
+            margin-top: 0.5em; // 8px / 16px
+        }
+    }
+}
+
+main > .container {
+    max-width: 100%;
+    padding: 0 1em; // 16px / 16px
+    margin: 0;
 }

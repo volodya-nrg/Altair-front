@@ -95,6 +95,8 @@ import {PageRecoverCheckHashComponent} from './components/page-recover/check-has
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ],
+    exports: [
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule {
