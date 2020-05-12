@@ -49,10 +49,10 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.loadMoreForScroll = this.loadMore.bind(this);
 
-        const s = this.serviceManager.catsTree.subscribe(
+        const s = this.serviceManager.settings$.subscribe(
             x => {
-                this.start(x);
-                this.pointerOnCatTree = x;
+                this.start(x.catsTree);
+                this.pointerOnCatTree = x.catsTree;
             },
             err => Helpers.handleErr(err.error),
             () => {

@@ -1,5 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
+import {Helpers} from '../../../../helpers';
+import {ManagerService} from '../../../../services/manager.service';
+import {CatTreeInterface} from '../../../../interfaces/response/cat';
 
 @Component({
     selector: 'app-main',
@@ -10,12 +13,24 @@ import {Subscription} from 'rxjs';
 export class MainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     jsonResult: Object;
-
-    constructor() {
+    pointerOnCatTree: CatTreeInterface;
+    constructor(
+        private serviceManager: ManagerService,
+    ) {
     }
 
     ngOnInit(): void {
         console.log('init adm');
+
+        const s = this.serviceManager.settings$.subscribe(
+            x => {
+                this.pointerOnCatTree = x.catsTree;
+            },
+            err => Helpers.handleErr(err.error),
+            () => {
+            }
+        );
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {

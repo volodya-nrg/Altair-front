@@ -45,8 +45,8 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         console.log('init pageAd');
-        const s = this.serviceManager.catsTree.subscribe(
-            x => this.start(x),
+        const s = this.serviceManager.settings$.subscribe(
+            x => this.start(x.catsTree),
             err => Helpers.handleErr(err.error),
             () => {
             }

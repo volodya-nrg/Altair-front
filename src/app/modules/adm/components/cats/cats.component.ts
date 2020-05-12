@@ -1,8 +1,13 @@
-import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {CatService} from '../../../../services/cat.service';
 import {Helpers} from '../../../../helpers';
+import {CatWithDeepInterface} from '../../../../interfaces/response/cat';
+import {ManagerService} from '../../../../services/manager.service';
+import {SettingsInterface} from '../../../../interfaces/response/settings';
+import {PropFullInterface} from '../../../../interfaces/response/prop';
+import {BlockPropsComponent} from '../block-props/block-props.component';
 
 @Component({
     selector: 'app-cats',
@@ -10,18 +15,25 @@ import {Helpers} from '../../../../helpers';
     styleUrls: ['./cats.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class CatsComponent implements OnInit {
+export class CatsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     formGetCats: FormGroup;
     formGetCatsCatId: FormGroup;
     formPostCats: FormGroup;
+    formGetCatForPut: FormGroup;
     formPutCatsCatId: FormGroup;
     formDeleteCatsCatId: FormGroup;
+    settings: SettingsInterface;
+    catTreeOneLevel: CatWithDeepInterface[] = [];
+    propsFull: PropFullInterface[] = [];
     @Output() json: EventEmitter<any> = new EventEmitter();
+    @ViewChild('formPut', {static: true}) formPut: ElementRef;
+    @ViewChild(BlockPropsComponent) blockProps: BlockPropsComponent;
 
     constructor(
         private fb: FormBuilder,
         private serviceCats: CatService,
+        private serviceManager: ManagerService,
     ) {
     }
 
@@ -37,7 +49,7 @@ export class CatsComponent implements OnInit {
         });
         this.formPostCats = this.fb.group({
             name: '',
-            parentId: 0,
+            parentId: '0',
             pos: 0,
             priceAlias: '',
             priceSuffix: '',
@@ -45,11 +57,14 @@ export class CatsComponent implements OnInit {
             titleComment: '',
             isAutogenerateTitle: false,
         });
+        this.formGetCatForPut = this.fb.group({
+            catId: 0,
+        });
         this.formPutCatsCatId = this.fb.group({
             catId: 0,
             name: '',
             slug: '',
-            parentId: 0,
+            parentId: '0',
             pos: 0,
             priceAlias: '',
             priceSuffix: '',
@@ -61,11 +76,24 @@ export class CatsComponent implements OnInit {
         this.formDeleteCatsCatId = this.fb.group({
             catId: 0,
         });
+
+        const s = this.serviceManager.settings$.subscribe(
+            x => {
+                this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
+            },
+            err => Helpers.handleErr(err.error),
+            () => {
+            }
+        );
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
         console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
+    }
+
+    ngAfterViewInit(): void {
     }
 
     submitFormGetCats({target}): void {
@@ -108,6 +136,16 @@ export class CatsComponent implements OnInit {
             }
             return;
         }
+
+        const catId: number = this.formGetCatsCatId.get('catId').value;
+        const isWithPropsOnlyFiltered: boolean = this.formGetCatsCatId.get('withPropsOnlyFiltered').value;
+        const s = this.serviceCats.getCatId(catId, isWithPropsOnlyFiltered).subscribe(
+            x => this.json.emit(x),
+            err => Helpers.handleErr(err),
+            () => {
+            },
+        );
+        this.subscriptions.push(s);
     }
 
     submitFormPostCats({target}): void {
@@ -121,6 +159,48 @@ export class CatsComponent implements OnInit {
             }
             return;
         }
+
+        const s = this.serviceCats.post(this.formPostCats.value).subscribe(
+            x => {
+                this.json.emit(x);
+                target.reset();
+                this.formGetCatsCatId.reset();
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            },
+        );
+        this.subscriptions.push(s);
+    }
+
+    submitFormGetCatDataForPut({target}): void {
+        if (this.formGetCatForPut.invalid) {
+            for (let key in this.formGetCatsCatId.controls) {
+                const formControl = this.formGetCatsCatId.get(key);
+
+                if (formControl.status === 'INVALID') {
+                    console.log('INVALID:', key);
+                }
+            }
+            return;
+        }
+
+        const catId: number = this.formGetCatForPut.get('catId').value;
+        const s = this.serviceCats.getCatId(catId, false).subscribe(
+            x => {
+                this.json.emit(x);
+                this.formPut.nativeElement.classList.remove('hidden');
+                this.propsFull = x.props;
+
+                this.formPutCatsCatId.reset();
+                this.formPutCatsCatId.patchValue(x);
+                this.blockProps.setPropsFull(x.props);
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            },
+        );
+        this.subscriptions.push(s);
     }
 
     submitFormPutCatsCatId({target}): void {
@@ -134,6 +214,16 @@ export class CatsComponent implements OnInit {
             }
             return;
         }
+
+        const s = this.serviceCats.put(this.formPutCatsCatId.get('catId').value, this.formPutCatsCatId.value).subscribe(
+            x => {
+                this.json.emit(x);
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            },
+        );
+        this.subscriptions.push(s);
     }
 
     submitFormDeleteCatsCatId({target}): void {
@@ -147,5 +237,17 @@ export class CatsComponent implements OnInit {
             }
             return;
         }
+
+        const s = this.serviceCats.delete(this.formDeleteCatsCatId.get('catId').value).subscribe(
+            x => {
+                this.json.emit(x);
+                target.reset();
+                this.formGetCatsCatId.reset();
+            },
+            err => Helpers.handleErr(err),
+            () => {
+            },
+        );
+        this.subscriptions.push(s);
     }
 }

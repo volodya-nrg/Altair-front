@@ -23,6 +23,9 @@ export interface CatFullInterface extends CatInterface, PropsFullInterface {
 export interface CatTreeFullInterface extends CatFullInterface, ChildesFullInterface {
 }
 
+export interface CatWithDeepInterface extends CatInterface, WithDeepInterface {
+}
+
 interface ChildesInterface {
     childes: CatTreeInterface[];
 }
@@ -33,4 +36,8 @@ interface ChildesFullInterface {
 
 interface PropsFullInterface {
     props: PropFullInterface[];
+}
+
+interface WithDeepInterface {
+    deep: number;
 }

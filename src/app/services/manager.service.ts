@@ -3,15 +3,13 @@ import {environment} from '../../environments/environment';
 import {SettingsInterface} from '../interfaces/response/settings';
 import {AsyncSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {CatTreeInterface} from '../interfaces/response/cat';
 import {Helpers} from '../helpers';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ManagerService {
-    private settings: SettingsInterface;
-    catsTree: AsyncSubject<CatTreeInterface> = new AsyncSubject<CatTreeInterface>();
+    settings$: AsyncSubject<SettingsInterface> = new AsyncSubject<SettingsInterface>();
 
     constructor(
         private http: HttpClient,
@@ -29,9 +27,8 @@ export class ManagerService {
     getFirstSettings(): void {
         const s = this.load().subscribe(
             x => {
-                this.settings = x; // на всякий случай сохраним
-                this.catsTree.next(x.catsTree); // дерево пошлем по дороге
-                this.catsTree.complete();
+                this.settings$.next(x); // дерево пошлем по дороге
+                this.settings$.complete();
             },
             err => {
                 Helpers.handleErr(err);

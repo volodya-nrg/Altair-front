@@ -31,7 +31,12 @@
                 <form [formGroup]="formGetCatsCatId" (ngSubmit)="submitFormGetCatsCatId($event)" class="form">
                     <div class="form_row">
                         <div class="form_title">catId</div>
-                        <div class="target_for_cats_tree" data-name="catId"></div>
+                        <select formControlName="catId" class="form_100">
+                            <option value="0"></option>
+                            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form_row">
                         <label>
@@ -59,7 +64,12 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">parentId</div>
-                        <div class="target_for_cats_tree" data-name="parentId"></div>
+                        <select formControlName="parentId" class="form_100">
+                            <option value="0"></option>
+                            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form_row">
                         <div class="form_title">позиция</div>
@@ -88,7 +98,7 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">назначенные свойства</div>
-                        <div class="target_for_props"></div>
+                        <app-block-props [outForm]="formPostCats"></app-block-props>
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
@@ -104,16 +114,21 @@
                 PUT: /api/v1/cats/:catId
             </div>
             <div class="adm-main_box_body">
-                <form [formGroup]="formGetCatsCatId" (ngSubmit)="submitFormGetCatsCatId($event)" class="form">
+                <form [formGroup]="formGetCatForPut" (ngSubmit)="submitFormGetCatDataForPut($event)" class="form">
                     <div class="form_row">
                         <div class="form_title">id категории</div>
-                        <div class="target_for_cats_tree" data-name="catId"></div>
+                        <select formControlName="catId" class="form_100">
+                            <option value="0"></option>
+                            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
                     </div>
                 </form>
-                <form [formGroup]="formPutCatsCatId" (ngSubmit)="submitFormPutCatsCatId($event)"
+                <form #formPut [formGroup]="formPutCatsCatId" (ngSubmit)="submitFormPutCatsCatId($event)"
                       class="form form-put-put-cats hidden">
                     <input type="hidden" formControlName="catId"/>
                     <div class="form_row">
@@ -122,11 +137,16 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">slug</div>
-                        <input type="text" formControlName="slug" class="form_100"/>
+                        <input type="text" formControlName="slug" readonly="readonly" class="form_100"/>
                     </div>
                     <div class="form_row">
                         <div class="form_title">id родителя</div>
-                        <div class="target_for_cats_tree" data-name="parentId"></div>
+                        <select formControlName="parentId" class="form_100">
+                            <option value="0"></option>
+                            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form_row">
                         <div class="form_title">позиция</div>
@@ -154,13 +174,13 @@
                         </label>
                     </div>
                     <div class="form_row">
-                        <div class="form_title">назначенные свойства</div>
-                        <div class="target_for_props"></div>
-                    </div>
-                    <div class="form_row">
                         <label>
                             <input type="checkbox" formControlName="isDisabled"/> is_disabled
                         </label>
+                    </div>
+                    <div class="form_row">
+                        <div class="form_title">назначенные свойства</div>
+                        <app-block-props [outForm]="formPutCatsCatId"></app-block-props>
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
@@ -179,7 +199,12 @@
                 <form [formGroup]="formDeleteCatsCatId" (ngSubmit)="submitFormDeleteCatsCatId($event)" class="form">
                     <div class="form_row">
                         <div class="form_title">catId</div>
-                        <div class="target_for_cats_tree" data-name="catId"></div>
+                        <select formControlName="catId" class="form_100">
+                            <option value="0"></option>
+                            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                            </option>
+                        </select>
                     </div>
                     <div class="form_row">
                         <input type="submit"/>

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {CatInterface, CatTreeInterface} from '../interfaces/response/cat';
+import {CatFullInterface, CatInterface, CatTreeInterface} from '../interfaces/response/cat';
 import {Observable} from 'rxjs';
 
 @Injectable({
@@ -29,5 +29,25 @@ export class CatService {
                 asTree: 'true'
             }
         });
+    }
+
+    getCatId(catId: number, isWithPropsOnlyFiltered: boolean): Observable<CatFullInterface> {
+        return this.http.get<CatFullInterface>(`${this.url}/api/v1/cats/${catId}`, {
+            params: {
+                withPropsOnlyFiltered: isWithPropsOnlyFiltered ? 'true' : 'false',
+            }
+        });
+    }
+
+    post(data: any): Observable<CatFullInterface> {
+        return this.http.post<CatFullInterface>(`${this.url}/api/v1/cats`, data);
+    }
+
+    put(catId: number, data: any): Observable<CatFullInterface> {
+        return this.http.put<CatFullInterface>(`${this.url}/api/v1/cats/${catId}`, data);
+    }
+
+    delete(catId: number): Observable<void> {
+        return this.http.delete<void>(`${this.url}/api/v1/cats/${catId}`);
     }
 }

@@ -39,10 +39,10 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     ngOnInit(): void {
         console.log('init CatsHorizAccordionComponent');
 
-        const s1 = this.managerSettings.catsTree.subscribe(
+        const s1 = this.managerSettings.settings$.subscribe(
             x => {
-                this.catTree = x;
-                this.aCols.push(x); // по умолчанию вставим первый иерархию каталога
+                this.catTree = x.catsTree;
+                this.aCols.push(this.catTree); // по умолчанию вставим первый иерархию каталога
             },
             err => Helpers.handleErr(err.error),
             () => {

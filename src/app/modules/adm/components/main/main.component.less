@@ -60,9 +60,17 @@
             background-color: lighten(whitesmoke, 1%);
         }
 
-        & > &_body &_body {
+        .form {
             padding: 1em; // 16px / 16px
-            background-color: lighten(whitesmoke, 2%);
+            border: lightgray solid 1px;
+        }
+
+        .form:first-child {
+            border-top: 0;
+        }
+
+        .form + .form {
+            margin-top: 1em; // 16px / 16px
         }
     }
 

@@ -29,8 +29,8 @@ export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewIni
 
     ngOnInit(): void {
         console.log('init top-menu-cats-tree comp');
-        const s = this.serviceManager.catsTree.subscribe(
-            x => this.catTree = x,
+        const s = this.serviceManager.settings$.subscribe(
+            x => this.catTree = x.catsTree,
             err => Helpers.handleErr(err.error),
             () => {
             }

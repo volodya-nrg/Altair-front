@@ -1,0 +1,45 @@
+<div class="block-props">
+    <div class="block-props_header">
+        <div>
+            <select #select>
+                <option value="0"></option>
+                <option *ngFor="let x of props" [value]="x.propId">
+                    {{ x.title }}
+                    {{ x.privateComment ? ' (' + x.privateComment + ')' : '' }}
+                </option>
+            </select>
+        </div>
+        <div>
+            <button (click)="add()" type="button">+</button>
+        </div>
+    </div>
+    <div [formGroup]="outForm" class="block-props_body">
+        <div *ngFor="let x of list" class="block-props_item">
+            <div class="block-props_item_title">{{ x.title }}</div>
+            <div class="block-props_item_content">
+                <div>
+                    <div class="block-props_item_inputs">
+                        <div>
+                            <input formControlName="propComment[{{x.propId}}]" type="text" placeholder="комментарий (покажется под свойством)"/>
+                        </div>
+                        <div>
+                            <input formControlName="propPos[{{x.propId}}]" type="number" placeholder="позиция"/>
+                        </div>
+                    </div>
+                    <div class="block-props_item_dop">
+                        <label>
+                            <input formControlName="propIsRequire[{{x.propId}}]" type="checkbox"/> если выбран, то обязателен
+                        </label>
+                        <br/>
+                        <label>
+                            <input formControlName="propIsCanAsFilter[{{x.propId}}]" type="checkbox"/> если выбран, то исп-ся как фильтр тоже
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <button (click)="remove(x.propId)" type="button">-</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

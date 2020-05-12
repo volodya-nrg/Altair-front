@@ -28,8 +28,8 @@ export class PageMainComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init pageMain');
 
-        const s = this.serviceManager.catsTree.subscribe(
-            x => this.start(x),
+        const s = this.serviceManager.settings$.subscribe(
+            x => this.start(x.catsTree),
             err => Helpers.handleErr(err.error),
             () => {
             }

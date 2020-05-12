@@ -13,6 +13,7 @@ import {AuthComponent} from './components/auth/auth.component';
 import {SearchComponent} from './components/search/search.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
+import { BlockPropsComponent } from './components/block-props/block-props.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
         SearchComponent,
         ProfileComponent,
         PrettyJsonPipe,
+        BlockPropsComponent,
     ],
     imports: [
         CommonModule,

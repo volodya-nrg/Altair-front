@@ -1,4 +1,4 @@
-import {CatInterface, CatTreeInterface} from './interfaces/response/cat';
+import {CatInterface, CatTreeInterface, CatWithDeepInterface} from './interfaces/response/cat';
 import {BreadcrumbsInterface} from './interfaces/breadcrumbs';
 import {UrlSegment} from '@angular/router';
 
@@ -275,5 +275,38 @@ export class Helpers {
         parent.style.height = saveY + 'px';
 
         return true;
+    }
+
+    static getCatTreeAsOneLevel(catTree: CatTreeInterface): CatWithDeepInterface[] {
+        let cats: CatWithDeepInterface[] = [];
+
+        this.walkGetCatTreeAsOneLevel(catTree.childes, 0, cats);
+
+        return cats;
+    }
+
+    static walkGetCatTreeAsOneLevel(catTree: CatTreeInterface[], deep: number, receiver: CatWithDeepInterface[]): void {
+        catTree.forEach(x => {
+            let el: CatWithDeepInterface = {
+                catId: x.catId,
+                name: x.name,
+                slug: x.slug,
+                parentId: x.parentId,
+                pos: x.pos,
+                isDisabled: x.isDisabled,
+                priceAlias: x.priceAlias,
+                priceSuffix: x.priceSuffix,
+                titleHelp: x.titleHelp,
+                titleComment: x.titleComment,
+                isAutogenerateTitle: x.isAutogenerateTitle,
+                deep: deep,
+            };
+
+            receiver.push(el);
+
+            if (x.childes && x.childes.length) {
+                this.walkGetCatTreeAsOneLevel(x.childes, deep + 1, receiver);
+            }
+        });
     }
 }
