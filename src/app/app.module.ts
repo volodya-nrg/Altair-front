@@ -43,6 +43,7 @@ import {DynamicPropsComponent} from './components/dynamic-props/dynamic-props.co
 import {DynamicPropComponent} from './components/dynamic-prop/dynamic-prop.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 import {FormsCatsComponent} from './components/forms-cats/forms-cats.component';
+import { ToggleActiveDirective } from './directives/toggle-active.directive';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import {FormsCatsComponent} from './components/forms-cats/forms-cats.component';
         DynamicPropComponent,
         PrettyJsonPipe,
         FormsCatsComponent,
+        ToggleActiveDirective,
     ],
     imports: [
         BrowserModule,
