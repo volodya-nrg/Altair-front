@@ -1,0 +1,14 @@
+import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+
+@Component({
+    selector: 'app-dynamic-prop',
+    templateUrl: './dynamic-prop.component.html',
+    styleUrls: ['./dynamic-prop.component.less'],
+    encapsulation: ViewEncapsulation.None,
+})
+export class DynamicPropComponent {
+    @Input() index: number;
+    @Input() prop: FormGroup;
+    @Output() removed: EventEmitter<number> = new EventEmitter<number>();
+}

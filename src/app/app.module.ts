@@ -38,6 +38,11 @@ import {ManagerService} from './services/manager.service';
 import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cats-horiz-accordion.component';
 import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
 import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
+import {PageAdmComponent} from './components/page-adm/page-adm.component';
+import {DynamicPropsComponent} from './components/dynamic-props/dynamic-props.component';
+import {DynamicPropComponent} from './components/dynamic-prop/dynamic-prop.component';
+import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
+import {FormsCatsComponent} from './components/forms-cats/forms-cats.component';
 
 @NgModule({
     declarations: [
@@ -71,6 +76,11 @@ import {PageRecoverCheckHashComponent} from './components/page-recover/check-has
         CatsHorizAccordionComponent,
         PageRecoverSenderComponent,
         PageRecoverCheckHashComponent,
+        PageAdmComponent,
+        DynamicPropsComponent,
+        DynamicPropComponent,
+        PrettyJsonPipe,
+        FormsCatsComponent,
     ],
     imports: [
         BrowserModule,
@@ -95,8 +105,7 @@ import {PageRecoverCheckHashComponent} from './components/page-recover/check-has
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ],
-    exports: [
-    ],
+    exports: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {

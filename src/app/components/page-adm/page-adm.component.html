@@ -1,0 +1,12 @@
+<div class="page-adm">
+    <div class="page-adm_columns">
+        <div>
+            <ul class="page-adm_list">
+                <li>
+                    <app-forms-cats (json)="jsonResult = $event"></app-forms-cats>
+                </li>
+            </ul>
+        </div>
+        <pre class="page-adm_json-result">{{ jsonResult | prettyJson }}</pre>
+    </div>
+</div>
