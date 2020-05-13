@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChil
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {PropInterface} from '../../interfaces/response/prop';
-import {DynamicPropInterface} from '../../interfaces/dynamic-prop';
 import {ManagerService} from '../../services/manager.service';
 import {Helpers} from '../../helpers';
 
@@ -15,11 +14,9 @@ import {Helpers} from '../../helpers';
 export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     props: PropInterface[] = [];
-    dynamicProps: DynamicPropInterface[] = [];
     @ViewChild('select', {static: true}) select: ElementRef;
     @Input() propsFormArray: FormArray;
 
-    // @ts-ignore
     constructor(
         private fb: FormBuilder,
         private serviceManager: ManagerService,
@@ -58,27 +55,36 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
                 return;
             }
             this.propsFormArray.push(this.fb.group({
-                name: x.title + (x.privateComment ? '(' + x.privateComment + ')' : ''),
                 propId: x.propId,
+                title: x.title,
+                kindPropId: x.kindPropId,
+                name: x.name,
+                suffix: x.suffix,
+                comment: x.comment,
                 privateComment: x.privateComment,
+                kindPropName: '',
                 propPos: this.propsFormArray.length,
                 propIsRequire: false,
                 propIsCanAsFilter: false,
-                propComment: x.comment,
+                propComment: '',
+                values: [],
             }));
+            return false; // только один раз
         });
 
-        this.updateSelect();
+        this.select.nativeElement.value = 0;
     }
 
-    updateSelect(): void {
-        this.select.nativeElement.querySelectorAll('option').forEach(x => {
-            x.disabled = false;
-        });
+    isSelected(id: number): boolean {
+        let result: boolean = false;
+
         this.propsFormArray.controls.forEach(x => {
-            const val = x.get('propId').value;
-            this.select.nativeElement.querySelector(`option[value="${val}"]`).disabled = true;
+            if (x.get('propId').value === id) {
+                result = true;
+                return false;
+            }
         });
-        this.select.nativeElement.value = 0; // сброси на начало
+
+        return result;
     }
 }

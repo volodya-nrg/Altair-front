@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {Helpers} from '../../helpers';
 import {SettingsInterface} from '../../interfaces/response/settings';
 import {CatWithDeepInterface} from '../../interfaces/response/cat';
 import {PropFullInterface, PropInterface} from '../../interfaces/response/prop';
-import {DynamicPropsComponent} from '../dynamic-props/dynamic-props.component';
 import {ManagerService} from '../../services/manager.service';
 import {CatService} from '../../services/cat.service';
+import {DynamicPropsComponent} from '../dynamic-props/dynamic-props.component';
 
 @Component({
     selector: 'app-forms-cats',
@@ -57,7 +57,7 @@ export class FormsCatsComponent implements OnInit, OnDestroy, AfterViewInit {
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            props: this.fb.array(this.props),
+            props: this.fb.array(this.propsFull), // походу так
         });
         this.formGetCatForPut = this.fb.group({
             catId: 0,
@@ -74,7 +74,7 @@ export class FormsCatsComponent implements OnInit, OnDestroy, AfterViewInit {
             titleComment: '',
             isAutogenerateTitle: false,
             isDisabled: false,
-            props: this.fb.array(this.props),
+            props: this.fb.array(this.propsFull), // походу так
         });
         this.formDeleteCatsCatId = this.fb.group({
             catId: 0,
@@ -193,11 +193,24 @@ export class FormsCatsComponent implements OnInit, OnDestroy, AfterViewInit {
             x => {
                 this.json.emit(x);
                 this.formPut.nativeElement.classList.remove('hidden');
-                this.propsFull = x.props;
-
-                this.formPutCatsCatId.reset();
+                this.formPutCatsCatId = this.fb.group({
+                    catId: 0,
+                    name: '',
+                    slug: '',
+                    parentId: '0',
+                    pos: 0,
+                    priceAlias: '',
+                    priceSuffix: '',
+                    titleHelp: '',
+                    titleComment: '',
+                    isAutogenerateTitle: false,
+                    isDisabled: false,
+                    props: this.fb.array(this.propsFull), // походу так
+                });
                 this.formPutCatsCatId.patchValue(x);
-                // this.dynamicProps.updateSelect();
+                const tmpProps = this.formPutCatsCatId.get('props') as FormArray;
+                x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));
+                this.dynamicProps.propsFormArray = tmpProps;
             },
             err => Helpers.handleErr(err),
             () => {

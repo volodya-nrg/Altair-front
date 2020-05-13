@@ -3,7 +3,7 @@
         <div>
             <select #select>
                 <option value="0"></option>
-                <option *ngFor="let x of props" [value]="x.propId">
+                <option *ngFor="let x of props" [value]="x.propId" [disabled]="isSelected(x.propId)">
                     {{ x.title }}
                     {{ x.privateComment ? ' (' + x.privateComment + ')' : '' }}
                 </option>
@@ -15,9 +15,9 @@
     </div>
     <div class="dynamic-props_body">
         <app-dynamic-prop *ngFor="let prop of propsFormArray.controls; let i = index"
-                        [index]="i"
-                        [prop]="prop"
-                        (removed)="propsFormArray.removeAt($event)">
+                          [index]="i"
+                          [prop]="prop"
+                          (removed)="propsFormArray.removeAt($event)">
         </app-dynamic-prop>
     </div>
 </div>

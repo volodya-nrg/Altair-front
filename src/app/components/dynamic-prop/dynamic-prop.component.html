@@ -1,6 +1,6 @@
 <div class="dynamic-prop" [formGroup]="prop">
     <div class="dynamic-prop_title">
-        {{ prop.get('name').value }}
+        {{ prop.get('title').value }} {{ prop.get('privateComment').value ? '(' + prop.get('privateComment').value + ')' : '' }}
     </div>
     <div class="dynamic-prop_content">
         <div>
@@ -14,15 +14,18 @@
                 </div>
             </div>
             <div class="dynamic-prop_dop">
-                <label>
-                    <input formControlName="propIsRequire" type="checkbox"/>
-                    если выбран, то обязателен
-                </label>
-                <br/>
-                <label>
-                    <input formControlName="propIsCanAsFilter" type="checkbox"/>
-                    если выбран, то исп-ся как фильтр тоже
-                </label>
+                <div>
+                    <label>
+                        <input formControlName="propIsRequire" type="checkbox"/>
+                        обязателен
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input formControlName="propIsCanAsFilter" type="checkbox"/>
+                        как фильтр (тоже)
+                    </label>
+                </div>
             </div>
         </div>
         <div>
