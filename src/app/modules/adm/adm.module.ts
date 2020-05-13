@@ -14,6 +14,7 @@ import {SearchComponent} from './components/search/search.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 import { BlockPropsComponent } from './components/block-props/block-props.component';
+import { BlockPropComponent } from './components/block-prop/block-prop.component';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { BlockPropsComponent } from './components/block-props/block-props.compon
         ProfileComponent,
         PrettyJsonPipe,
         BlockPropsComponent,
+        BlockPropComponent,
     ],
     imports: [
         CommonModule,

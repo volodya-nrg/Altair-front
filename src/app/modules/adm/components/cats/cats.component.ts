@@ -1,12 +1,12 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CatService} from '../../../../services/cat.service';
 import {Helpers} from '../../../../helpers';
 import {CatWithDeepInterface} from '../../../../interfaces/response/cat';
 import {ManagerService} from '../../../../services/manager.service';
 import {SettingsInterface} from '../../../../interfaces/response/settings';
-import {PropFullInterface} from '../../../../interfaces/response/prop';
+import {PropFullInterface, PropInterface} from '../../../../interfaces/response/prop';
 import {BlockPropsComponent} from '../block-props/block-props.component';
 
 @Component({
@@ -26,9 +26,10 @@ export class CatsComponent implements OnInit, OnDestroy, AfterViewInit {
     settings: SettingsInterface;
     catTreeOneLevel: CatWithDeepInterface[] = [];
     propsFull: PropFullInterface[] = [];
+    props: PropInterface[] = [];
     @Output() json: EventEmitter<any> = new EventEmitter();
-    @ViewChild('formPut', {static: true}) formPut: ElementRef;
     @ViewChild(BlockPropsComponent) blockProps: BlockPropsComponent;
+    @ViewChild('formPut', {static: true}) formPut: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -56,6 +57,7 @@ export class CatsComponent implements OnInit, OnDestroy, AfterViewInit {
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
+            props: this.fb.array(this.props),
         });
         this.formGetCatForPut = this.fb.group({
             catId: 0,
@@ -72,6 +74,7 @@ export class CatsComponent implements OnInit, OnDestroy, AfterViewInit {
             titleComment: '',
             isAutogenerateTitle: false,
             isDisabled: false,
+            props: this.fb.array(this.props),
         });
         this.formDeleteCatsCatId = this.fb.group({
             catId: 0,
@@ -194,7 +197,7 @@ export class CatsComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 this.formPutCatsCatId.reset();
                 this.formPutCatsCatId.patchValue(x);
-                this.blockProps.setPropsFull(x.props);
+                this.blockProps.updateSelect();
             },
             err => Helpers.handleErr(err),
             () => {

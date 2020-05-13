@@ -98,7 +98,7 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">назначенные свойства</div>
-                        <app-block-props [outForm]="formPostCats"></app-block-props>
+                        <app-block-props formArrayName="props" [itemsFormArray]="formPostCats.get('props')"></app-block-props>
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
@@ -130,7 +130,9 @@
                 </form>
                 <form #formPut [formGroup]="formPutCatsCatId" (ngSubmit)="submitFormPutCatsCatId($event)"
                       class="form form-put-put-cats hidden">
+
                     <input type="hidden" formControlName="catId"/>
+
                     <div class="form_row">
                         <div class="form_title">название</div>
                         <input type="text" formControlName="name" class="form_100"/>
@@ -180,7 +182,8 @@
                     </div>
                     <div class="form_row">
                         <div class="form_title">назначенные свойства</div>
-                        <app-block-props [outForm]="formPutCatsCatId"></app-block-props>
+                        <!--                        <app-block-props formArrayName="props"-->
+                        <!--                                         [propsFull]="formPutCatsCatId.get('props')"></app-block-props>-->
                     </div>
                     <div class="form_row">
                         <input type="submit"/>
