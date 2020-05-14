@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {FormsCatsComponent} from './cats.component';
+import {FormsCatsGetCatsComponent} from './forms-cats-get-cats.component';
 
-describe('CatsComponent', () => {
-    let component: FormsCatsComponent;
-    let fixture: ComponentFixture<FormsCatsComponent>;
+describe('FormsCatsGetCatsComponent', () => {
+    let component: FormsCatsGetCatsComponent;
+    let fixture: ComponentFixture<FormsCatsGetCatsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [FormsCatsComponent]
+            declarations: [FormsCatsGetCatsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FormsCatsComponent);
+        fixture = TestBed.createComponent(FormsCatsGetCatsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

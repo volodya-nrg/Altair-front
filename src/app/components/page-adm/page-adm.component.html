@@ -3,7 +3,19 @@
         <div>
             <ul class="page-adm_list">
                 <li>
-                    <app-forms-cats (json)="jsonResult = $event"></app-forms-cats>
+                    <div class="page-adm_box">
+                        <div class="page-adm_box_title" appToggleActive>
+                            Категории
+                        </div>
+                        <div class="page-adm_box_body">
+                            <app-forms-cats-get-cats (json)="jsonResult = $event"></app-forms-cats-get-cats>
+                            <app-forms-cats-get-cats-catid (json)="jsonResult = $event"></app-forms-cats-get-cats-catid>
+                            <app-forms-cats-post-cats (json)="jsonResult = $event"></app-forms-cats-post-cats>
+                            <app-forms-cats-put-cats-catid (json)="jsonResult = $event"></app-forms-cats-put-cats-catid>
+                            <app-forms-cats-delete-cats-catid
+                                (json)="jsonResult = $event"></app-forms-cats-delete-cats-catid>
+                        </div>
+                    </div>
                 </li>
             </ul>
         </div>

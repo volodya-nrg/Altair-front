@@ -42,8 +42,12 @@ import {PageAdmComponent} from './components/page-adm/page-adm.component';
 import {DynamicPropsComponent} from './components/dynamic-props/dynamic-props.component';
 import {DynamicPropComponent} from './components/dynamic-prop/dynamic-prop.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
-import {FormsCatsComponent} from './components/forms-cats/forms-cats.component';
-import { ToggleActiveDirective } from './directives/toggle-active.directive';
+import {ToggleActiveDirective} from './directives/toggle-active.directive';
+import {FormsCatsGetCatsComponent} from './components/forms-cats/forms-cats-get-cats/forms-cats-get-cats.component';
+import {FormsCatsGetCatsCatidComponent} from './components/forms-cats/forms-cats-get-cats-catid/forms-cats-get-cats-catid.component';
+import {FormsCatsPostCatsComponent} from './components/forms-cats/forms-cats-post-cats/forms-cats-post-cats.component';
+import {FormsCatsPutCatsCatidComponent} from './components/forms-cats/forms-cats-put-cats-catid/forms-cats-put-cats-catid.component';
+import {FormsCatsDeleteCatsCatidComponent} from './components/forms-cats/forms-cats-delete-cats-catid/forms-cats-delete-cats-catid.component';
 
 @NgModule({
     declarations: [
@@ -81,8 +85,12 @@ import { ToggleActiveDirective } from './directives/toggle-active.directive';
         DynamicPropsComponent,
         DynamicPropComponent,
         PrettyJsonPipe,
-        FormsCatsComponent,
         ToggleActiveDirective,
+        FormsCatsGetCatsComponent,
+        FormsCatsGetCatsCatidComponent,
+        FormsCatsPostCatsComponent,
+        FormsCatsPutCatsCatidComponent,
+        FormsCatsDeleteCatsCatidComponent,
     ],
     imports: [
         BrowserModule,
