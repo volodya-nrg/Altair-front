@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, O
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 import {SettingsInterface} from '../../../interfaces/response/settings';
-import {CatWithDeepInterface} from '../../../interfaces/response/cat';
+import {CatFull, CatWithDeepInterface} from '../../../interfaces/response/cat';
 import {PropFullInterface, PropInterface} from '../../../interfaces/response/prop';
 import {DynamicPropsComponent} from '../../dynamic-props/dynamic-props.component';
 import {CatService} from '../../../services/cat.service';
@@ -40,20 +40,10 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
         this.formGetCatForPut = this.fb.group({
             catId: 0,
         });
-        this.formPutCatsCatId = this.fb.group({
-            catId: 0,
-            name: '',
-            slug: '',
-            parentId: '0',
-            pos: 0,
-            priceAlias: '',
-            priceSuffix: '',
-            titleHelp: '',
-            titleComment: '',
-            isAutogenerateTitle: false,
-            isDisabled: false,
-            props: this.fb.array(this.propsFull), // походу так
-        });
+
+        let a = new CatFull();
+        a.props = this.fb.array(this.propsFull);
+        this.formPutCatsCatId = this.fb.group(a);
 
         const s = this.serviceManager.settings$.subscribe(
             x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
@@ -89,20 +79,11 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             x => {
                 this.json.emit(x);
                 this.formPut.nativeElement.classList.remove('hidden');
-                this.formPutCatsCatId = this.fb.group({
-                    catId: 0,
-                    name: '',
-                    slug: '',
-                    parentId: '0',
-                    pos: 0,
-                    priceAlias: '',
-                    priceSuffix: '',
-                    titleHelp: '',
-                    titleComment: '',
-                    isAutogenerateTitle: false,
-                    isDisabled: false,
-                    props: this.fb.array(this.propsFull), // походу так
-                });
+
+                let a = new CatFull();
+                a.props = this.fb.array(this.propsFull);
+                this.formPutCatsCatId = this.fb.group(a);
+
                 this.formPutCatsCatId.patchValue(x);
                 const tmpProps = this.formPutCatsCatId.get('props') as FormArray;
                 x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));

@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} f
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SettingsInterface} from '../../../interfaces/response/settings';
-import {CatWithDeepInterface} from '../../../interfaces/response/cat';
+import {CatFull, CatWithDeepInterface} from '../../../interfaces/response/cat';
 import {PropFullInterface, PropInterface} from '../../../interfaces/response/prop';
 import {CatService} from '../../../services/cat.service';
 import {ManagerService} from '../../../services/manager.service';
@@ -33,17 +33,9 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init adm cats');
 
-        this.formPostCats = this.fb.group({
-            name: '',
-            parentId: '0',
-            pos: 0,
-            priceAlias: '',
-            priceSuffix: '',
-            titleHelp: '',
-            titleComment: '',
-            isAutogenerateTitle: false,
-            props: this.fb.array(this.propsFull), // походу так
-        });
+        let a = new CatFull();
+        a.props = this.fb.array(this.propsFull);
+        this.formPostCats = this.fb.group(a);
 
         const s = this.serviceManager.settings$.subscribe(
             x => {
