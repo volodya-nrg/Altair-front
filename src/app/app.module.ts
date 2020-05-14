@@ -48,6 +48,11 @@ import {FormsCatsGetCatsCatidComponent} from './components/forms-cats/forms-cats
 import {FormsCatsPostCatsComponent} from './components/forms-cats/forms-cats-post-cats/forms-cats-post-cats.component';
 import {FormsCatsPutCatsCatidComponent} from './components/forms-cats/forms-cats-put-cats-catid/forms-cats-put-cats-catid.component';
 import {FormsCatsDeleteCatsCatidComponent} from './components/forms-cats/forms-cats-delete-cats-catid/forms-cats-delete-cats-catid.component';
+import {FormsUsersGetUsersComponent} from './components/forms-users/forms-users-get-users/forms-users-get-users.component';
+import {FormsUsersGetUsersUseridComponent} from './components/forms-users/forms-users-get-users-userid/forms-users-get-users-userid.component';
+import {FormsUsersPostUsersComponent} from './components/forms-users/forms-users-post-users/forms-users-post-users.component';
+import {FormsUsersPutUsersUseridComponent} from './components/forms-users/forms-users-put-users-userid/forms-users-put-users-userid.component';
+import {FormsUsersDeleteUsersUseridComponent} from './components/forms-users/forms-users-delete-users-userid/forms-users-delete-users-userid.component';
 
 @NgModule({
     declarations: [
@@ -91,6 +96,11 @@ import {FormsCatsDeleteCatsCatidComponent} from './components/forms-cats/forms-c
         FormsCatsPostCatsComponent,
         FormsCatsPutCatsCatidComponent,
         FormsCatsDeleteCatsCatidComponent,
+        FormsUsersGetUsersComponent,
+        FormsUsersGetUsersUseridComponent,
+        FormsUsersPostUsersComponent,
+        FormsUsersPutUsersUseridComponent,
+        FormsUsersDeleteUsersUseridComponent,
     ],
     imports: [
         BrowserModule,

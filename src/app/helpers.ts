@@ -55,10 +55,13 @@ export class Helpers {
 
     static getNewFormData(obj: Object): FormData {
         const formData = new FormData();
+
         for (const key in obj) {
             if (key === 'files') {
-                for (let i = 0; i < obj[key].length; i++) {
-                    formData.append(key, obj[key][i]);
+                if (obj[key]) { // файлов может и не быть
+                    for (let i = 0; i < obj[key].length; i++) {
+                        formData.append(key, obj[key][i]);
+                    }
                 }
                 continue;
             }

@@ -8,12 +8,35 @@
                             Категории
                         </div>
                         <div class="page-adm_box_body">
-                            <app-forms-cats-get-cats (json)="jsonResult = $event"></app-forms-cats-get-cats>
-                            <app-forms-cats-get-cats-catid (json)="jsonResult = $event"></app-forms-cats-get-cats-catid>
-                            <app-forms-cats-post-cats (json)="jsonResult = $event"></app-forms-cats-post-cats>
-                            <app-forms-cats-put-cats-catid (json)="jsonResult = $event"></app-forms-cats-put-cats-catid>
+                            <app-forms-cats-get-cats
+                                (json)="jsonResult = $event"></app-forms-cats-get-cats>
+                            <app-forms-cats-get-cats-catid
+                                (json)="jsonResult = $event"></app-forms-cats-get-cats-catid>
+                            <app-forms-cats-post-cats
+                                (json)="jsonResult = $event"></app-forms-cats-post-cats>
+                            <app-forms-cats-put-cats-catid
+                                (json)="jsonResult = $event"></app-forms-cats-put-cats-catid>
                             <app-forms-cats-delete-cats-catid
                                 (json)="jsonResult = $event"></app-forms-cats-delete-cats-catid>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="page-adm_box">
+                        <div class="page-adm_box_title" appToggleActive>
+                            Пользователи
+                        </div>
+                        <div class="page-adm_box_body">
+                            <app-forms-users-get-users
+                                (json)="jsonResult = $event"></app-forms-users-get-users>
+                            <app-forms-users-get-users-userid
+                                (json)="jsonResult = $event"></app-forms-users-get-users-userid>
+                            <app-forms-users-post-users
+                                (json)="jsonResult = $event"></app-forms-users-post-users>
+                            <app-forms-users-put-users-userid
+                                (json)="jsonResult = $event"></app-forms-users-put-users-userid>
+                            <app-forms-users-delete-users-userid
+                                (json)="jsonResult = $event"></app-forms-users-delete-users-userid>
                         </div>
                     </div>
                 </li>
