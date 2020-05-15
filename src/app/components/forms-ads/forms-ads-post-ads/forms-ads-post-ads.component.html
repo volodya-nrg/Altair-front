@@ -1,0 +1,60 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        POST: /api/v1/ads
+    </div>
+    <div class="page-adm_box_body">
+        <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">avatar</div>
+                <input type="hidden" formControlName="files"/>
+                <input class="form_100" type="file" accept="image/jpeg,image/png" (change)="addPhoto($event)"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">название</div>
+                <input type="text" formControlName="title" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">id категории *</div>
+                <div class="target_for_cats_tree" data-formControlName="catId"></div>
+            </div>
+            <div class="form_row">
+                <div class="form_title">id пользователя</div>
+                <input type="number" formControlName="userId" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">описание *</div>
+                <textarea formControlName="description" class="form_100"></textarea>
+            </div>
+            <div class="form_row">
+                <div class="form_title">цена</div>
+                <input type="number" formControlName="price" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Youtube</div>
+                <input type="text" formControlName="youtube" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Широта</div>
+                <input type="text" formControlName="latitude" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Долгота</div>
+                <input type="text" formControlName="longitude" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Назнвание города</div>
+                <input type="text" formControlName="cityName" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Назнвание страны</div>
+                <input type="text" formControlName="countryName" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+            <div class="form_row">
+                {{ form.value | json }}
+            </div>
+        </form>
+    </div>
+</div>

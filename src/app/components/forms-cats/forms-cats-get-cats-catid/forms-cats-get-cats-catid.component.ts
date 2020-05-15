@@ -13,7 +13,7 @@ import {Helpers} from '../../../helpers';
     styleUrls: ['./forms-cats-get-cats-catid.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     formGetCatsCatId: FormGroup;
     settings: SettingsInterface;
@@ -46,9 +46,6 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy, AfterV
     ngOnDestroy(): void {
         console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
-    }
-
-    ngAfterViewInit(): void {
     }
 
     submitFormGetCatsCatId({target}): void {

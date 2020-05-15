@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Helpers} from '../../../helpers';
@@ -10,7 +10,7 @@ import {UserService} from '../../../services/user.service';
     styleUrls: ['./forms-users-get-users.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class FormsUsersGetUsersComponent implements OnInit {
+export class FormsUsersGetUsersComponent implements  OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     formGetUsers: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();

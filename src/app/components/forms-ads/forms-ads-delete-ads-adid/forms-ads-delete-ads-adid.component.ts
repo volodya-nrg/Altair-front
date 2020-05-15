@@ -1,36 +1,36 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../../services/user.service';
 import {Helpers} from '../../../helpers';
+import {AdService} from '../../../services/ad.service';
 
 @Component({
-    selector: 'app-forms-users-get-users-userid',
-    templateUrl: './forms-users-get-users-userid.component.html',
-    styleUrls: ['./forms-users-get-users-userid.component.less'],
+    selector: 'app-forms-ads-delete-ads-adid',
+    templateUrl: './forms-ads-delete-ads-adid.component.html',
+    styleUrls: ['./forms-ads-delete-ads-adid.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class FormsUsersGetUsersUseridComponent implements  OnInit, OnDestroy {
+export class FormsAdsDeleteAdsAdidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private fb: FormBuilder,
-        private serviceUsers: UserService,
+        private serviceAds: AdService,
     ) {
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
+        console.log('init adm ads delete');
 
         this.form = this.fb.group({
-            userId: 0,
+            adId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
+        console.log('destroy adm ads delete');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
@@ -46,8 +46,11 @@ export class FormsUsersGetUsersUseridComponent implements  OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceUsers.getUser(this.form.get('userId').value).subscribe(
-            x => this.json.emit(x),
+        const s = this.serviceAds.delete(this.form.get('adId').value).subscribe(
+            x => {
+                this.json.emit(x);
+                this.form.reset();
+            },
             err => Helpers.handleErr(err),
             () => {
             },

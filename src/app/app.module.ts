@@ -53,6 +53,11 @@ import {FormsUsersGetUsersUseridComponent} from './components/forms-users/forms-
 import {FormsUsersPostUsersComponent} from './components/forms-users/forms-users-post-users/forms-users-post-users.component';
 import {FormsUsersPutUsersUseridComponent} from './components/forms-users/forms-users-put-users-userid/forms-users-put-users-userid.component';
 import {FormsUsersDeleteUsersUseridComponent} from './components/forms-users/forms-users-delete-users-userid/forms-users-delete-users-userid.component';
+import {FormsAdsGetAdsComponent} from './components/forms-ads/forms-ads-get-ads/forms-ads-get-ads.component';
+import {FormsAdsGetAdsAdidComponent} from './components/forms-ads/forms-ads-get-ads-adid/forms-ads-get-ads-adid.component';
+import {FormsAdsPostAdsComponent} from './components/forms-ads/forms-ads-post-ads/forms-ads-post-ads.component';
+import {FormsAdsPutAdsAdidComponent} from './components/forms-ads/forms-ads-put-ads-adid/forms-ads-put-ads-adid.component';
+import {FormsAdsDeleteAdsAdidComponent} from './components/forms-ads/forms-ads-delete-ads-adid/forms-ads-delete-ads-adid.component';
 
 @NgModule({
     declarations: [
@@ -101,6 +106,11 @@ import {FormsUsersDeleteUsersUseridComponent} from './components/forms-users/for
         FormsUsersPostUsersComponent,
         FormsUsersPutUsersUseridComponent,
         FormsUsersDeleteUsersUseridComponent,
+        FormsAdsGetAdsComponent,
+        FormsAdsGetAdsAdidComponent,
+        FormsAdsPostAdsComponent,
+        FormsAdsPutAdsAdidComponent,
+        FormsAdsDeleteAdsAdidComponent,
     ],
     imports: [
         BrowserModule,

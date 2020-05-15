@@ -10,7 +10,7 @@ import {CatService} from '../../../services/cat.service';
     styleUrls: ['./forms-cats-get-cats.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class FormsCatsGetCatsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class FormsCatsGetCatsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     formGetCats: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();
@@ -32,9 +32,6 @@ export class FormsCatsGetCatsComponent implements OnInit, OnDestroy, AfterViewIn
     ngOnDestroy(): void {
         console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
-    }
-
-    ngAfterViewInit(): void {
     }
 
     submitFormGetCats({target}): void {
