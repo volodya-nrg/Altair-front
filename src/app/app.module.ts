@@ -58,8 +58,6 @@ import {FormsAdsGetAdsAdidComponent} from './components/forms-ads/forms-ads-get-
 import {FormsAdsPostAdsComponent} from './components/forms-ads/forms-ads-post-ads/forms-ads-post-ads.component';
 import {FormsAdsPutAdsAdidComponent} from './components/forms-ads/forms-ads-put-ads-adid/forms-ads-put-ads-adid.component';
 import {FormsAdsDeleteAdsAdidComponent} from './components/forms-ads/forms-ads-delete-ads-adid/forms-ads-delete-ads-adid.component';
-import { DynamicPropsFullComponent } from './components/dynamic-props-full/dynamic-props-full.component';
-import { DynamicPropFullComponent } from './components/dynamic-prop-full/dynamic-prop-full.component';
 
 @NgModule({
     declarations: [
@@ -113,8 +111,6 @@ import { DynamicPropFullComponent } from './components/dynamic-prop-full/dynamic
         FormsAdsPostAdsComponent,
         FormsAdsPutAdsAdidComponent,
         FormsAdsDeleteAdsAdidComponent,
-        DynamicPropsFullComponent,
-        DynamicPropFullComponent,
     ],
     imports: [
         BrowserModule,

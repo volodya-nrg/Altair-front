@@ -10,8 +10,7 @@
           [formGroup]="form"
           class="form"
           [class.sx-loading]="isLoadingProps"
-          (ngSubmit)="onSubmit($event)"
-          enctype="multipart/form-data">
+          (ngSubmit)="onSubmit($event)">
 
         <input type="hidden" formControlName="catId" value="0"/>
 
@@ -74,10 +73,10 @@
                     <p *ngIf="propFull.comment" class="form_comment text-mute">{{ propFull.comment }}</p>
 
                     <div *ngIf="propFull.kindPropName === 'photo' && editAd?.images?.length"
-                         class="page-ad-create-edit_images">
-                        <div *ngFor="let img of editAd.images" class="page-ad-create-edit_image">
-                            <span class="page-ad-create-edit_image_close" title="удалить"
-                                  (click)="removeImage($event)">&times;</span>
+                         class="form_thumbnails">
+                        <div *ngFor="let img of editAd.images" class="form_thumbnails_thumbnail">
+                            <div class="form_thumbnails_thumbnail_close" title="удалить"
+                                 (click)="removeImage($event)"></div>
                             <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
                         </div>
                     </div>

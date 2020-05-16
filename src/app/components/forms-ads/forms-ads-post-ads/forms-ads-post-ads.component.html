@@ -10,14 +10,14 @@
             </div>
             <div class="form_row">
                 <div class="form_title">id категории</div>
-                <select formControlName="catId" (change)="onChangeCat($event)" class="form_100">
+                <select formControlName="catId" (change)="onChangeCat()" class="form_100">
                     <option value="0"></option>
                     <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
                         {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
                     </option>
                 </select>
 
-                <div class="dynamic-props-full" formGroupName="propFullControls">
+                <div class="dynamic-props-full">
                     <div *ngFor="let propFull of propsFull">
                         <div class="page-adm_prop-full">
                             <div class="page-adm_prop-full_title">
@@ -110,11 +110,11 @@
             </div>
             <div class="form_row">
                 <div class="form_title">Широта</div>
-                <input type="text" formControlName="latitude" class="form_100"/>
+                <input type="number" formControlName="latitude" class="form_100"/>
             </div>
             <div class="form_row">
                 <div class="form_title">Долгота</div>
-                <input type="text" formControlName="longitude" class="form_100"/>
+                <input type="number" formControlName="longitude" class="form_100"/>
             </div>
             <div class="form_row">
                 <div class="form_title">Назнвание города</div>

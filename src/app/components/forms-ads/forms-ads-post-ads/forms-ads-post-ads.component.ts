@@ -7,6 +7,7 @@ import {CatTreeInterface, CatWithDeepInterface} from '../../../interfaces/respon
 import {ManagerService} from '../../../services/manager.service';
 import {CatService} from '../../../services/cat.service';
 import {PropFullInterface} from '../../../interfaces/response/prop';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-forms-ads-post-ads',
@@ -21,6 +22,7 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     form: FormGroup;
     catTreeOneLevel: CatWithDeepInterface[] = [];
     propsFull: PropFullInterface[] = [];
+    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -29,16 +31,11 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         private serviceManager: ManagerService,
         private serviceCats: CatService,
     ) {
-    }
-
-    ngOnInit(): void {
-        console.log('init adm ads post');
-
-        this.form = this.fb.group({
+        this.defaultControls = {
             title: '',
-            catId: 0,
-            userId: 0,
-            description: '',
+            catId: [0, [Validators.required, Validators.min(1)]],
+            userId: [0, [Validators.min(0)]],
+            description: ['', Validators.required],
             price: 0,
             isDisabled: false,
             youtube: '',
@@ -46,8 +43,13 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
             longitude: 0,
             cityName: '',
             countryName: '',
-            propFullControls: this.fb.group({}),
-        });
+        };
+    }
+
+    ngOnInit(): void {
+        console.log('init adm ads post');
+
+        this.form = this.fb.group(this.defaultControls);
 
         const s = this.serviceManager.settings$.subscribe(
             x => {
@@ -88,7 +90,7 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         this.subscriptions.push(s);
     }
 
-    onChangeCat({target}): void {
+    onChangeCat(): void {
         const catId: number = parseInt(this.form.get('catId').value, 10);
 
         if (Helpers.isLeaf(this.catsTree.childes, catId) !== 1) {
@@ -98,8 +100,10 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
 
         const s = this.serviceCats.getCatId(catId, false).subscribe(
             x => {
-                const propFullControls = this.form.get('propFullControls') as FormGroup;
-                //propFullControls.clear();
+                let tmpGroup = this.fb.group(this.defaultControls);
+
+                tmpGroup.get('catId').setValue(this.form.get('catId').value);
+                this.form = tmpGroup;
 
                 x.props.forEach(y => {
                     let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
@@ -112,11 +116,11 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
 
                     if (y.kindPropName === 'checkbox') {
                         y.values.forEach((z, i) => {
-                            propFullControls.addControl(y.name + '[' + i + ']', new FormControl(z.propId, aValidators));
+                            this.form.addControl(y.name + '[' + i + ']', new FormControl(z.propId, aValidators));
                         });
 
                     } else {
-                        propFullControls.addControl(y.name, new FormControl(defaultValue, aValidators));
+                        this.form.addControl(y.name, new FormControl(defaultValue, aValidators));
                     }
                 });
 
@@ -134,7 +138,7 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     }
 
     addPhoto({target}): void {
-        const cFiles = this.form.get('propFullControls').get('files');
+        const cFiles = this.form.get('files');
 
         if (target.files.length) {
             this.form.markAsDirty();
