@@ -299,4 +299,29 @@ export class Helpers {
             }
         });
     }
+
+    static isLeaf(catsTree: CatTreeInterface[], catId: number): number {
+        let x: number = -1;
+
+        for (let i = 0; i < catsTree.length; i++) {
+            const el = catsTree[i];
+
+            if (el.catId === catId) {
+                if (el.childes && el.childes.length) {
+                    return 0;
+                }
+
+                return 1;
+            }
+            if (el.childes && el.childes.length) {
+                let tmp = this.isLeaf(el.childes, catId);
+
+                if (tmp > -1) {
+                    return tmp;
+                }
+            }
+        }
+
+        return x;
+    }
 }

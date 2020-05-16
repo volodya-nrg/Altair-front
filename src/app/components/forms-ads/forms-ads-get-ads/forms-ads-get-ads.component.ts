@@ -3,6 +3,8 @@ import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
 import {AdService} from '../../../services/ad.service';
+import {CatWithDeepInterface} from '../../../interfaces/response/cat';
+import {ManagerService} from '../../../services/manager.service';
 
 @Component({
     selector: 'app-forms-ads-get-ads',
@@ -13,21 +15,31 @@ import {AdService} from '../../../services/ad.service';
 export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
+    catTreeOneLevel: CatWithDeepInterface[] = [];
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private fb: FormBuilder,
         private serviceAds: AdService,
+        private serviceManager: ManagerService,
     ) {
     }
 
     ngOnInit(): void {
         console.log('init adm ads');
         this.form = this.fb.group({
-            catId: [0, [Validators.required, Validators.min(1)]],
+            catId: ['0', [Validators.required]],
             limit: [10, [Validators.required, Validators.min(1), Validators.max(100)]],
-            offset: 0,
+            offset: [0, Validators.min(0)],
         });
+
+        const s = this.serviceManager.settings$.subscribe(
+            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
+            err => Helpers.handleErr(err.error),
+            () => {
+            }
+        );
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
@@ -47,11 +59,7 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const catId: number = this.form.get('catId').value;
-        const limit: number = this.form.get('limit').value;
-        const offset: number = this.form.get('offset').value;
-
-        const s = this.serviceAds.getFromCat(catId, limit, offset).subscribe(
+        const s = this.serviceAds.getFromCat(this.form.value).subscribe(
             x => this.json.emit(x),
             err => Helpers.handleErr(err),
             () => {

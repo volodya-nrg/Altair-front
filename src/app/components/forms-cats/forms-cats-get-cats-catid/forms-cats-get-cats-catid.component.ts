@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SettingsInterface} from '../../../interfaces/response/settings';
@@ -60,7 +60,7 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const catId: number = this.formGetCatsCatId.get('catId').value;
+        const catId: number = parseInt(this.formGetCatsCatId.get('catId').value, 10);
         const isWithPropsOnlyFiltered: boolean = this.formGetCatsCatId.get('withPropsOnlyFiltered').value;
         const s = this.serviceCats.getCatId(catId, isWithPropsOnlyFiltered).subscribe(
             x => this.json.emit(x),

@@ -6,7 +6,12 @@
         <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
             <div class="form_row">
                 <div class="form_title">id категории</div>
-                <div class="target_for_cats_tree" data-formControlName="catId"></div>
+                <select formControlName="catId" class="form_100">
+                    <option value="0"></option>
+                    <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                        {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                    </option>
+                </select>
             </div>
             <div class="form_row">
                 <div class="form_title">лимит</div>

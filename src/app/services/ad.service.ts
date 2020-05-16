@@ -31,12 +31,12 @@ export class AdService {
         return this.http.delete<void>(`${this.url}/api/v1/ads/${adId}`);
     }
 
-    getFromCat(catId: number, limit: number, offset: number): Observable<AdFullInterface[]> {
+    getFromCat(data: Object): Observable<AdFullInterface[]> {
         return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, {
             params: {
-                catId: catId.toString(),
-                limit: limit.toString(),
-                offset: offset.toString(),
+                catId: data['catId'].toString(),
+                limit: data['limit'].toString(),
+                offset: data['offset'].toString(),
             }
         });
     }

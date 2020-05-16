@@ -7,6 +7,7 @@ import {CatInterface, CatTreeInterface} from '../../interfaces/response/cat';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
 import {Helpers} from '../../helpers';
 import {ManagerService} from '../../services/manager.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'app-page-cat',
@@ -17,11 +18,12 @@ import {ManagerService} from '../../services/manager.service';
 export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscribeCats: Subscription;
     private subscriptions: Subscription[] = [];
-    private catId: number = 0;
-    private limit: number = 4;
-    private offset: number = 0;
+    //private catId: number = 0;
+    //private limit: number = 4;
+    //private offset: number = 0;
     private loadMoreForScroll: () => void;
     private masonry: ElementRef;
+    private form: FormGroup;
     isLoadAll: boolean = false;
     ads: AdFullInterface[] = [];
     isLoading: boolean = false;
@@ -29,6 +31,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     isPathNotFound: boolean = false;
     pointerOnCatTree: CatTreeInterface;
     @ViewChild('preloader', {static: true}) preloader: ElementRef;
+
     @ViewChild('masonry') set content(content: ElementRef) {
         if (content) {
             this.masonry = content;
@@ -36,6 +39,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     constructor(
+        private fb: FormBuilder,
         private serviceAd: AdService,
         private serviceManager: ManagerService,
         private serviceBreadcrumbs: BreadcrumbsService,
@@ -59,6 +63,12 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
             }
         );
         this.subscriptions.push(s);
+
+        this.form = this.fb.group({
+            catId: [0, [Validators.required, Validators.min(0)]],
+            limit: [10, [Validators.required, Validators.min(1)]],
+            offset: [0, Validators.min(0)],
+        });
     }
 
     ngOnDestroy(): void {
@@ -89,10 +99,11 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         });
         this.subscriptions.push(s);
 
-        this.catId = Helpers.findCatIdFromSlugs(catsTree.childes, this.route.snapshot.url);
+        const catId = Helpers.findCatIdFromSlugs(catsTree.childes, this.route.snapshot.url);
+        this.form.get('catId').setValue(catId);
 
         // если находимся в /cat
-        if (this.catId === 0 && this.route.snapshot.url.length === 0) {
+        if (catId < 1 && this.route.snapshot.url.length === 0) {
             this.reset();
             this.renderBC();
             this.isPathRootCat = true;
@@ -100,7 +111,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
 
             // есть какой-то урл (/cat/asd), но он не найден в структуре дерева
-        } else if (this.catId === 0 && this.route.snapshot.url.length) {
+        } else if (catId < 1 && this.route.snapshot.url.length) {
             this.reset();
             this.isPathNotFound = true;
             return;
@@ -110,14 +121,28 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     send(): void {
+        if (this.form.invalid) {
+            for (let key in this.form.controls) {
+                const formControl = this.form.get(key);
+
+                if (formControl.status === 'INVALID') {
+                    console.log('INVALID:', key);
+                }
+            }
+            return;
+        }
+
         this.isLoading = true;
-        this.subscribeCats = this.serviceAd.getFromCat(this.catId, this.limit, this.offset).subscribe(
+        this.subscribeCats = this.serviceAd.getFromCat(this.form.value).subscribe(
             x => {
                 this.ads.push(...x);
-                this.offset += this.limit;
                 this.isLoading = false;
+                let offset = this.form.get('offset').value;
+                let limit = this.form.get('limit').value;
 
-                if (x.length < this.limit) {
+                this.form.get('offset').setValue(offset + limit);
+
+                if (x.length < limit) {
                     this.isLoadAll = true;
 
                 } else {
@@ -128,9 +153,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isLoading = false;
                 Helpers.handleErr(err.error);
             },
-            () => {
-                this.isLoading = false;
-            }
+            () => this.isLoading = false
         );
         this.subscriptions.push(this.subscribeCats);
 
@@ -143,7 +166,8 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         let cats: CatInterface[] = [];
-        Helpers.getDescendants(this.pointerOnCatTree.childes, this.catId, cats, 0);
+
+        Helpers.getDescendants(this.pointerOnCatTree.childes, this.form.get('catId').value, cats, 0);
         this.serviceBreadcrumbs.bhSubject.next(Helpers.buildBCFromCats(cats));
     }
 
@@ -162,11 +186,11 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
     reset(): void {
         this.ads.length = 0;
-        this.offset = 0;
         this.isLoading = false;
         this.isLoadAll = false;
         this.isPathRootCat = false;
         this.isPathNotFound = false;
+        this.form.get('offset').setValue(0);
 
         if (this.subscribeCats) {
             this.subscribeCats.unsubscribe();
