@@ -58,6 +58,13 @@ import {FormsAdsGetAdsAdidComponent} from './components/forms-ads/forms-ads-get-
 import {FormsAdsPostAdsComponent} from './components/forms-ads/forms-ads-post-ads/forms-ads-post-ads.component';
 import {FormsAdsPutAdsAdidComponent} from './components/forms-ads/forms-ads-put-ads-adid/forms-ads-put-ads-adid.component';
 import {FormsAdsDeleteAdsAdidComponent} from './components/forms-ads/forms-ads-delete-ads-adid/forms-ads-delete-ads-adid.component';
+import { FormsPropsGetPropsComponent } from './components/forms-props/forms-props-get-props/forms-props-get-props.component';
+import { FormsPropsGetPropsPropidComponent } from './components/forms-props/forms-props-get-props-propid/forms-props-get-props-propid.component';
+import { FormsPropsPutPropsPropidComponent } from './components/forms-props/forms-props-put-props-propid/forms-props-put-props-propid.component';
+import { FormsPropsDeletePropsPropidComponent } from './components/forms-props/forms-props-delete-props-propid/forms-props-delete-props-propid.component';
+import { FormsPropsPostPropsComponent } from './components/forms-props/forms-props-post-props/forms-props-post-props.component';
+import { DynamicValuesComponent } from './components/dynamic-values/dynamic-values.component';
+import { DynamicValueComponent } from './components/dynamic-value/dynamic-value.component';
 
 @NgModule({
     declarations: [
@@ -111,6 +118,13 @@ import {FormsAdsDeleteAdsAdidComponent} from './components/forms-ads/forms-ads-d
         FormsAdsPostAdsComponent,
         FormsAdsPutAdsAdidComponent,
         FormsAdsDeleteAdsAdidComponent,
+        FormsPropsGetPropsComponent,
+        FormsPropsGetPropsPropidComponent,
+        FormsPropsPutPropsPropidComponent,
+        FormsPropsDeletePropsPropidComponent,
+        FormsPropsPostPropsComponent,
+        DynamicValuesComponent,
+        DynamicValueComponent,
     ],
     imports: [
         BrowserModule,

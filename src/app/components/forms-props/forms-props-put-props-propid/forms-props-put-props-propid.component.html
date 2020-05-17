@@ -1,0 +1,176 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        PUT: /api/v1/ads/:adId
+    </div>
+    <div class="page-adm_box_body">
+        <form [formGroup]="formGetAdsAdId" (ngSubmit)="submitFormGet($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">id объявления</div>
+                <input type="number" formControlName="adId" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+        </form>
+        <form #formPut [formGroup]="form" (ngSubmit)="submitFormPut($event)" class="form hidden">
+            <input type="hidden" formControlName="adId"/>
+
+            <div class="form_row">
+                <div class="form_title">название</div>
+                <input type="text" formControlName="title" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">slug</div>
+                <input type="text" formControlName="slug" class="form_100" readonly="readonly"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">id категории</div>
+                <select formControlName="catId" (change)="onChangeCat(null)" class="form_100">
+                    <option value="0"></option>
+                    <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                        {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                    </option>
+                </select>
+
+                <div class="dynamic-props-full">
+                    <div *ngFor="let propFull of propsFull">
+                        <div class="page-adm_prop-full">
+                            <div class="page-adm_prop-full_title">
+                                {{ propFull.title }}
+                                {{ propFull.privateComment ? '(' + propFull.privateComment + ')' : '' }}
+                                {{ propFull.propIsRequire ? ' *' : '' }}
+                            </div>
+
+                            <div class="page-adm_prop-full_input">
+                                <input
+                                    *ngIf=" propFull.kindPropName === 'input' || propFull.kindPropName === 'ymaps' "
+                                    type="text"
+                                    class="form_100"
+                                    formControlName="{{propFull.name}}"/>
+
+                                <input *ngIf=" propFull.kindPropName === 'input_number' "
+                                       type="number"
+                                       class="form_100"
+                                       formControlName="{{propFull.name}}"/>
+
+                                <input *ngIf=" propFull.kindPropName === 'input_date' "
+                                       type="date"
+                                       class="form_100"
+                                       [formControlName]="propFull.name"/>
+
+                                <input *ngIf=" propFull.kindPropName === 'input_datetime' "
+                                       type="datetime-local"
+                                       class="form_100"
+                                       [formControlName]="propFull.name"/>
+
+                                <textarea *ngIf=" propFull.kindPropName === 'textarea' "
+                                          [formControlName]="propFull.name"></textarea>
+
+                                <div *ngIf=" propFull.kindPropName === 'photo' ">
+                                    <!-- name="files" -->
+                                    <input type="hidden" [formControlName]="propFull.name"/>
+                                    <input class="form_100"
+                                           type="file"
+                                           accept="image/jpeg,image/png"
+                                           [multiple]="convertToInt(propFull.propComment) > 1"
+                                           [disabled]="!convertToInt(propFull.propComment)"
+                                           (change)="addPhoto($event)"/>
+
+                                    <div *ngIf="editAd?.images?.length" class="form_thumbnails">
+                                        <div *ngFor="let img of editAd.images" class="form_thumbnails_thumbnail">
+                                            <div class="form_thumbnails_thumbnail_close"
+                                                 title="удалить" (click)="removeImage($event)"></div>
+                                            <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf=" propFull.kindPropName === 'radio' && propFull.values.length ">
+                                    <span *ngFor="let val of propFull.values; let i = index" class="form_radio-chain">
+                                        <input formControlName="{{propFull.name}}" id="{{propFull.name}}_{{ i }}"
+                                               type="radio"
+                                               [value]="val.valueId"/>
+                                        <label for="{{propFull.name}}_{{ i }}">
+                                            {{ val.title }}
+                                        </label>
+                                    </span>
+                                </div>
+
+                                <div *ngIf=" propFull.kindPropName === 'checkbox' ">
+                                    <label *ngFor="let checkbox of propFull.values; let j = index">
+                                        <input type="checkbox" formControlName="{{propFull.name}}[{{ j }}]"/>
+                                        {{ checkbox.title }}
+                                    </label>
+                                </div>
+
+                                <select *ngIf="propFull.kindPropName === 'select' && propFull.values.length"
+                                        class="form_100"
+                                        [formControlName]="propFull.name">
+                                    <option selected="selected" value=""></option>
+                                    <option *ngFor="let option of propFull.values"
+                                            [value]="option.valueId">{{ option.title }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form_row">
+                <div class="form_title">id пользователя</div>
+                <input type="number" formControlName="userId" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <label>
+                    <input type="checkbox" formControlName="isDisabled" value="true"/> если выбран, то выключен
+                </label>
+            </div>
+            <div class="form_row">
+                <label>
+                    <input type="checkbox" formControlName="isApproved" value="true"/> если выбран, то заапрувлен
+                </label>
+            </div>
+            <div class="form_row">
+                <div class="form_title">описание *</div>
+                <textarea formControlName="description" class="form_100"></textarea>
+            </div>
+            <div class="form_row">
+                <div class="form_title">цена</div>
+                <input type="number" formControlName="price" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Youtube</div>
+                <input type="text" formControlName="youtube" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Широта</div>
+                <input type="number" formControlName="latitude" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Долгота</div>
+                <input type="number" formControlName="longitude" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Назнвание города</div>
+                <input type="text" formControlName="cityName" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">Назнвание страны</div>
+                <input type="text" formControlName="countryName" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">created_at</div>
+                <input type="text" formControlName="createdAt" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <div class="form_title">updated_at</div>
+                <input type="text" formControlName="updatedAt" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+            <div class="form_row">
+                {{ form.value | json }}
+            </div>
+        </form>
+    </div>
+</div>

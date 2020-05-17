@@ -1,0 +1,24 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        GET: /api/v1/props
+    </div>
+    <div class="page-adm_box_body">
+        <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">id категории</div>
+                <select formControlName="catId" class="form_100">
+                    <option value="0"></option>
+                    <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                        {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                    </option>
+                </select>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+            <div class="form_row">
+                {{ form.value | json }}
+            </div>
+        </form>
+    </div>
+</div>

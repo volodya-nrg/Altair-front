@@ -22,4 +22,12 @@ export class PropService {
             }
         });
     }
+
+    getOne(propId: number): Observable<PropFullInterface> {
+        return this.http.get<PropFullInterface>(`${this.url}/api/v1/props/${propId}`);
+    }
+
+    create(data: any): Observable<PropFullInterface> {
+        return this.http.post<PropFullInterface>(`${this.url}/api/v1/props`, data);
+    }
 }
