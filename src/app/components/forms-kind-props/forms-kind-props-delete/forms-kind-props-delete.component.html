@@ -1,0 +1,19 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        DELETE: /api/v1/kind_props/:kindPropId
+    </div>
+    <div class="page-adm_box_body">
+        <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">id типа свойства</div>
+                <input type="number" formControlName="kindPropId" class="form_100"/>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+            <div class="form_row">
+                {{ form.value | json }}
+            </div>
+        </form>
+    </div>
+</div>

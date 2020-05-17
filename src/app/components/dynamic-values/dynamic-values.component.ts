@@ -1,6 +1,7 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
+import {ValuePropInterface} from '../../interfaces/response/value-prop';
 
 @Component({
     selector: 'app-dynamic-values',
@@ -8,7 +9,7 @@ import {FormArray, FormBuilder} from '@angular/forms';
     styleUrls: ['./dynamic-values.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DynamicValuesComponent implements OnInit, OnDestroy, AfterViewInit {
+export class DynamicValuesComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     values: ValuePropInterface[] = [];
     @Input() propId: number;

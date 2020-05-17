@@ -7,7 +7,7 @@ import {FormGroup} from '@angular/forms';
     styleUrls: ['./dynamic-value.component.less'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DynamicValueComponent implements OnInit {
+export class DynamicValueComponent {
     @Input() index: number;
     @Input() value: FormGroup;
     @Output() removed: EventEmitter<number> = new EventEmitter<number>();

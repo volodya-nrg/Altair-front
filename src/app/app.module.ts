@@ -65,6 +65,11 @@ import {FormsPropsDeletePropsPropidComponent} from './components/forms-props/for
 import {FormsPropsPostPropsComponent} from './components/forms-props/forms-props-post-props/forms-props-post-props.component';
 import {DynamicValuesComponent} from './components/dynamic-values/dynamic-values.component';
 import {DynamicValueComponent} from './components/dynamic-value/dynamic-value.component';
+import {FormsKindPropsGetAllComponent} from './components/forms-kind-props/forms-kind-props-get-all/forms-kind-props-get-all.component';
+import {FormsKindPropsGetOneComponent} from './components/forms-kind-props/forms-kind-props-get-one/forms-kind-props-get-one.component';
+import {FormsKindPropsPostComponent} from './components/forms-kind-props/forms-kind-props-post/forms-kind-props-post.component';
+import {FormsKindPropsPutComponent} from './components/forms-kind-props/forms-kind-props-put/forms-kind-props-put.component';
+import {FormsKindPropsDeleteComponent} from './components/forms-kind-props/forms-kind-props-delete/forms-kind-props-delete.component';
 
 @NgModule({
     declarations: [
@@ -125,6 +130,11 @@ import {DynamicValueComponent} from './components/dynamic-value/dynamic-value.co
         FormsPropsPostPropsComponent,
         DynamicValuesComponent,
         DynamicValueComponent,
+        FormsKindPropsGetAllComponent,
+        FormsKindPropsGetOneComponent,
+        FormsKindPropsPostComponent,
+        FormsKindPropsPutComponent,
+        FormsKindPropsDeleteComponent,
     ],
     imports: [
         BrowserModule,

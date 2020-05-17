@@ -78,6 +78,25 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="page-adm_box">
+                        <div class="page-adm_box_title" appToggleActive>
+                            Разновидности типов св-в для категорий
+                        </div>
+                        <div class="page-adm_box_body">
+                            <app-forms-kind-props-get-all
+                                (json)="jsonResult = $event"></app-forms-kind-props-get-all>
+                            <app-forms-kind-props-get-one
+                                (json)="jsonResult = $event"></app-forms-kind-props-get-one>
+                            <app-forms-kind-props-post
+                                (json)="jsonResult = $event"></app-forms-kind-props-post>
+                            <app-forms-kind-props-put
+                                (json)="jsonResult = $event"></app-forms-kind-props-put>
+                            <app-forms-kind-props-delete
+                                (json)="jsonResult = $event"></app-forms-kind-props-delete>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
         <pre class="page-adm_json-result">{{ jsonResult | prettyJson }}</pre>
