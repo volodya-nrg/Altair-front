@@ -30,4 +30,12 @@ export class PropService {
     create(data: any): Observable<PropFullInterface> {
         return this.http.post<PropFullInterface>(`${this.url}/api/v1/props`, data);
     }
+
+    update(propId: number, data: any): Observable<PropFullInterface> {
+        return this.http.put<PropFullInterface>(`${this.url}/api/v1/props/${propId}`, data);
+    }
+
+    delete(propId: number): Observable<void> {
+        return this.http.delete<void>(`${this.url}/api/v1/props/${propId}`);
+    }
 }

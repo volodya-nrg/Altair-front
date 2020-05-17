@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ManagerService} from '../../../services/manager.service';
@@ -10,9 +10,10 @@ import {ValuePropInterface} from '../../../interfaces/response/value-prop';
 @Component({
     selector: 'app-forms-props-post-props',
     templateUrl: './forms-props-post-props.component.html',
-    styleUrls: ['./forms-props-post-props.component.less']
+    styleUrls: ['./forms-props-post-props.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
-export class FormsPropsPostPropsComponent implements OnInit {
+export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     kindProps: KindPropInterface[] = [];
     values: ValuePropInterface[] = [];

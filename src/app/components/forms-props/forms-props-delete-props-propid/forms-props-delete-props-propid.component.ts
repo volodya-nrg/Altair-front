@@ -1,13 +1,14 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AdService} from '../../../services/ad.service';
 import {Helpers} from '../../../helpers';
+import {PropService} from '../../../services/prop.service';
 
 @Component({
     selector: 'app-forms-props-delete-props-propid',
     templateUrl: './forms-props-delete-props-propid.component.html',
-    styleUrls: ['./forms-props-delete-props-propid.component.less']
+    styleUrls: ['./forms-props-delete-props-propid.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsDeletePropsPropidComponent implements OnInit {
     private subscriptions: Subscription[] = [];
@@ -16,20 +17,20 @@ export class FormsPropsDeletePropsPropidComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private serviceAds: AdService,
+        private serviceProps: PropService,
     ) {
     }
 
     ngOnInit(): void {
-        console.log('init adm ads delete');
+        console.log('init adm props delete');
 
         this.form = this.fb.group({
-            adId: [0, [Validators.required, Validators.min(1)]],
+            propId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm ads delete');
+        console.log('destroy adm props delete');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
@@ -45,7 +46,7 @@ export class FormsPropsDeletePropsPropidComponent implements OnInit {
             return;
         }
 
-        const s = this.serviceAds.delete(this.form.get('adId').value).subscribe(
+        const s = this.serviceProps.delete(this.form.get('propId').value).subscribe(
             x => {
                 this.json.emit(x);
                 this.form.reset();

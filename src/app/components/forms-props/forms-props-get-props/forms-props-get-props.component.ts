@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CatWithDeepInterface} from '../../../interfaces/response/cat';
@@ -9,7 +9,8 @@ import {PropService} from '../../../services/prop.service';
 @Component({
     selector: 'app-forms-props-get-props',
     templateUrl: './forms-props-get-props.component.html',
-    styleUrls: ['./forms-props-get-props.component.less']
+    styleUrls: ['./forms-props-get-props.component.less'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsGetPropsComponent implements OnInit {
     private subscriptions: Subscription[] = [];
