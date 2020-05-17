@@ -97,6 +97,19 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="page-adm_box">
+                        <div class="page-adm_box_title" appToggleActive>
+                            Страницы
+                        </div>
+                        <div class="page-adm_box_body">
+                            <app-forms-pages-ad-adid
+                                (json)="jsonResult = $event"></app-forms-pages-ad-adid>
+                            <app-forms-pages-main
+                                (json)="jsonResult = $event"></app-forms-pages-main>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
         <pre class="page-adm_json-result">{{ jsonResult | prettyJson }}</pre>
