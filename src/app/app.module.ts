@@ -72,6 +72,7 @@ import {FormsKindPropsPutComponent} from './components/forms-kind-props/forms-ki
 import {FormsKindPropsDeleteComponent} from './components/forms-kind-props/forms-kind-props-delete/forms-kind-props-delete.component';
 import { FormsPagesAdAdidComponent } from './components/forms-pages/forms-pages-ad-adid/forms-pages-ad-adid.component';
 import { FormsPagesMainComponent } from './components/forms-pages/forms-pages-main/forms-pages-main.component';
+import { FormsSearchAdsComponent } from './components/forms-search/forms-search-ads/forms-search-ads.component';
 
 @NgModule({
     declarations: [
@@ -139,6 +140,7 @@ import { FormsPagesMainComponent } from './components/forms-pages/forms-pages-ma
         FormsKindPropsDeleteComponent,
         FormsPagesAdAdidComponent,
         FormsPagesMainComponent,
+        FormsSearchAdsComponent,
     ],
     imports: [
         BrowserModule,

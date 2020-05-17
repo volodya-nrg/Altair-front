@@ -110,6 +110,17 @@
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="page-adm_box">
+                        <div class="page-adm_box_title" appToggleActive>
+                            Поиск
+                        </div>
+                        <div class="page-adm_box_body">
+                            <app-forms-search-ads
+                                (json)="jsonResult = $event"></app-forms-search-ads>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
         <pre class="page-adm_json-result">{{ jsonResult | prettyJson }}</pre>
