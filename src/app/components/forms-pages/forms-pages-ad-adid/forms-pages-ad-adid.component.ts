@@ -8,7 +8,6 @@ import {PagesService} from '../../../services/pages.service';
     selector: 'app-forms-pages-ad-adid',
     templateUrl: './forms-pages-ad-adid.component.html',
     styleUrls: ['./forms-pages-ad-adid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPagesAdAdidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

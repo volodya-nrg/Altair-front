@@ -7,18 +7,16 @@ import {CatTreeInterface, CatWithDeepInterface} from '../../../interfaces/respon
 import {ManagerService} from '../../../services/manager.service';
 import {CatService} from '../../../services/cat.service';
 import {PropFullInterface} from '../../../interfaces/response/prop';
-import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-forms-ads-post-ads',
     templateUrl: './forms-ads-post-ads.component.html',
     styleUrls: ['./forms-ads-post-ads.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     private catsTree: CatTreeInterface;
-    private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+    private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
     form: FormGroup;
     catTreeOneLevel: CatWithDeepInterface[] = [];
     propsFull: PropFullInterface[] = [];

@@ -5,7 +5,6 @@ import {environment} from '../../../environments/environment';
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FooterComponent {
     emailSupport: string = environment.emailSupport;

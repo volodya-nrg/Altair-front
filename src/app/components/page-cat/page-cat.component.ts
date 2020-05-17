@@ -13,14 +13,10 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
     selector: 'app-page-cat',
     templateUrl: './page-cat.component.html',
     styleUrls: ['./page-cat.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscribeCats: Subscription;
     private subscriptions: Subscription[] = [];
-    //private catId: number = 0;
-    //private limit: number = 4;
-    //private offset: number = 0;
     private loadMoreForScroll: () => void;
     private masonry: ElementRef;
     private form: FormGroup;

@@ -13,7 +13,7 @@ export const environment = {
     minLenHash: 32,
     domain: 'https://www.altair.uz',
     ymapKey: '777a18a8-eb0d-4f9b-ae88-99aed55c227b',
-    // tagKindNumber: ['checkbox', 'radio', 'select', 'input_number'], - походу массивы тут нельзя ставить
+    // походу массивы тут нельзя ставить
 };
 
 /*

@@ -3,7 +3,7 @@
         PUT: /api/v1/cats/:catId
     </div>
     <div class="page-adm_box_body">
-        <form [formGroup]="formGetCatForPut" (ngSubmit)="submitFormGetCatDataForPut($event)" class="form">
+        <form [formGroup]="formGet" (ngSubmit)="submitFormGetCatDataForPut($event)" class="form">
             <div class="form_row">
                 <div class="form_title">id категории</div>
                 <select formControlName="catId" class="form_100">
@@ -17,7 +17,7 @@
                 <input type="submit"/>
             </div>
         </form>
-        <form #formPut [formGroup]="formPutCatsCatId" (ngSubmit)="submitFormPutCatsCatId($event)"
+        <form #formPutEl [formGroup]="formPut" (ngSubmit)="submitFormPutCatsCatId($event)"
               class="form hidden">
 
             <input type="hidden" formControlName="catId"/>
@@ -72,13 +72,13 @@
             <div class="form_row">
                 <div class="form_title">назначенные свойства</div>
                 <app-dynamic-props formArrayName="props"
-                                   [propsFormArray]="formPutCatsCatId.get('props')"></app-dynamic-props>
+                                   [propsFormArray]="formPut.get('props')"></app-dynamic-props>
             </div>
             <div class="form_row">
                 <input type="submit"/>
             </div>
             <div class="form_row">
-                {{ formPutCatsCatId.value | json }}
+                {{ formPut.value | json }}
             </div>
         </form>
     </div>

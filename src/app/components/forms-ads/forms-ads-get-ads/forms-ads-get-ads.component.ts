@@ -10,7 +10,6 @@ import {ManagerService} from '../../../services/manager.service';
     selector: 'app-forms-ads-get-ads',
     templateUrl: './forms-ads-get-ads.component.html',
     styleUrls: ['./forms-ads-get-ads.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

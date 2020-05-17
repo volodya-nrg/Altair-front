@@ -8,7 +8,6 @@ import {KindPropsService} from '../../../services/kind-props.service';
     selector: 'app-forms-kind-props-get-one',
     templateUrl: './forms-kind-props-get-one.component.html',
     styleUrls: ['./forms-kind-props-get-one.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsKindPropsGetOneComponent implements OnInit {
     private subscriptions: Subscription[] = [];

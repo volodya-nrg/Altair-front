@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../interfaces/response/settings';
-import {CatFull, CatWithDeepInterface} from '../../../interfaces/response/cat';
+import {CatWithDeepInterface} from '../../../interfaces/response/cat';
 import {PropFullInterface, PropInterface} from '../../../interfaces/response/prop';
 import {CatService} from '../../../services/cat.service';
 import {ManagerService} from '../../../services/manager.service';
@@ -12,7 +12,6 @@ import {Helpers} from '../../../helpers';
     selector: 'app-forms-cats-post-cats',
     templateUrl: './forms-cats-post-cats.component.html',
     styleUrls: ['./forms-cats-post-cats.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
@@ -21,6 +20,7 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     catTreeOneLevel: CatWithDeepInterface[] = [];
     propsFull: PropFullInterface[] = [];
     props: PropInterface[] = [];
+    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -28,14 +28,25 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
         private serviceCats: CatService,
         private serviceManager: ManagerService,
     ) {
+        this.defaultControls = {
+            name: ['', [Validators.required, Validators.minLength(2)]],
+            parentId: [0, Validators.min(0)],
+            pos: [0, Validators.min(0)],
+            isDisabled: false,
+            priceAlias: '',
+            priceSuffix: '',
+            titleHelp: '',
+            titleComment: '',
+            isAutogenerateTitle: false,
+            props: [],
+        };
     }
 
     ngOnInit(): void {
         console.log('init adm cats');
 
-        let a = new CatFull();
-        a.props = this.fb.array(this.propsFull);
-        this.formPostCats = this.fb.group(a);
+        this.formPostCats = this.fb.group(this.defaultControls);
+        this.formPostCats.get('props').setValue(this.fb.array(this.propsFull));
 
         const s = this.serviceManager.settings$.subscribe(
             x => {

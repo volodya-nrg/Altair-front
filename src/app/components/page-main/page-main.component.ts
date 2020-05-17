@@ -11,7 +11,6 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
     selector: 'app-page-main',
     templateUrl: './page-main.component.html',
     styleUrls: ['./page-main.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageMainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

@@ -8,7 +8,6 @@ import {KindPropsService} from '../../../services/kind-props.service';
     selector: 'app-forms-kind-props-delete',
     templateUrl: './forms-kind-props-delete.component.html',
     styleUrls: ['./forms-kind-props-delete.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsKindPropsDeleteComponent implements OnInit {
     private subscriptions: Subscription[] = [];

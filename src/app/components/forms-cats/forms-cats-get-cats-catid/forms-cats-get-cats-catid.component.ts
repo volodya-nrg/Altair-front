@@ -11,7 +11,6 @@ import {Helpers} from '../../../helpers';
     selector: 'app-forms-cats-get-cats-catid',
     templateUrl: './forms-cats-get-cats-catid.component.html',
     styleUrls: ['./forms-cats-get-cats-catid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

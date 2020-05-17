@@ -8,7 +8,6 @@ import {PagesService} from '../../../services/pages.service';
     selector: 'app-forms-pages-main',
     templateUrl: './forms-pages-main.component.html',
     styleUrls: ['./forms-pages-main.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPagesMainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

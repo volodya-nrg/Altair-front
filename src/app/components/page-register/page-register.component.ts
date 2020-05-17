@@ -11,7 +11,6 @@ import {environment} from '../../../environments/environment';
     selector: 'app-page-register',
     templateUrl: './page-register.component.html',
     styleUrls: ['./page-register.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

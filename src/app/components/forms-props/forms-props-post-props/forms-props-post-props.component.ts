@@ -11,7 +11,6 @@ import {ValuePropInterface} from '../../../interfaces/response/value-prop';
     selector: 'app-forms-props-post-props',
     templateUrl: './forms-props-post-props.component.html',
     styleUrls: ['./forms-props-post-props.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

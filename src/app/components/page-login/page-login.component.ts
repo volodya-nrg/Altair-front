@@ -10,7 +10,6 @@ import {environment} from '../../../environments/environment';
     selector: 'app-page-login',
     templateUrl: './page-login.component.html',
     styleUrls: ['./page-login.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

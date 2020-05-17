@@ -8,12 +8,12 @@ import {Helpers} from '../../helpers';
     selector: 'app-page-adm',
     templateUrl: './page-adm.component.html',
     styleUrls: ['./page-adm.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageAdmComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     jsonResult: Object;
     pointerOnCatTree: CatTreeInterface;
+
     constructor(
         private serviceManager: ManagerService,
     ) {

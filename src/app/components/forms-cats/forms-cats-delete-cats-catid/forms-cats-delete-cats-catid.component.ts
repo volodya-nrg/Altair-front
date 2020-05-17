@@ -10,7 +10,6 @@ import {CatWithDeepInterface} from '../../../interfaces/response/cat';
     selector: 'app-forms-cats-delete-cats-catid',
     templateUrl: './forms-cats-delete-cats-catid.component.html',
     styleUrls: ['./forms-cats-delete-cats-catid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsCatsDeleteCatsCatidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

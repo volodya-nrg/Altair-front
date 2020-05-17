@@ -9,7 +9,6 @@ import {Helpers} from '../../helpers';
     selector: 'app-page-profile',
     templateUrl: './page-profile.component.html',
     styleUrls: ['./page-profile.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
@@ -19,7 +18,6 @@ export class PageProfileComponent implements OnInit, OnDestroy {
         private serviceAuth: AuthService,
         private router: Router,
     ) {
-        // let id = this.route.snapshot.paramMap.get('id');
     }
 
     ngOnInit(): void {

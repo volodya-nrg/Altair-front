@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
@@ -9,9 +9,8 @@ import {environment} from '../../../../environments/environment';
     selector: 'app-forms-users-post-users',
     templateUrl: './forms-users-post-users.component.html',
     styleUrls: ['./forms-users-post-users.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
-export class FormsUsersPostUsersComponent implements  OnInit, OnDestroy {
+export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();

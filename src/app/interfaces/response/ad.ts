@@ -1,4 +1,3 @@
-import {AdDetailExtInterface} from './ad-detail';
 import {ImageInterface} from './image';
 
 export interface AdInterface {
@@ -23,6 +22,21 @@ export interface AdInterface {
 }
 
 export interface AdFullInterface extends AdInterface, AdDopInterface {
+}
+
+export interface AdDetailInterface {
+    adId: number;
+    propId: number;
+    value: string;
+}
+
+export interface AdDetailExtInterface extends AdDetailInterface, ExtInterface {
+}
+
+interface ExtInterface {
+    propName: string;
+    kindPropName: string;
+    valueName: string;
 }
 
 interface AdDopInterface {

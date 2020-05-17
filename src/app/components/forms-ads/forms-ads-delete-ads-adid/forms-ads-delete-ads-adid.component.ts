@@ -8,7 +8,6 @@ import {AdService} from '../../../services/ad.service';
     selector: 'app-forms-ads-delete-ads-adid',
     templateUrl: './forms-ads-delete-ads-adid.component.html',
     styleUrls: ['./forms-ads-delete-ads-adid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsAdsDeleteAdsAdidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

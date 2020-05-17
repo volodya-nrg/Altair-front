@@ -5,7 +5,6 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
     selector: 'app-tree-in-the-top',
     templateUrl: './tree-in-the-top.component.html',
     styleUrls: ['./tree-in-the-top.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class TreeInTheTopComponent {
     @Input() catTree: CatTreeInterface;
@@ -21,7 +20,7 @@ export class TreeInTheTopComponent {
 
     closeAll(target: HTMLBaseElement): void {
         target.closest('ul')
-              .querySelectorAll('.sx-active')
-              .forEach(x => x.classList.remove('sx-active'));
+            .querySelectorAll('.sx-active')
+            .forEach(x => x.classList.remove('sx-active'));
     }
 }

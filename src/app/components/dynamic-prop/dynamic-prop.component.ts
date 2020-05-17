@@ -5,7 +5,6 @@ import {FormGroup} from '@angular/forms';
     selector: 'app-dynamic-prop',
     templateUrl: './dynamic-prop.component.html',
     styleUrls: ['./dynamic-prop.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class DynamicPropComponent {
     @Input() index: number;

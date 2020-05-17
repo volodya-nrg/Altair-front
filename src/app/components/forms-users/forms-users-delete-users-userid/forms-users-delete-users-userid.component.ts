@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
@@ -8,9 +8,8 @@ import {Helpers} from '../../../helpers';
     selector: 'app-forms-users-delete-users-userid',
     templateUrl: './forms-users-delete-users-userid.component.html',
     styleUrls: ['./forms-users-delete-users-userid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
-export class FormsUsersDeleteUsersUseridComponent implements  OnInit, OnDestroy {
+export class FormsUsersDeleteUsersUseridComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();

@@ -8,7 +8,6 @@ import {Helpers} from '../../helpers';
     selector: 'app-breadcrumbs',
     templateUrl: './breadcrumbs.component.html',
     styleUrls: ['./breadcrumbs.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class BreadcrumbsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

@@ -8,7 +8,6 @@ import {PropService} from '../../../services/prop.service';
     selector: 'app-forms-props-get-props-propid',
     templateUrl: './forms-props-get-props-propid.component.html',
     styleUrls: ['./forms-props-get-props-propid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsGetPropsPropidComponent implements OnInit {
     private subscriptions: Subscription[] = [];

@@ -9,7 +9,6 @@ import {Helpers} from '../../helpers';
     selector: 'app-dynamic-props',
     templateUrl: './dynamic-props.component.html',
     styleUrls: ['./dynamic-props.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

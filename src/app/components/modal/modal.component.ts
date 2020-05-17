@@ -4,7 +4,6 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} f
     selector: 'app-modal',
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class ModalComponent implements OnInit, OnDestroy {
     @Output() onClose: EventEmitter<boolean> = new EventEmitter();

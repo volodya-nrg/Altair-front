@@ -10,7 +10,6 @@ import {SearchService} from '../../services/search.service';
     selector: 'app-page-search',
     templateUrl: './page-search.component.html',
     styleUrls: ['./page-search.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageSearchComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

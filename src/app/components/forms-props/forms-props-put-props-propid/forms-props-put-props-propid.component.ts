@@ -12,7 +12,6 @@ import {PropService} from '../../../services/prop.service';
     selector: 'app-forms-props-put-props-propid',
     templateUrl: './forms-props-put-props-propid.component.html',
     styleUrls: ['./forms-props-put-props-propid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
@@ -46,7 +45,7 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
         console.log('init adm props put');
 
         this.formGetPropsPropId = this.fb.group({
-            propId: [113, [Validators.required, Validators.min(1)]],
+            propId: [0, [Validators.required, Validators.min(1)]],
         });
         this.form = this.fb.group(this.defaultControls);
 

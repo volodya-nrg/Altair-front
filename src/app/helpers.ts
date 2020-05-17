@@ -1,4 +1,4 @@
-import {CatInterface, CatTreeInterface, CatWithDeep, CatWithDeepInterface} from './interfaces/response/cat';
+import {CatInterface, CatTreeInterface, CatWithDeepInterface} from './interfaces/response/cat';
 import {BreadcrumbsInterface} from './interfaces/breadcrumbs';
 import {UrlSegment} from '@angular/router';
 
@@ -290,9 +290,20 @@ export class Helpers {
 
     static walkGetCatTreeAsOneLevel(catTree: CatTreeInterface[], deep: number, receiver: CatWithDeepInterface[]): void {
         catTree.forEach(x => {
-            let el: CatWithDeepInterface = new CatWithDeep(x, deep);
-
-            receiver.push(el);
+            receiver.push({
+                catId: x.catId,
+                name: x.name,
+                slug: x.slug,
+                parentId: x.parentId,
+                pos: x.pos,
+                isDisabled: x.isDisabled,
+                priceAlias: x.priceAlias,
+                priceSuffix: x.priceSuffix,
+                titleHelp: x.titleHelp,
+                titleComment: x.titleComment,
+                isAutogenerateTitle: x.isAutogenerateTitle,
+                deep: deep,
+            });
 
             if (x.childes && x.childes.length) {
                 this.walkGetCatTreeAsOneLevel(x.childes, deep + 1, receiver);
@@ -324,4 +335,8 @@ export class Helpers {
 
         return x;
     }
+
+    // static addImage(): void {}
+    //
+    // static removeImage(): void {}
 }

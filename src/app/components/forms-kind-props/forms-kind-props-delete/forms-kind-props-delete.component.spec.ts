@@ -1,25 +1,25 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FormsKindPropsDeleteComponent } from './forms-kind-props-delete.component';
+import {FormsKindPropsDeleteComponent} from './forms-kind-props-delete.component';
 
 describe('FormsKindPropsDeleteComponent', () => {
-  let component: FormsKindPropsDeleteComponent;
-  let fixture: ComponentFixture<FormsKindPropsDeleteComponent>;
+    let component: FormsKindPropsDeleteComponent;
+    let fixture: ComponentFixture<FormsKindPropsDeleteComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ FormsKindPropsDeleteComponent ]
-    })
-    .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [FormsKindPropsDeleteComponent]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FormsKindPropsDeleteComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(FormsKindPropsDeleteComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

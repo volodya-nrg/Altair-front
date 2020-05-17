@@ -8,7 +8,6 @@ import {PropService} from '../../../services/prop.service';
     selector: 'app-forms-props-delete-props-propid',
     templateUrl: './forms-props-delete-props-propid.component.html',
     styleUrls: ['./forms-props-delete-props-propid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsDeletePropsPropidComponent implements OnInit {
     private subscriptions: Subscription[] = [];

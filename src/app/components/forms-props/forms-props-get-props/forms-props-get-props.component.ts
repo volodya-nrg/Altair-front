@@ -10,7 +10,6 @@ import {PropService} from '../../../services/prop.service';
     selector: 'app-forms-props-get-props',
     templateUrl: './forms-props-get-props.component.html',
     styleUrls: ['./forms-props-get-props.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsPropsGetPropsComponent implements OnInit {
     private subscriptions: Subscription[] = [];

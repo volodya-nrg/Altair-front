@@ -12,7 +12,6 @@ import {environment} from '../../../../environments/environment';
     selector: 'app-page-profile-info',
     templateUrl: './info.component.html',
     styleUrls: ['./info.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileInfoComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

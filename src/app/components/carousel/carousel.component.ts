@@ -5,6 +5,7 @@ import {
     Component,
     ElementRef,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
     ViewEncapsulation
@@ -14,9 +15,8 @@ import {
     selector: 'app-carousel',
     templateUrl: './carousel.component.html',
     styleUrls: ['./carousel.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
-export class CarouselComponent implements OnInit, AfterViewInit, AfterContentInit, AfterContentChecked {
+export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit, AfterContentInit, AfterContentChecked {
     private classNameDisabled: string = 'sx-disabled';
     private sideLeft: HTMLBaseElement[] = [];
     private sideCenter: HTMLBaseElement[] = [];
@@ -33,6 +33,9 @@ export class CarouselComponent implements OnInit, AfterViewInit, AfterContentIni
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
     }
 
     ngAfterViewInit(): void {

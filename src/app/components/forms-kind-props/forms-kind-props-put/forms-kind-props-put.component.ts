@@ -9,7 +9,6 @@ import {KindPropsService} from '../../../services/kind-props.service';
     selector: 'app-forms-kind-props-put',
     templateUrl: './forms-kind-props-put.component.html',
     styleUrls: ['./forms-kind-props-put.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

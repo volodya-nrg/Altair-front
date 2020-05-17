@@ -10,7 +10,6 @@ import {ProfileService} from '../../../services/profile.service';
     selector: 'app-page-profile-ads',
     templateUrl: './ads.component.html',
     styleUrls: ['./ads.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {environment} from '../../../../environments/environment';
 import {Helpers} from '../../../helpers';
 import {AdService} from '../../../services/ad.service';
@@ -14,12 +14,11 @@ import {AdFullInterface} from '../../../interfaces/response/ad';
     selector: 'app-forms-ads-put-ads-adid',
     templateUrl: './forms-ads-put-ads-adid.component.html',
     styleUrls: ['./forms-ads-put-ads-adid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private catsTree: CatTreeInterface;
-    private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+    private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
     formGetAdsAdId: FormGroup;
     form: FormGroup;
     url: string = environment.apiUrl;

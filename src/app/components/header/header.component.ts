@@ -7,7 +7,6 @@ import {UserInterface} from '../../interfaces/response/user';
     selector: 'app-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class HeaderComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

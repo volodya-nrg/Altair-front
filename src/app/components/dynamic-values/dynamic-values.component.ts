@@ -7,7 +7,6 @@ import {ValuePropInterface} from '../../interfaces/response/value-prop';
     selector: 'app-dynamic-values',
     templateUrl: './dynamic-values.component.html',
     styleUrls: ['./dynamic-values.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class DynamicValuesComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

@@ -10,7 +10,6 @@ import {ManagerService} from '../../services/manager.service';
     selector: 'app-top-menu-cats-tree',
     templateUrl: './top-menu-cats-tree.component.html',
     styleUrls: ['./top-menu-cats-tree.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

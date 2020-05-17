@@ -8,7 +8,6 @@ import {TestService} from '../../services/test.service';
     selector: 'app-forms-test',
     templateUrl: './forms-test.component.html',
     styleUrls: ['./forms-test.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsTestComponent implements OnInit {
     private subscriptions: Subscription[] = [];

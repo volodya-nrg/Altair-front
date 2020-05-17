@@ -10,7 +10,6 @@ import {CatWithDeepInterface} from '../../../interfaces/response/cat';
     selector: 'app-forms-search-ads',
     templateUrl: './forms-search-ads.component.html',
     styleUrls: ['./forms-search-ads.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsSearchAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

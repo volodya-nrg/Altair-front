@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {environment} from '../../environments/environment';
 import {AuthService} from '../services/auth.service';
 
 @Injectable()
@@ -14,10 +13,6 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-        const url = environment.apiUrl;
-        const api = url + '/api/v1';
-        const allowUrlsForCookie = [api + '/auth/login', api + '/auth/logout', api + '/auth/refresh-tokens'];
-        const urlsForAuth = [api + '/auth/logout', api + '/auth/refresh-tokens']; // api + '/users/7/ads',
         let req = request.clone({
             withCredentials: true
         });

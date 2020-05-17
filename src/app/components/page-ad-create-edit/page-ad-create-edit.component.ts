@@ -19,14 +19,13 @@ import {EmitCatsHorizAccordionInterface} from '../../interfaces/emit-cats-horiz-
     selector: 'app-page-ad-create-edit',
     templateUrl: './page-ad-create-edit.component.html',
     styleUrls: ['./page-ad-create-edit.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private previousTitleHelp: string;
     private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
-    private tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
+    private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
     private ymapKey: string = environment.ymapKey;
     private ym: any;
     private map: any;
@@ -63,6 +62,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         private router: Router,
         private route: ActivatedRoute,
         private changeDetection: ChangeDetectorRef,
+        private serviceManager: ManagerService,
     ) {
     }
 

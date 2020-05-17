@@ -20,7 +20,6 @@ import {EmitCatsHorizAccordionInterface} from '../../interfaces/emit-cats-horiz-
     selector: 'app-cats-horiz-accordion',
     templateUrl: './cats-horiz-accordion.component.html',
     styleUrls: ['./cats-horiz-accordion.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

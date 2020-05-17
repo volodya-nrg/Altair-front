@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Helpers} from '../../../helpers';
@@ -8,7 +8,6 @@ import {CatService} from '../../../services/cat.service';
     selector: 'app-forms-cats-get-cats',
     templateUrl: './forms-cats-get-cats.component.html',
     styleUrls: ['./forms-cats-get-cats.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsCatsGetCatsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];

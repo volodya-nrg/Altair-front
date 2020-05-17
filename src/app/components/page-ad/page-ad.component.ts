@@ -15,7 +15,6 @@ import {ManagerService} from '../../services/manager.service';
     selector: 'app-page-ad',
     templateUrl: './page-ad.component.html',
     styleUrls: ['./page-ad.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];

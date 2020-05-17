@@ -9,7 +9,6 @@ import {environment} from '../../../../environments/environment';
     selector: 'app-forms-users-put-users-userid',
     templateUrl: './forms-users-put-users-userid.component.html',
     styleUrls: ['./forms-users-put-users-userid.component.less'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
