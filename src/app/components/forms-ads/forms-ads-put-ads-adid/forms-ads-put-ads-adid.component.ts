@@ -156,21 +156,17 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
     }
 
     addPhoto({target}): void {
-        const cFiles = this.form.get('files');
+        Helpers.addPhoto(target, this.form);
 
-        if (target.files.length) {
-            this.form.markAsDirty();
-            cFiles.setValue(target.files);
-
-        } else {
-            cFiles.setValue('');
-        }
-    }
-
-    removePhoto({target}): void {
-        this.form.patchValue({
-            avatar: '',
-        });
+        // const cFiles = this.form.get('files');
+        //
+        // if (target.files.length) {
+        //     this.form.markAsDirty();
+        //     cFiles.setValue(target.files);
+        //
+        // } else {
+        //     cFiles.setValue('');
+        // }
     }
 
     convertToInt(str: string): number {

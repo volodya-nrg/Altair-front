@@ -1,6 +1,7 @@
 import {CatInterface, CatTreeInterface, CatWithDeepInterface} from './interfaces/response/cat';
 import {BreadcrumbsInterface} from './interfaces/breadcrumbs';
 import {UrlSegment} from '@angular/router';
+import {FormGroup} from '@angular/forms';
 
 export class Helpers {
     static rand(min: number, max: number) {
@@ -341,5 +342,17 @@ export class Helpers {
         script.src = url;
         script.async = false; // чтобы гарантировать порядок
         document.head.appendChild(script);
+    }
+
+    static addPhoto(target: HTMLFormElement, form: FormGroup): void {
+        const cFiles = form.get('files');
+
+        if (target.files.length) {
+            form.markAsDirty();
+            cFiles.setValue(target.files);
+
+        } else {
+            cFiles.setValue(''); // null
+        }
     }
 }

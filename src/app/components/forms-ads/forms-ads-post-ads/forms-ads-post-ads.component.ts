@@ -136,14 +136,16 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     }
 
     addPhoto({target}): void {
-        const cFiles = this.form.get('files');
+        Helpers.addPhoto(target, this.form);
 
-        if (target.files.length) {
-            this.form.markAsDirty();
-            cFiles.setValue(target.files);
-
-        } else {
-            cFiles.setValue('');
-        }
+        // const cFiles = this.form.get('files');
+        //
+        // if (target.files.length) {
+        //     this.form.markAsDirty();
+        //     cFiles.setValue(target.files);
+        //
+        // } else {
+        //     cFiles.setValue('');
+        // }
     }
 }

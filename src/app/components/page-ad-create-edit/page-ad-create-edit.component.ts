@@ -40,6 +40,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     url: string = environment.apiUrl;
     isSendData: boolean = false;
     idMap: string = 'map';
+    youTubeLink: string = environment.youTubeExampleLink;
     @ViewChild('formTag', {static: true}) formTag: ElementRef;
     @ViewChild(CatsHorizAccordionComponent) catsHorizAccordion: CatsHorizAccordionComponent;
 
@@ -331,6 +332,8 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             this.form.get('files').setValue(val);
             return;
         }
+
+        // Helpers.addPhoto(target, this.form);
 
         this.form.patchValue({
             files: target.files

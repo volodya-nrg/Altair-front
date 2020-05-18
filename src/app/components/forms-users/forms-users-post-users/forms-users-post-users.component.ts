@@ -64,11 +64,13 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
     }
 
     addPhoto({target}): void {
-        if (target.files.length) {
-            this.form.markAsDirty();
-        }
-        this.form.patchValue({
-            files: target.files
-        });
+        Helpers.addPhoto(target, this.form);
+
+        // if (target.files.length) {
+        //     this.form.markAsDirty();
+        // }
+        // this.form.patchValue({
+        //     files: target.files
+        // });
     }
 }

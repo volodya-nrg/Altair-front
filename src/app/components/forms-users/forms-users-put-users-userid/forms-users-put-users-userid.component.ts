@@ -111,12 +111,14 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
     }
 
     addPhoto({target}): void {
-        if (target.files.length) {
-            this.formPutUsersUserId.markAsDirty();
-        }
-        this.formPutUsersUserId.patchValue({
-            files: target.files
-        });
+        Helpers.addPhoto(target, this.formPutUsersUserId);
+
+        // if (target.files.length) {
+        //     this.formPutUsersUserId.markAsDirty();
+        // }
+        // this.formPutUsersUserId.patchValue({
+        //     files: target.files
+        // });
     }
 
     removePhoto({target}): void {

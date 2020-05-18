@@ -13,6 +13,7 @@ export const environment = {
     minLenHash: 32,
     domain: 'https://www.altair.uz',
     ymapKey: '777a18a8-eb0d-4f9b-ae88-99aed55c227b',
+    youTubeExampleLink: 'https://www.youtube.com/watch?v=zU-LndSG5RE',
     // походу массивы тут нельзя ставить
 };
 
