@@ -1,18 +1,18 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="page-ad">
     <app-preloader *ngIf="isLoading"></app-preloader>
-    <div *ngIf="adFull && catFull">
-        <h1>{{ adFull.title }}</h1>
+    <div>
+        <h1>{{ adFull?.title }}</h1>
         <div class="page-ad_row">
             <div class="page-ad_basic">
                 <div>
                     <div class="page-ad_photo">
-                        <img *ngIf="adFull.images && adFull.images.length"
+                        <img *ngIf="adFull?.images && adFull.images.length"
                              (click)="showPhotos(0)"
                              [src]="url + '/api/v1/resample/320/0/' + adFull.images[0].filepath"
                              title="{{ adFull.title }}"/>
                     </div>
-                    <div *ngIf="adFull.images && adFull.images.length > 1" class="page-ad_mini-photos">
+                    <div *ngIf="adFull?.images && adFull.images.length > 1" class="page-ad_mini-photos">
                         <ng-container *ngFor="let img of adFull.images; let i = index">
                             <span *ngIf="i" (click)="showPhotos(i)" class="page-ad_mini-photo">
                                 <img [src]="url + '/api/v1/resample/56/0/' + img.filepath" title="{{ adFull.title }}"/>
@@ -29,7 +29,7 @@
                 </div>
                 <div>
                     <ul class="page-ad_props">
-                        <li *ngFor="let detailExt of adFull.detailsExt">
+                        <li *ngFor="let detailExt of adFull?.detailsExt">
                             <ng-container *ngIf="detailExt.kindPropName != 'photo' ">
                                 <ng-container *ngFor="let prop of catFull.props">
                                     <ng-container *ngIf="prop.propId === detailExt.propId">
@@ -42,13 +42,13 @@
                         </li>
                     </ul>
                     <div>
-                        <span class="text-mute">{{ catFull.priceAlias ? catFull.priceAlias : 'Цена' }}: </span>
-                        <span *ngIf="adFull.price" class="text-nowrap">
+                        <span class="text-mute">{{ catFull?.priceAlias ? catFull.priceAlias : 'Цена' }}: </span>
+                        <span *ngIf="adFull?.price" class="text-nowrap">
                             <strong class="page-ad_price">{{ adFull.price | myCurrency}}</strong>
                             сум
                         </span>
-                        <strong *ngIf="!adFull.price" class="page-ad_price">бесплатно</strong>
-                        {{ catFull.priceSuffix }}
+                        <strong *ngIf="!adFull?.price" class="page-ad_price">бесплатно</strong>
+                        {{ catFull?.priceSuffix }}
                     </div>
                 </div>
             </div>
@@ -56,10 +56,10 @@
         <div class="page-ad_row">
             <h2>Описание</h2>
             <div class="page-ad_description">
-                {{ adFull.description }}
+                {{ adFull?.description }}
             </div>
         </div>
-        <div *ngIf="adFull.youtube" class="page-ad_row">
+        <div *ngIf="adFull?.youtube" class="page-ad_row">
             <h2>Видео</h2>
             <div>
                 <!-- data-mylink="{{ adFull.youtube }}" -->
@@ -72,8 +72,8 @@
             </div>
         </div>
         <div class="page-ad_row align-right">
-            <span class="text-mute">Созданно:</span> {{ adFull.createdAt | date }} /
-            <span class="text-mute">Изменено:</span> {{ adFull.updatedAt | date }}
+            <span class="text-mute">Созданно:</span> {{ adFull?.createdAt | date }} /
+            <span class="text-mute">Изменено:</span> {{ adFull?.updatedAt | date }}
         </div>
     </div>
 </div>

@@ -336,7 +336,10 @@ export class Helpers {
         return x;
     }
 
-    // static addImage(): void {}
-    //
-    // static removeImage(): void {}
+    static addScript(url: string): void {
+        var script = document.createElement('script');
+        script.src = url;
+        script.async = false; // чтобы гарантировать порядок
+        document.head.appendChild(script);
+    }
 }

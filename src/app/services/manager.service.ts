@@ -10,7 +10,7 @@ import {Helpers} from '../helpers';
 })
 export class ManagerService {
     settings$: AsyncSubject<SettingsInterface> = new AsyncSubject<SettingsInterface>();
-    tagKindNumber: ['checkbox', 'radio', 'select', 'input_number'];
+    tagKindNumber: string[] = ['checkbox', 'radio', 'select', 'input_number'];
 
     constructor(
         private http: HttpClient,

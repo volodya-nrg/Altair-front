@@ -26,29 +26,20 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
-    private ymapKey: string = environment.ymapKey;
+    private ymapsPathScript: string = `https://api-maps.yandex.ru/2.1/?apikey=${environment.ymapKey}&lang=ru_RU`;
     private ym: any;
     private map: any;
+    private defaultCenterMap: number[] = [55.76, 37.64];
     adId: number = 0; // это через param приходит
     form: FormGroup;
-    defaultFormControls: Object = {
-        catId: new FormControl(0, Validators.required),
-        title: new FormControl(''),
-        description: new FormControl('', Validators.required),
-        price: new FormControl(0),
-        youtube: new FormControl(''),
-        isDisabled: new FormControl(false),
-        latitude: new FormControl(0),
-        longitude: new FormControl(0),
-        cityName: new FormControl(''),
-        countryName: new FormControl(''),
-    };
+    defaultControls: Object = {};
     aDynamicPropsFull: PropFullInterface[] = [];
     leaf: CatTreeInterface; // выбранный на данный момент каталог-лист
     isLoadingProps: boolean = false;
     editAd: AdFullInterface;
     url: string = environment.apiUrl;
     isSendData: boolean = false;
+    idMap: string = 'map';
     @ViewChild('formTag', {static: true}) formTag: ElementRef;
     @ViewChild(CatsHorizAccordionComponent) catsHorizAccordion: CatsHorizAccordionComponent;
 
@@ -64,6 +55,18 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         private changeDetection: ChangeDetectorRef,
         private serviceManager: ManagerService,
     ) {
+        this.defaultControls = {
+            catId: [0, Validators.required],
+            title: '',
+            description: ['', Validators.required],
+            price: 0,
+            youtube: '',
+            isDisabled: false,
+            latitude: 0,
+            longitude: 0,
+            cityName: '',
+            countryName: '',
+        };
     }
 
     ngOnInit(): void {
@@ -80,7 +83,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             }
         }
 
-        this.addScript('https://api-maps.yandex.ru/2.1/?apikey=' + this.ymapKey + '&lang=ru_RU&mode=debug');
+        Helpers.addScript(this.ymapsPathScript);
     }
 
     ngOnDestroy(): void {
@@ -171,7 +174,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.form.get('catId').setValue(cat.catId);
 
         if (this.editAd) {
-            Object.keys(this.defaultFormControls).forEach(defKey => {
+            Object.keys(this.defaultControls).forEach(defKey => {
                 Object.keys(this.editAd).forEach(curKey => {
                     if (defKey === curKey) {
                         this.form.get(defKey).setValue(this.editAd[curKey]);
@@ -186,7 +189,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             newFormGroup.addControl('userId', new FormControl(this.editAd.userId, Validators.required));
 
         } else {
-            Object.keys(this.defaultFormControls).forEach(defKey => {
+            Object.keys(this.defaultControls).forEach(defKey => {
                 Object.keys(this.form.controls).forEach(curKey => {
                     if (defKey === curKey) {
                         newFormGroup.addControl(defKey, this.form.controls[defKey]);
@@ -230,7 +233,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.aDynamicPropsFull.length = 0;
         this.editAd = null;
         this.isLoadingProps = false;
-        this.form = this.fb.group(this.defaultFormControls);
+        this.form = this.fb.group(this.defaultControls);
     }
 
     private loadParams(catId: number): void {
@@ -356,22 +359,20 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.loadParams(signal.cat.catId);
     }
 
-    addScript(src): void {
-        var script = document.createElement('script');
-        script.src = src;
-        script.async = false; // чтобы гарантировать порядок
-        document.head.appendChild(script);
-    }
-
     createYmap(): void {
         if (typeof window['ymaps'] === 'undefined') {
             return;
         }
 
+        this.changeDetection.detectChanges();
+        if (!document.getElementById(this.idMap)) {
+            return;
+        }
+
         window['ymaps'].ready().done(ym => {
             this.ym = ym;
-            this.map = new this.ym.Map('map', {
-                center: [55.76, 37.64],
+            this.map = new this.ym.Map(this.idMap, {
+                center: this.defaultCenterMap,
                 zoom: 10,
             });
             this.addEventClickForYmapForListen(null);
