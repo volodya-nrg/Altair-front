@@ -4,7 +4,7 @@
     </div>
     <div class="page-adm_box_body">
         <div>
-            <form [formGroup]="formGetUsersUserId" (ngSubmit)="submitFormGetUsersUserId($event)" class="form">
+            <form [formGroup]="formGet" (ngSubmit)="submitFormGetUsersUserId($event)" class="form">
                 <div class="form_row">
                     <div class="form_title">userId</div>
                     <input type="number" formControlName="userId" class="form_100"/>
@@ -13,7 +13,7 @@
                     <input type="submit"/>
                 </div>
             </form>
-            <form #formPut [formGroup]="formPutUsersUserId"
+            <form #formPutTag [formGroup]="formPut"
                   (ngSubmit)="submitFormPutUsersUserId($event)" class="form hidden">
                 <input type="hidden" formControlName="userId"/>
 
@@ -23,10 +23,10 @@
                     <input class="form_100" type="file" accept="image/jpeg,image/png"
                            (change)="addPhoto($event)"/>
 
-                    <div *ngIf="formPutUsersUserId.get('avatar').value" class="form_thumbnails">
+                    <div *ngIf="formPut.get('avatar').value" class="form_thumbnails">
                         <div class="form_thumbnails_thumbnail">
                             <div (click)="removePhoto($event)" class="form_thumbnails_thumbnail_close"></div>
-                            <img [src]="url + '/api/v1/resample/0/100/' + formPutUsersUserId.get('avatar').value"/>
+                            <img [src]="url + '/api/v1/resample/0/100/' + formPut.get('avatar').value"/>
                         </div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                     <input type="submit"/>
                 </div>
                 <div class="form_row">
-                    {{ formPutUsersUserId.value | json }}
+                    {{ formPut.value | json }}
                 </div>
             </form>
         </div>

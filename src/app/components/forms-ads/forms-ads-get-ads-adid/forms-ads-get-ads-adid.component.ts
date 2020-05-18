@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {AdService} from '../../../services/ad.service';
 
 @Component({
@@ -42,12 +41,7 @@ export class FormsAdsGetAdsAdidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceAds.getOne(this.form.get('adId').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceAds.getOne(this.form.get('adId').value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

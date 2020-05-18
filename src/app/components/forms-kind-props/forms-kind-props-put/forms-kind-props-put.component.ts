@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, O
 import {Subscription} from 'rxjs';
 import {KindPropInterface} from '../../../interfaces/response/kind-prop';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {KindPropsService} from '../../../services/kind-props.service';
 
 @Component({
@@ -66,9 +65,6 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
                 this.form.patchValue(x);
                 this.editKindProp = x;
             },
-            err => Helpers.handleErr(err),
-            () => {
-            },
         );
         this.subscriptions.push(s);
     }
@@ -85,12 +81,8 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
             return;
         }
 
-        const s = this.serviceKindProps.update(this.form.get('kindPropId').value, this.form.value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceKindProps.update(this.form.get('kindPropId').value, this.form.value)
+            .subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

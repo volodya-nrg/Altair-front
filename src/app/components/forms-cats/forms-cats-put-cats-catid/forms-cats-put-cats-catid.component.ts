@@ -56,12 +56,8 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
         this.formPut = this.fb.group(this.defaultControls);
         this.formPut.get('props').setValue(this.fb.array(this.propsFull));
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -98,9 +94,6 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
                 x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));
                 this.dynamicProps.propsFormArray = tmpProps;
             },
-            err => Helpers.handleErr(err),
-            () => {
-            },
         );
         this.subscriptions.push(s);
     }
@@ -117,12 +110,8 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             return;
         }
 
-        const s = this.serviceCats.put(this.formPut.get('catId').value, this.formPut.value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceCats.put(this.formPut.get('catId').value, this.formPut.value)
+            .subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

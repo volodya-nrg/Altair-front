@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecoverService} from '../../../services/recover.service';
@@ -10,9 +10,9 @@ import {environment} from '../../../../environments/environment';
     templateUrl: './check-hash.component.html',
     styleUrls: ['./check-hash.component.less']
 })
-export class PageRecoverCheckHashComponent implements OnInit {
+export class PageRecoverCheckHashComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    private attentionMsg: string = 'Пароль успешно изменен.';
+    private msg: string = 'Пароль успешно изменен.';
     form: FormGroup;
     isProdMode: boolean = environment.production;
 
@@ -51,16 +51,14 @@ export class PageRecoverCheckHashComponent implements OnInit {
 
         const btnSubmit = target.querySelector('[type="submit"]');
         btnSubmit.disabled = true;
-        this.serviceRecover.changePassword(this.form.value).subscribe(
+        const s = this.serviceRecover.changePassword(this.form.value).subscribe(
             x => {
-                alert(this.attentionMsg);
+                alert(this.msg);
                 this.router.navigate(['/login']).then();
-            }, err => {
-                btnSubmit.disabled = false;
             },
-            () => {
-                btnSubmit.disabled = false;
-            }
+            err => btnSubmit.disabled = false,
+            () => btnSubmit.disabled = false
         );
+        this.subscriptions.push(s);
     }
 }

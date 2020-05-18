@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BreadcrumbsInterface} from '../../interfaces/breadcrumbs';
 import {BreadcrumbsService} from '../../services/breadcrumbs.service';
-import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-breadcrumbs',
@@ -15,24 +14,16 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
     isLoading: boolean = false;
 
     constructor(
-        private serviceBreadcrumbs: BreadcrumbsService
+        private serviceBreadcrumbs: BreadcrumbsService,
     ) {
     }
 
     ngOnInit(): void {
         this.isLoading = true;
         const s = this.serviceBreadcrumbs.bhSubject.subscribe(
-            x => {
-                this.items = x;
-                this.isLoading = false;
-            },
-            err => {
-                Helpers.handleErr(err.error);
-                this.isLoading = false;
-            },
-            () => {
-                this.isLoading = false;
-            }
+            x => this.items = x,
+            err => this.isLoading = false,
+            () => this.isLoading = false
         );
         this.subscriptions.push(s);
     }

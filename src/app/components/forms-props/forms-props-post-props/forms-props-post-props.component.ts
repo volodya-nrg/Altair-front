@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ManagerService} from '../../../services/manager.service';
-import {Helpers} from '../../../helpers';
 import {PropService} from '../../../services/prop.service';
 import {KindPropInterface} from '../../../interfaces/response/kind-prop';
 import {ValuePropInterface} from '../../../interfaces/response/value-prop';
@@ -51,12 +50,7 @@ export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
             });
         });
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.kindProps = x.kindProps,
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.kindProps = x.kindProps);
         this.subscriptions.push(s);
     }
 
@@ -76,12 +70,7 @@ export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceProps.create(this.form.value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceProps.create(this.form.value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

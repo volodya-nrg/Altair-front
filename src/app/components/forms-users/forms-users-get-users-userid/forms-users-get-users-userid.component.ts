@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
-import {Helpers} from '../../../helpers';
 
 @Component({
     selector: 'app-forms-users-get-users-userid',
@@ -42,12 +41,7 @@ export class FormsUsersGetUsersUseridComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceUsers.getUser(this.form.get('userId').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceUsers.getUser(this.form.get('userId').value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

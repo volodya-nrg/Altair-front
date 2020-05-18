@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {PagesService} from '../../../services/pages.service';
 
 @Component({
@@ -42,12 +41,7 @@ export class FormsPagesMainComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.servicePages.pageMain(this.form.get('limit').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.servicePages.pageMain(this.form.get('limit').value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

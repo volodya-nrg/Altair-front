@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs';
 import {Helpers} from '../../helpers';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {ManagerService} from '../../services/manager.service';
+import {MyErrorService} from '../../services/my-error.service';
 
 @Component({
     selector: 'app-top-menu-cats-tree',
@@ -27,12 +28,7 @@ export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTree = x.catsTree,
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.catTree = x.catsTree);
         this.subscriptions.push(s);
     }
 

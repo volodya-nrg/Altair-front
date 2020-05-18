@@ -33,12 +33,8 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form = this.fb.group(this.defaultControls);
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -63,12 +59,7 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
         const limit: number = this.form.get('limit').value;
         const offset: number = this.form.get('offset').value;
 
-        const s = this.serviceSearch.ads(query, catId, limit, offset).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceSearch.ads(query, catId, limit, offset).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

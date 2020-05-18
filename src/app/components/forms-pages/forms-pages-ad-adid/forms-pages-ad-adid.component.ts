@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {PagesService} from '../../../services/pages.service';
 
 @Component({
@@ -42,12 +41,8 @@ export class FormsPagesAdAdidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.servicePages.pageAd(this.form.get('adId').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.servicePages.pageAd(this.form.get('adId').value)
+            .subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

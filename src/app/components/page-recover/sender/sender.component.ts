@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecoverService} from '../../../services/recover.service';
@@ -10,9 +10,9 @@ import {environment} from '../../../../environments/environment';
     templateUrl: './sender.component.html',
     styleUrls: ['./sender.component.less']
 })
-export class PageRecoverSenderComponent implements OnInit {
+export class PageRecoverSenderComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    private attentionMsg: string = 'На Ваш е-мэйл отправлен проверочный код.\nСледуйте указаниям в письме.';
+    private msg: string = 'На Ваш е-мэйл отправлен проверочный код.\nСледуйте указаниям в письме.';
     form: FormGroup;
     isProdMode: boolean = environment.production;
 
@@ -47,16 +47,14 @@ export class PageRecoverSenderComponent implements OnInit {
 
         const btnSubmit = target.querySelector('[type="submit"]');
         btnSubmit.disabled = true;
-        this.serviceRecover.sendHash(this.form.value).subscribe(
+        const s = this.serviceRecover.sendHash(this.form.value).subscribe(
             x => {
-                alert(this.attentionMsg);
+                alert(this.msg);
                 this.router.navigate(['/main']).then();
-            }, err => {
-                btnSubmit.disabled = false;
             },
-            () => {
-                btnSubmit.disabled = false;
-            }
+            err => btnSubmit.disabled = false,
+            () => btnSubmit.disabled = false
         );
+        this.subscriptions.push(s);
     }
 }

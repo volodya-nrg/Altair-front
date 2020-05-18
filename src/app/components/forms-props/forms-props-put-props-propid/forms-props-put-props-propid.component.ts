@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PropFullInterface} from '../../../interfaces/response/prop';
 import {ManagerService} from '../../../services/manager.service';
-import {Helpers} from '../../../helpers';
 import {KindPropInterface} from '../../../interfaces/response/kind-prop';
 import {ValuePropInterface} from '../../../interfaces/response/value-prop';
 import {PropService} from '../../../services/prop.service';
@@ -47,12 +46,7 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
         });
         this.form = this.fb.group(this.defaultControls);
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.kindProps = x.kindProps,
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.kindProps = x.kindProps);
         this.subscriptions.push(s);
     }
 
@@ -75,30 +69,23 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceProps.getOne(this.formGetPropsPropId.get('propId').value).subscribe(
-            x => {
-                // затереть предыдущее
-                this.form = this.fb.group(this.defaultControls);
-                let tmp1 = this.form.get('values') as FormArray;
-                tmp1.clear();
-                this.editPropFull = null;
+        const s = this.serviceProps.getOne(this.formGetPropsPropId.get('propId').value).subscribe(x => {
+            // затереть предыдущее
+            this.form = this.fb.group(this.defaultControls);
+            let tmp1 = this.form.get('values') as FormArray;
+            tmp1.clear(); // <---------------------------------------------------------------------------------------------------------
+            this.editPropFull = null;
 
-                this.json.emit(x);
-                this.formPut.nativeElement.classList.remove('hidden');
-                this.form.patchValue(x);
-                this.form.get('kindPropId').setValue(this.form.get('kindPropId').value.toString()); // нужна именно строчка
+            this.json.emit(x);
+            this.formPut.nativeElement.classList.remove('hidden');
+            this.form.patchValue(x);
+            this.form.get('kindPropId').setValue(this.form.get('kindPropId').value.toString()); // нужна именно строчка
 
-                let tmp2 = this.form.get('values') as FormArray;
-                x.values.forEach(y => {
-                    tmp2.push(this.fb.group(y));
-                });
+            let tmp2 = this.form.get('values') as FormArray;
+            x.values.forEach(y => tmp2.push(this.fb.group(y)));
 
-                this.editPropFull = x;
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+            this.editPropFull = x;
+        });
         this.subscriptions.push(s);
     }
 
@@ -114,12 +101,8 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceProps.update(this.form.get('propId').value, this.form.value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceProps.update(this.form.get('propId').value, this.form.value)
+            .subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

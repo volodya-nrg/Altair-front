@@ -25,12 +25,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.start(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.start(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -45,18 +40,15 @@ export class PageMainComponent implements OnInit, OnDestroy {
                 this.lastAdsFull = x.lastAdsFull;
 
                 if (this.lastAdsFull.length) {
-                    const needCatId = this.lastAdsFull[0].catId;
-                    let listCat = Helpers.getAncestors(catsTree.childes, needCatId);
-                    this.lastChainBC = Helpers.buildBCFromCats(listCat);
+                    return;
                 }
+
+                const needCatId = this.lastAdsFull[0].catId;
+                let listCat = Helpers.getAncestors(catsTree.childes, needCatId);
+                this.lastChainBC = Helpers.buildBCFromCats(listCat);
             },
-            err => {
-                this.isLoading = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.isLoading = false;
-            }
+            err => this.isLoading = false,
+            () => this.isLoading = false
         );
         this.subscriptions.push(s);
     }

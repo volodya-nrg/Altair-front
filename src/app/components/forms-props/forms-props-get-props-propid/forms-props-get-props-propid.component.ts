@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {PropService} from '../../../services/prop.service';
 
 @Component({
@@ -42,12 +41,7 @@ export class FormsPropsGetPropsPropidComponent implements OnInit {
             return;
         }
 
-        const s = this.serviceProps.getOne(this.form.get('propId').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceProps.getOne(this.form.get('propId').value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

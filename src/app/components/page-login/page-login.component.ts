@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../helpers';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
@@ -25,8 +24,8 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: new FormControl('test@test.te', [Validators.required, Validators.email]),
-            password: new FormControl('test123', [Validators.required, Validators.minLength(environment.minLenPassword)]),
+            email: ['test@test.te', [Validators.required, Validators.email]],
+            password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
         });
     }
 
@@ -48,21 +47,17 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
             }
             return;
         }
+        const submit = this.submit.nativeElement;
 
-        this.submit.nativeElement.disabled = true;
+        submit.disabled = true;
         const s = this.serviceAuth.login(this.form.value).subscribe(
             x => {
                 this.serviceAuth.JWT = x.JWT;
                 this.serviceAuth.profileBhSubject.next(x.user);
                 this.router.navigate(['/profile']).then();
             },
-            err => {
-                this.submit.nativeElement.disabled = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.submit.nativeElement.disabled = false;
-            }
+            err => submit.disabled = false,
+            () => submit.disabled = false
         );
         this.subscriptions.push(s);
     }

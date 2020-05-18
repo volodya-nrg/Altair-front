@@ -28,12 +28,8 @@ export class FormsCatsDeleteCatsCatidComponent implements OnInit, OnDestroy {
         this.formDeleteCatsCatId = this.fb.group({
             catId: 0,
         });
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -53,16 +49,11 @@ export class FormsCatsDeleteCatsCatidComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceCats.delete(this.formDeleteCatsCatId.get('catId').value).subscribe(
-            x => {
-                this.json.emit(x);
-                target.reset();
-                this.formDeleteCatsCatId.reset();
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceCats.delete(this.formDeleteCatsCatId.get('catId').value).subscribe(x => {
+            this.json.emit(x);
+            target.reset();
+            this.formDeleteCatsCatId.reset();
+        });
         this.subscriptions.push(s);
     }
 }

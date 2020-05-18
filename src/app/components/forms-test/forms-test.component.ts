@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Helpers} from '../../helpers';
 import {TestService} from '../../services/test.service';
 
 @Component({
@@ -29,12 +28,7 @@ export class FormsTestComponent implements OnInit {
     }
 
     submitForm({target}): void {
-        const s = this.serviceTest.request().subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceTest.request().subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

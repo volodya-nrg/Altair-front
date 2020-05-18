@@ -14,6 +14,7 @@ import {environment} from '../../../environments/environment';
 import {ProfileService} from '../../services/profile.service';
 import {CatsHorizAccordionComponent} from '../cats-horiz-accordion/cats-horiz-accordion.component';
 import {EmitCatsHorizAccordionInterface} from '../../interfaces/emit-cats-horiz-accordion';
+import {MyErrorService} from '../../services/my-error.service';
 
 @Component({
     selector: 'app-page-ad-create-edit',
@@ -56,6 +57,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         private route: ActivatedRoute,
         private changeDetection: ChangeDetectorRef,
         private serviceManager: ManagerService,
+        private serviceMyError: MyErrorService,
     ) {
         this.defaultControls = {
             catId: [0, Validators.required],
@@ -91,7 +93,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         this.subscriptions.forEach(x => x.unsubscribe());
 
         if (this.map) {
-            this.map.destroy();// Деструктор карты
+            this.map.destroy();
         }
 
         this.map = null;
@@ -99,11 +101,13 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngAfterViewInit(): void {
-        if (this.adId) {
-            this.loadAd(this.adId, () => {
-                this.catsHorizAccordion.render(this.editAd.catId, false, null);
-            });
+        if (!this.adId) {
+            return;
         }
+
+        this.loadAd(this.adId, () => {
+            this.catsHorizAccordion.render(this.editAd.catId, false, null);
+        });
     };
 
     private successAnswerOnPropsFull(x: PropFullInterface[]): void {
@@ -148,7 +152,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
                         if (this.editAd.images && this.editAd.images.length) { // images может и не быть
                             this.editAd.images.forEach((img, i) => {
-                                newFormGroup.addControl('filesAlreadyHas[' + i + ']', new FormControl(img.filepath));
+                                newFormGroup.addControl('filesAlreadyHas[' + i + ']', this.fb.control(img.filepath));
                             });
                             oldValue = prop.value;
                         }
@@ -167,7 +171,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                 });
             }
 
-            newFormGroup.addControl(newProp.name, new FormControl(oldValue, aValidators));
+            newFormGroup.addControl(newProp.name, this.fb.control(oldValue, aValidators));
         });
 
         // обновим значения те что по дефолку. Не теряем старые введенные значени.
@@ -185,8 +189,8 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             });
 
             // добавим доп. данные
-            newFormGroup.addControl('adId', new FormControl(this.editAd.adId, Validators.required));
-            newFormGroup.addControl('userId', new FormControl(this.editAd.userId, Validators.required));
+            newFormGroup.addControl('adId', this.fb.control(this.editAd.adId, Validators.required));
+            newFormGroup.addControl('userId', this.fb.control(this.editAd.userId, Validators.required));
 
         } else {
             Object.keys(this.defaultControls).forEach(defKey => {
@@ -242,7 +246,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             x => this.successAnswerOnPropsFull(x),
             err => {
                 this.isLoadingProps = false;
-                Helpers.handleErr(err.error);
                 s.unsubscribe();
             },
             () => {
@@ -261,13 +264,8 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
                     cb();
                 }
             },
-            err => {
-                Helpers.handleErr(err);
-                s.unsubscribe();
-            },
-            () => {
-                s.unsubscribe();
-            }
+            err => s.unsubscribe(),
+            () => s.unsubscribe()
         );
     }
 
@@ -296,14 +294,13 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         const s = fnExec.subscribe(
             x => {
                 alert(isUpdate ? this.attentionTextUpdate : this.attentionTextCreate);
-                target.reset(); // на всякий случай и нативную форму сбросим
+                target.reset(); // на всякий случай сбросим нативную форму
                 this.resetToDefault();
                 this.catsHorizAccordion.reset();
                 this.router.navigate(['/profile/ads']).then();
             },
             err => {
                 this.isSendData = false;
-                Helpers.handleErr(err.error);
                 s.unsubscribe();
             },
             () => {
@@ -366,6 +363,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
             return;
         }
 
+        // проверим: есть ли тег "id=map"
         this.changeDetection.detectChanges();
         if (!document.getElementById(this.idMap)) {
             return;
@@ -438,7 +436,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
 
             this.updateMapDataInForm(coord, firstGeoObject.getAddressLine(), city, country);
         }).catch((err) => {
-            console.log(err);
+            this.serviceMyError.errors$.next({msg: err});
         });
     }
 

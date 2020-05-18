@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {UserService} from '../../../services/user.service';
 
 @Component({
@@ -29,12 +28,7 @@ export class FormsUsersGetUsersComponent implements OnInit, OnDestroy {
     }
 
     submitFormGetUsers({target}): void {
-        const s = this.serviceUsers.getUsers().subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceUsers.getUsers().subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

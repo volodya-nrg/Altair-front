@@ -31,12 +31,8 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
             catId: 0,
             withPropsOnlyFiltered: false,
         });
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -58,12 +54,7 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
 
         const catId: number = parseInt(this.formGetCatsCatId.get('catId').value, 10);
         const isWithPropsOnlyFiltered: boolean = this.formGetCatsCatId.get('withPropsOnlyFiltered').value;
-        const s = this.serviceCats.getCatId(catId, isWithPropsOnlyFiltered).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceCats.getCatId(catId, isWithPropsOnlyFiltered).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

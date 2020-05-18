@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {KindPropsService} from '../../../services/kind-props.service';
 
 @Component({
@@ -42,15 +41,10 @@ export class FormsKindPropsDeleteComponent implements OnInit {
             return;
         }
 
-        const s = this.serviceKindProps.delete(this.form.get('kindPropId').value).subscribe(
-            x => {
-                this.json.emit(x);
-                this.form.reset();
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceKindProps.delete(this.form.get('kindPropId').value).subscribe(x => {
+            this.json.emit(x);
+            this.form.reset();
+        });
         this.subscriptions.push(s);
     }
 }

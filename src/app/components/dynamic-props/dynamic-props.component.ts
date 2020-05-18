@@ -3,7 +3,6 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {PropInterface} from '../../interfaces/response/prop';
 import {ManagerService} from '../../services/manager.service';
-import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-dynamic-props',
@@ -23,12 +22,7 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.props = x.props,
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.props = x.props);
         this.subscriptions.push(s);
     }
 

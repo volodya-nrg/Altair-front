@@ -1,7 +1,6 @@
 import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {ManagerService} from '../../services/manager.service';
-import {Helpers} from '../../helpers';
 import {Subscription} from 'rxjs';
 import {EmitCatsHorizAccordionInterface} from '../../interfaces/emit-cats-horiz-accordion';
 
@@ -25,15 +24,10 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     }
 
     ngOnInit(): void {
-        const s = this.managerSettings.settings$.subscribe(
-            x => {
-                this.catTree = x.catsTree;
-                this.aCols.push(this.catTree); // по умолчанию вставим первый иерархию каталога
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.managerSettings.settings$.subscribe(x => {
+            this.catTree = x.catsTree;
+            this.aCols.push(this.catTree); // по умолчанию вставим первый иерархию каталога
+        });
         this.subscriptions.push(s);
     }
 
@@ -73,7 +67,10 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     reset(): void {
         this.aCols.length = 0;
         this.aCols = [this.catTree];
-        this.catCols.nativeElement.querySelectorAll('.sx-active')
+
+        this.catCols
+            .nativeElement
+            .querySelectorAll('.sx-active')
             .forEach(x => x.classList.remove('sx-active'));
     }
 

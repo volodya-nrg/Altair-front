@@ -46,14 +46,8 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
         this.formPostCats = this.fb.group(this.defaultControls);
         this.formPostCats.get('props').setValue(this.fb.array(this.propsFull));
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -73,16 +67,11 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceCats.post(this.formPostCats.value).subscribe(
-            x => {
-                this.json.emit(x);
-                target.reset();
-                this.formPostCats.reset();
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceCats.post(this.formPostCats.value).subscribe(x => {
+            this.json.emit(x);
+            target.reset();
+            this.formPostCats.reset();
+        });
         this.subscriptions.push(s);
     }
 }

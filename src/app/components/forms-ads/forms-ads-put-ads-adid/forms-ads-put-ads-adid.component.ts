@@ -63,15 +63,10 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
         });
         this.form = this.fb.group(this.defaultControls);
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.catsTree = x.catsTree;
-                this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => {
+            this.catsTree = x.catsTree;
+            this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
+        });
         this.subscriptions.push(s);
     }
 
@@ -94,34 +89,32 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
             return;
         }
 
-        const s = this.serviceAds.getOne(this.formGetAdsAdId.get('adId').value).subscribe(
-            x => {
-                // затереть предыдущее
-                this.form = this.fb.group(this.defaultControls);
-                this.editAd = null;
+        const s = this.serviceAds.getOne(this.formGetAdsAdId.get('adId').value).subscribe(x => {
+            // затереть предыдущее
+            this.form = this.fb.group(this.defaultControls);
+            this.editAd = null;
 
-                this.json.emit(x);
-                this.formPut.nativeElement.classList.remove('hidden');
-                this.form.get('catId').setValue(x.catId);
-                this.onChangeCat(() => {
-                    this.form.patchValue(x);
-                    if (x.images && x.images.length) { // images может и не быть
-                        x.images.forEach((img, i) => {
-                            this.form.addControl('filesAlreadyHas[' + i + ']', new FormControl(img.filepath));
-                        });
-                    }
-                    x.detailsExt.forEach(y => {
-                        if (this.form.contains(y.propName)) {
-                            this.form.get(y.propName).setValue(y.value);
-                        }
+            this.json.emit(x);
+            this.formPut.nativeElement.classList.remove('hidden');
+            this.form.get('catId').setValue(x.catId);
+            this.onChangeCat(() => {
+                this.form.patchValue(x);
+
+                if (x.images && x.images.length) { // images может и не быть
+                    x.images.forEach((img, i) => {
+                        this.form.addControl('filesAlreadyHas[' + i + ']', this.fb.control(img.filepath));
                     });
-                    this.editAd = x;
+                }
+
+                x.detailsExt.forEach(y => {
+                    if (this.form.contains(y.propName)) {
+                        this.form.get(y.propName).setValue(y.value);
+                    }
                 });
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+
+                this.editAd = x;
+            });
+        });
         this.subscriptions.push(s);
     }
 
@@ -138,32 +131,17 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        const s = this.serviceAds.update(this.form.get('adId').value, newFormData).subscribe(
-            x => {
-                this.json.emit(x);
-                // target.reset();
-                // this.form.reset();
-                // this.form.patchValue(x);
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceAds.update(this.form.get('adId').value, newFormData).subscribe(x => {
+            this.json.emit(x);
+            // target.reset();
+            // this.form.reset();
+            // this.form.patchValue(x);
+        });
         this.subscriptions.push(s);
     }
 
     addPhoto({target}): void {
         Helpers.addPhoto(target, this.form);
-
-        // const cFiles = this.form.get('files');
-        //
-        // if (target.files.length) {
-        //     this.form.markAsDirty();
-        //     cFiles.setValue(target.files);
-        //
-        // } else {
-        //     cFiles.setValue('');
-        // }
     }
 
     convertToInt(str: string): number {
@@ -177,42 +155,37 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
             return;
         }
 
-        const s = this.serviceCats.getCatId(catId, false).subscribe(
-            x => {
-                let tmpGroup = this.fb.group(this.defaultControls);
+        const s = this.serviceCats.getCatId(catId, false).subscribe(x => {
+            let tmpGroup = this.fb.group(this.defaultControls);
 
-                tmpGroup.get('catId').setValue(this.form.get('catId').value);
-                this.form = tmpGroup;
+            tmpGroup.get('catId').setValue(this.form.get('catId').value);
+            this.form = tmpGroup;
 
-                x.props.forEach(y => {
-                    let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
-                    let aValidators = [];
+            x.props.forEach(y => {
+                let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
+                let aValidators = [];
 
-                    // если данное св-во обязательно, то подключим валидатор
-                    if (y.propIsRequire) {
-                        aValidators.push(Validators.required);
-                    }
-
-                    if (y.kindPropName === 'checkbox') {
-                        y.values.forEach((z, i) => {
-                            this.form.addControl(y.name + '[' + i + ']', new FormControl(z.propId, aValidators));
-                        });
-
-                    } else {
-                        this.form.addControl(y.name, new FormControl(defaultValue, aValidators));
-                    }
-                });
-
-                this.propsFull = x.props;
-
-                if (cb) {
-                    cb();
+                // если данное св-во обязательно, то подключим валидатор
+                if (y.propIsRequire) {
+                    aValidators.push(Validators.required);
                 }
-            },
-            err => Helpers.handleErr(err),
-            () => {
+
+                if (y.kindPropName === 'checkbox') {
+                    y.values.forEach((z, i) => {
+                        this.form.addControl(y.name + '[' + i + ']', this.fb.control(z.propId, aValidators));
+                    });
+
+                } else {
+                    this.form.addControl(y.name, this.fb.control(defaultValue, aValidators));
+                }
+            });
+
+            this.propsFull = x.props;
+
+            if (cb) {
+                cb();
             }
-        );
+        });
         this.subscriptions.push(s);
     }
 

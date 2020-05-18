@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
 import {AdService} from '../../../services/ad.service';
 import {CatTreeInterface, CatWithDeepInterface} from '../../../interfaces/response/cat';
@@ -47,15 +47,10 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.form = this.fb.group(this.defaultControls);
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.catsTree = x.catsTree;
-                this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => {
+            this.catsTree = x.catsTree;
+            this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
+        });
         this.subscriptions.push(s);
     }
 
@@ -76,12 +71,7 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        const s = this.serviceAds.create(newFormData).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceAds.create(newFormData).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 
@@ -92,38 +82,33 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceCats.getCatId(catId, false).subscribe(
-            x => {
-                let tmpGroup = this.fb.group(this.defaultControls);
+        const s = this.serviceCats.getCatId(catId, false).subscribe(x => {
+            let tmpGroup = this.fb.group(this.defaultControls);
 
-                tmpGroup.get('catId').setValue(this.form.get('catId').value);
-                this.form = tmpGroup;
+            tmpGroup.get('catId').setValue(this.form.get('catId').value);
+            this.form = tmpGroup;
 
-                x.props.forEach(y => {
-                    let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
-                    let aValidators = [];
+            x.props.forEach(y => {
+                let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
+                let aValidators = [];
 
-                    // если данное св-во обязательно, то подключим валидатор
-                    if (y.propIsRequire) {
-                        aValidators.push(Validators.required);
-                    }
+                // если данное св-во обязательно, то подключим валидатор
+                if (y.propIsRequire) {
+                    aValidators.push(Validators.required);
+                }
 
-                    if (y.kindPropName === 'checkbox') {
-                        y.values.forEach((z, i) => {
-                            this.form.addControl(y.name + '[' + i + ']', new FormControl(z.propId, aValidators));
-                        });
+                if (y.kindPropName === 'checkbox') {
+                    y.values.forEach((z, i) => {
+                        this.form.addControl(y.name + '[' + i + ']', this.fb.control(z.propId, aValidators));
+                    });
 
-                    } else {
-                        this.form.addControl(y.name, new FormControl(defaultValue, aValidators));
-                    }
-                });
+                } else {
+                    this.form.addControl(y.name, this.fb.control(defaultValue, aValidators));
+                }
+            });
 
-                this.propsFull = x.props;
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            }
-        );
+            this.propsFull = x.props;
+        });
         this.subscriptions.push(s);
     }
 
@@ -133,15 +118,5 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
 
     addPhoto({target}): void {
         Helpers.addPhoto(target, this.form);
-
-        // const cFiles = this.form.get('files');
-        //
-        // if (target.files.length) {
-        //     this.form.markAsDirty();
-        //     cFiles.setValue(target.files);
-        //
-        // } else {
-        //     cFiles.setValue('');
-        // }
     }
 }

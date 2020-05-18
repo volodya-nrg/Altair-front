@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {CatService} from '../../../services/cat.service';
 
 @Component({
@@ -42,20 +41,8 @@ export class FormsCatsGetCatsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let fn: any;
-
-        if (this.formGetCats.get('asTree').value) {
-            fn = this.serviceCats.getTree();
-        } else {
-            fn = this.serviceCats.getList();
-        }
-
-        const s = fn.subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        let fn: any = this.formGetCats.get('asTree').value ? this.serviceCats.getTree() : this.serviceCats.getList();
+        const s = fn.subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

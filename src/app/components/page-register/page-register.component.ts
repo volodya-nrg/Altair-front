@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
 import {Router} from '@angular/router';
-import {Helpers} from '../../helpers';
 import {ProfileService} from '../../services/profile.service';
 import {environment} from '../../../environments/environment';
 
@@ -28,11 +27,11 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: new FormControl('test@test.te', [Validators.required, Validators.email]),
-            password: new FormControl('test123', [Validators.required, Validators.minLength(environment.minLenPassword)]),
-            passwordConfirm: new FormControl('test123', [Validators.required, Validators.minLength(environment.minLenPassword)]),
-            agreeOffer: new FormControl(true, Validators.requiredTrue),
-            agreePolicy: new FormControl(true, Validators.requiredTrue),
+            email: ['test@test.te', [Validators.required, Validators.email]],
+            password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
+            passwordConfirm: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
+            agreeOffer: [true, Validators.requiredTrue],
+            agreePolicy: [true, Validators.requiredTrue],
         });
     }
 
@@ -57,16 +56,9 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.submit.nativeElement.disabled = true;
         const s = this.serviceProfile.create(this.form.value).subscribe(
-            _ => {
-                this.router.navigate(['/register/ok']).then();
-            },
-            err => {
-                this.submit.nativeElement.disabled = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.submit.nativeElement.disabled = false;
-            }
+            x => this.router.navigate(['/register/ok']).then(),
+            err => this.submit.nativeElement.disabled = false,
+            () => this.submit.nativeElement.disabled = false
         );
         this.subscriptions.push(s);
     }

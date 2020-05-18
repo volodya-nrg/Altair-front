@@ -39,19 +39,15 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.serviceAuth.profileBhSubject.subscribe(x => {
-            if (!x) {
-                return;
-            }
-
+        const s = this.serviceAuth.profileBhSubject.subscribe(x => {
             this.profile = x;
-
             this.form.patchValue({
                 email: this.profile.email,
                 avatar: this.profile.avatar,
                 name: this.profile.name,
             });
         });
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
@@ -87,7 +83,6 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
             err => {
                 btnSubmit.disabled = false;
                 target.classList.remove('sx-loading');
-                Helpers.handleErr(err.error);
             },
             () => {
                 btnSubmit.disabled = false;
@@ -98,36 +93,24 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     deleteProfile({target}): void {
-        if (confirm(this.attentionMsg)) {
-            target.disable = true;
-            const s = this.serviceProfile.delete().subscribe(
-                x => {
-                    // отписку не делаем, т.к. нужно чтоб она по любому отработала
-                    this.serviceAuth.logout().subscribe(x => {
-                        this.serviceAuth.JWT = '';
-                    });
-                    this.router.navigate(['/main']).then();
-                },
-                err => {
-                    target.disable = false;
-                    Helpers.handleErr(err.error);
-                },
-                () => {
-                    target.disable = false;
-                }
-            );
-            this.subscriptions.push(s);
+        if (!confirm(this.attentionMsg)) {
+            return;
         }
+
+        target.disable = true;
+        const s = this.serviceProfile.delete().subscribe(
+            x => {
+                // отписку не делаем, т.к. нужно чтоб она по любому отработала
+                this.serviceAuth.logout().subscribe(x => this.serviceAuth.JWT = '');
+                this.router.navigate(['/main']).then();
+            },
+            err => target.disable = false,
+            () => target.disable = false
+        );
+        this.subscriptions.push(s);
     }
 
     addPhoto({target}): void {
         Helpers.addPhoto(target, this.form);
-
-        // if (target.files.length) {
-        //     this.form.markAsDirty();
-        // }
-        // this.form.patchValue({
-        //     files: target.files
-        // });
     }
 }

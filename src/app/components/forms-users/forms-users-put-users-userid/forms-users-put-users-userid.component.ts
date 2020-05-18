@@ -12,11 +12,11 @@ import {environment} from '../../../../environments/environment';
 })
 export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
-    formGetUsersUserId: FormGroup;
-    formPutUsersUserId: FormGroup;
+    formGet: FormGroup;
+    formPut: FormGroup;
     url: string = environment.apiUrl;
     @Output() json: EventEmitter<any> = new EventEmitter();
-    @ViewChild('formPut', {static: true}) formPut: ElementRef;
+    @ViewChild('formPutTag', {static: true}) formPutTag: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -25,10 +25,10 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
     }
 
     ngOnInit(): void {
-        this.formGetUsersUserId = this.fb.group({
+        this.formGet = this.fb.group({
             userId: [0, [Validators.required, Validators.min(1)]],
         });
-        this.formPutUsersUserId = this.fb.group({
+        this.formPut = this.fb.group({
             userId: [0, [Validators.required, Validators.min(1)]],
             email: ['', [Validators.required, Validators.email]],
             password: '',
@@ -48,9 +48,9 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
     }
 
     submitFormGetUsersUserId({target}): void {
-        if (this.formGetUsersUserId.invalid) {
-            for (let key in this.formGetUsersUserId.controls) {
-                const formControl = this.formGetUsersUserId.get(key);
+        if (this.formGet.invalid) {
+            for (let key in this.formGet.controls) {
+                const formControl = this.formGet.get(key);
 
                 if (formControl.status === 'INVALID') {
                     console.log('INVALID:', key);
@@ -59,23 +59,18 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
             return;
         }
 
-        const s = this.serviceUsers.getUser(this.formGetUsersUserId.get('userId').value).subscribe(
-            x => {
-                this.json.emit(x);
-                this.formPut.nativeElement.classList.remove('hidden');
-                this.formPutUsersUserId.patchValue(x);
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceUsers.getUser(this.formGet.get('userId').value).subscribe(x => {
+            this.json.emit(x);
+            this.formPutTag.nativeElement.classList.remove('hidden');
+            this.formPut.patchValue(x);
+        });
         this.subscriptions.push(s);
     }
 
     submitFormPutUsersUserId({target}): void {
-        if (this.formPutUsersUserId.invalid) {
-            for (let key in this.formPutUsersUserId.controls) {
-                const formControl = this.formPutUsersUserId.get(key);
+        if (this.formPut.invalid) {
+            for (let key in this.formPut.controls) {
+                const formControl = this.formPut.get(key);
 
                 if (formControl.status === 'INVALID') {
                     console.log('INVALID:', key);
@@ -84,43 +79,29 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
             return;
         }
 
-        const newFormData = Helpers.getNewFormData(this.formPutUsersUserId.value);
-        const s = this.serviceUsers.update(this.formPutUsersUserId.get('userId').value, newFormData).subscribe(
-            x => {
-                this.json.emit(x);
-                target.reset();
-                this.formPutUsersUserId.reset();
-                this.formPutUsersUserId.patchValue({
-                    userId: x.userId,
-                    email: x.email,
-                    avatar: x.avatar,
-                    name: x.name,
-                    password: '',
-                    passwordConfirm: '', // не null, проверка не нужна
-                    isEmailConfirmed: x.isEmailConfirmed,
-                });
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const newFormData = Helpers.getNewFormData(this.formPut.value);
+        const s = this.serviceUsers.update(this.formPut.get('userId').value, newFormData).subscribe(x => {
+            this.json.emit(x);
+            target.reset();
+            this.formPut.reset();
+            this.formPut.patchValue({
+                userId: x.userId,
+                email: x.email,
+                avatar: x.avatar,
+                name: x.name,
+                password: '',
+                passwordConfirm: '', // не null, проверка не нужна
+                isEmailConfirmed: x.isEmailConfirmed,
+            });
+        });
         this.subscriptions.push(s);
     }
 
     addPhoto({target}): void {
-        Helpers.addPhoto(target, this.formPutUsersUserId);
-
-        // if (target.files.length) {
-        //     this.formPutUsersUserId.markAsDirty();
-        // }
-        // this.formPutUsersUserId.patchValue({
-        //     files: target.files
-        // });
+        Helpers.addPhoto(target, this.formPut);
     }
 
     removePhoto({target}): void {
-        this.formPutUsersUserId.patchValue({
-            avatar: '',
-        });
+        this.formPut.get('avatar').setValue('');
     }
 }

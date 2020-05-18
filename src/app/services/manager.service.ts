@@ -3,7 +3,6 @@ import {environment} from '../../environments/environment';
 import {SettingsInterface} from '../interfaces/response/settings';
 import {AsyncSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {Helpers} from '../helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -31,11 +30,7 @@ export class ManagerService {
                 this.settings$.next(x); // дерево пошлем по дороге
                 this.settings$.complete();
             },
-            err => {
-                Helpers.handleErr(err);
-            },
-            () => {
-                s.unsubscribe();
-            });
+            err => s.unsubscribe(),
+            () => s.unsubscribe());
     }
 }

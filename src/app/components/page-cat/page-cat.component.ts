@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
@@ -15,7 +15,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
     styleUrls: ['./page-cat.component.less'],
 })
 export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
-    private subscribeCats: Subscription;
+    private sSpecial: Subscription;
     private subscriptions: Subscription[] = [];
     private loadMoreForScroll: () => void;
     private masonry: ElementRef;
@@ -29,9 +29,11 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild('preloader', {static: true}) preloader: ElementRef;
 
     @ViewChild('masonry') set content(content: ElementRef) {
-        if (content) {
-            this.masonry = content;
+        if (!content) {
+            return;
         }
+
+        this.masonry = content;
     };
 
     constructor(
@@ -41,21 +43,17 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         private serviceBreadcrumbs: BreadcrumbsService,
         private router: Router,
         private route: ActivatedRoute,
+        private changeDetection: ChangeDetectorRef,
     ) {
     }
 
     ngOnInit(): void {
         this.loadMoreForScroll = this.loadMore.bind(this);
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.start(x.catsTree);
-                this.pointerOnCatTree = x.catsTree;
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => {
+            this.start(x.catsTree);
+            this.pointerOnCatTree = x.catsTree;
+        });
         this.subscriptions.push(s);
 
         this.form = this.fb.group({
@@ -99,7 +97,8 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
             this.reset();
             this.renderBC();
             this.isPathRootCat = true;
-            setTimeout(() => Helpers.masonry(this.masonry.nativeElement, '.page-cat_brick'), 0);
+            this.changeDetection.detectChanges();
+            Helpers.masonry(this.masonry.nativeElement, '.page-cat_brick');
             return;
 
             // есть какой-то урл (/cat/asd), но он не найден в структуре дерева
@@ -125,7 +124,7 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.isLoading = true;
-        this.subscribeCats = this.serviceAd.getFromCat(this.form.value).subscribe(
+        this.sSpecial = this.serviceAd.getFromCat(this.form.value).subscribe(
             x => {
                 this.ads.push(...x);
                 this.isLoading = false;
@@ -136,18 +135,15 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
 
                 if (x.length < limit) {
                     this.isLoadAll = true;
-
-                } else {
-                    this.loadMore();
+                    return;
                 }
+
+                this.loadMore();
             },
-            err => {
-                this.isLoading = false;
-                Helpers.handleErr(err.error);
-            },
+            err => this.isLoading = false,
             () => this.isLoading = false
         );
-        this.subscriptions.push(this.subscribeCats);
+        this.subscriptions.push(this.sSpecial);
 
         this.renderBC();
     }
@@ -158,8 +154,8 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         let cats: CatInterface[] = [];
-
-        Helpers.getDescendants(this.pointerOnCatTree.childes, this.form.get('catId').value, cats, 0);
+        const catId = this.form.get('catId').value;
+        Helpers.getDescendants(this.pointerOnCatTree.childes, catId, cats, 0);
         this.serviceBreadcrumbs.bhSubject.next(Helpers.buildBCFromCats(cats));
     }
 
@@ -169,9 +165,11 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         const rect: DOMRect = this.preloader.nativeElement.getBoundingClientRect();
-        if (rect.top < window.innerHeight && !this.isLoading && !this.isLoadAll) {
-            this.send();
+        if (rect.top > window.innerHeight || this.isLoading || this.isLoadAll) {
+            return;
         }
+
+        this.send();
     }
 
     reset(): void {
@@ -182,8 +180,8 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         this.isPathNotFound = false;
         this.form.get('offset').setValue(0);
 
-        if (this.subscribeCats) {
-            this.subscribeCats.unsubscribe();
+        if (this.sSpecial) {
+            this.sSpecial.unsubscribe();
         }
     }
 }

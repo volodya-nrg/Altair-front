@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {ManagerService} from '../../services/manager.service';
-import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-page-adm',
@@ -20,14 +19,7 @@ export class PageAdmComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.pointerOnCatTree = x.catsTree;
-            },
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.pointerOnCatTree = x.catsTree);
         this.subscriptions.push(s);
     }
 

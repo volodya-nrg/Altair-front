@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AdFullInterface} from '../../../interfaces/response/ad';
 import {AuthService} from '../../../services/auth.service';
-import {Helpers} from '../../../helpers';
 import {Subscription} from 'rxjs';
 import {UserInterface} from '../../../interfaces/response/user';
 import {ProfileService} from '../../../services/profile.service';
@@ -66,29 +65,26 @@ export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit
             x => {
                 this.ads.push(...x);
                 this.offset += this.limit;
-                this.isLoading = false;
 
                 if (x.length < this.limit) {
                     this.isLoadAll = true;
-
-                } else {
-                    this.loadMore();
+                    return;
                 }
+
+                this.loadMore();
             },
-            err => {
-                this.isLoading = false;
-                Helpers.handleErr(err);
-            },
-            () => {
-                this.isLoading = false;
-            });
+            err => this.isLoading = false,
+            () => this.isLoading = false
+        );
         this.subscriptions.push(s);
     }
 
     loadMore(): void {
         const rect: DOMRect = this.preloader.nativeElement.getBoundingClientRect();
-        if (rect.top < window.innerHeight && !this.isLoading && !this.isLoadAll) {
-            this.send();
+        if (rect.top > window.innerHeight || this.isLoading || this.isLoadAll) {
+            return;
         }
+
+        this.send();
     }
 }

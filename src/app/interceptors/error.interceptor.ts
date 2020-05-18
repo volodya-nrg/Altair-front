@@ -2,11 +2,14 @@ import {Injectable} from '@angular/core';
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {MyErrorService} from '../services/my-error.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-    constructor() {
+    constructor(
+        private serviceMyError: MyErrorService,
+    ) {
     }
 
     intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
@@ -15,7 +18,12 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log('ErrorInterceptor', err);
 
                 if (err.status === 401) {
+                    console.log('Редирект на стр. авторизации');
                     // редирект на страницу авторизации с гет-параметром редиректа назад
+                } else {
+                    this.serviceMyError.errors$.next({
+                        msg: err.error,
+                    });
                 }
 
                 return throwError(err);

@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Helpers} from '../../helpers';
 import {Subscription} from 'rxjs';
 import {SearchService} from '../../services/search.service';
+import {MyErrorService} from '../../services/my-error.service';
 
 @Component({
     selector: 'app-search',
@@ -19,26 +19,29 @@ export class SearchComponent implements OnInit, OnDestroy {
         private router: Router,
         private route: ActivatedRoute,
         private serviceSearch: SearchService,
+        private serviceMyError: MyErrorService,
     ) {
     }
 
     ngOnInit(): void {
         const s1 = this.route.queryParams.subscribe(
-            params => {
-                const q = params['q'];
+            x => {
+                const q = x['q'];
 
-                if (q) {
-                    this.form.setValue({q: q});
+                if (!q) {
+                    return;
                 }
+
+                this.form.setValue({q: q});
             },
-            err => Helpers.handleErr(err.error),
+            err => this.serviceMyError.errors$.next({msg: err}),
             () => {
             }
         );
         this.subscriptions.push(s1);
 
         this.form = this.fb.group({
-            q: new FormControl('')
+            q: ''
         });
 
         const s2 = this.serviceSearch.watchForReset.subscribe(_ => this.reset());

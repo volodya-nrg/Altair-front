@@ -31,12 +31,8 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
             offset: [0, Validators.min(0)],
         });
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$
+            .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -56,12 +52,7 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceAds.getFromCat(this.form.value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceAds.getFromCat(this.form.value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

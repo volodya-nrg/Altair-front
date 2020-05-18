@@ -74,6 +74,7 @@ import { FormsPagesAdAdidComponent } from './components/forms-pages/forms-pages-
 import { FormsPagesMainComponent } from './components/forms-pages/forms-pages-main/forms-pages-main.component';
 import { FormsSearchAdsComponent } from './components/forms-search/forms-search-ads/forms-search-ads.component';
 import { FormsTestComponent } from './components/forms-test/forms-test.component';
+import { ErrorsFlyComponent } from './components/errors-fly/errors-fly.component';
 
 @NgModule({
     declarations: [
@@ -143,6 +144,7 @@ import { FormsTestComponent } from './components/forms-test/forms-test.component
         FormsPagesMainComponent,
         FormsSearchAdsComponent,
         FormsTestComponent,
+        ErrorsFlyComponent,
     ],
     imports: [
         BrowserModule,

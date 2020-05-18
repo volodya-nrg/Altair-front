@@ -49,25 +49,11 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        const s = this.serviceUsers.create(newFormData).subscribe(
-            x => {
-                this.json.emit(x);
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceUsers.create(newFormData).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 
     addPhoto({target}): void {
         Helpers.addPhoto(target, this.form);
-
-        // if (target.files.length) {
-        //     this.form.markAsDirty();
-        // }
-        // this.form.patchValue({
-        //     files: target.files
-        // });
     }
 }

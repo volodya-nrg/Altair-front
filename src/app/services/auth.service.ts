@@ -5,7 +5,6 @@ import {environment} from '../../environments/environment';
 import {JwtInterface} from '../interfaces/response/jwt';
 import {UserInterface} from '../interfaces/response/user';
 import {JwtPayloadInterface} from '../interfaces/jwt-payload';
-import {Helpers} from '../helpers';
 
 @Injectable({
     providedIn: 'root'
@@ -56,9 +55,11 @@ export class AuthService {
                 this.JWT = x.JWT;
                 this.profileBhSubject.next(x.user);
             },
-            err => Helpers.handleErr(err),
+            err => s.unsubscribe(),
             () => {
+                console.log('====>', s);
                 s.unsubscribe();
-            });
+            }
+        );
     }
 }

@@ -1,7 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Helpers} from '../../../helpers';
 import {KindPropsService} from '../../../services/kind-props.service';
 
 @Component({
@@ -29,12 +28,7 @@ export class FormsKindPropsGetAllComponent implements OnInit, OnDestroy {
     }
 
     submitForm({target}): void {
-        const s = this.serviceKindProps.getAll().subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceKindProps.getAll().subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

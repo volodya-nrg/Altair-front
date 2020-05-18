@@ -29,12 +29,7 @@ export class FormsPropsGetPropsComponent implements OnInit {
             catId: ['0', [Validators.required]],
         });
 
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -54,12 +49,8 @@ export class FormsPropsGetPropsComponent implements OnInit {
             return;
         }
 
-        const s = this.serviceProps.getPropsFullForCat(this.form.get('catId').value).subscribe(
-            x => this.json.emit(x),
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceProps.getPropsFullForCat(this.form.get('catId').value)
+            .subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

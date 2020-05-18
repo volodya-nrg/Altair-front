@@ -43,12 +43,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(
-            x => this.start(x.catsTree),
-            err => Helpers.handleErr(err.error),
-            () => {
-            }
-        );
+        const s = this.serviceManager.settings$.subscribe(x => this.start(x.catsTree));
         this.subscriptions.push(s);
     }
 
@@ -72,13 +67,8 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
                 const bcItems = Helpers.buildBCFromCats(cats);
                 this.serviceBreadcrumbs.bhSubject.next(bcItems);
             },
-            err => {
-                this.isLoading = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.isLoading = false;
-            }
+            err => this.isLoading = false,
+            () => this.isLoading = false
         );
         this.subscriptions.push(s);
     }

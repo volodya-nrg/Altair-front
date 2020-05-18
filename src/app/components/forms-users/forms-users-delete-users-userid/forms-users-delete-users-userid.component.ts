@@ -2,7 +2,6 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../services/user.service';
-import {Helpers} from '../../../helpers';
 
 @Component({
     selector: 'app-forms-users-delete-users-userid',
@@ -42,15 +41,10 @@ export class FormsUsersDeleteUsersUseridComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceUsers.delete(this.form.get('userId').value).subscribe(
-            x => {
-                this.json.emit(x);
-                this.form.reset();
-            },
-            err => Helpers.handleErr(err),
-            () => {
-            },
-        );
+        const s = this.serviceUsers.delete(this.form.get('userId').value).subscribe(x => {
+            this.json.emit(x);
+            this.form.reset();
+        });
         this.subscriptions.push(s);
     }
 }

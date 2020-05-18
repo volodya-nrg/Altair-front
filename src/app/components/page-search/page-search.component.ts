@@ -3,7 +3,6 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AdInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';
-import {Helpers} from '../../helpers';
 import {SearchService} from '../../services/search.service';
 
 @Component({
@@ -52,16 +51,9 @@ export class PageSearchComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.ads.length = 0;
         const s = this.serviceAd.getByQuery(this.q, 0).subscribe(
-            x => {
-                this.ads = x;
-            },
-            err => {
-                this.isLoading = false;
-                Helpers.handleErr(err.error);
-            },
-            () => {
-                this.isLoading = false;
-            }
+            x => this.ads = x,
+            err => this.isLoading = false,
+            () => this.isLoading = false
         );
         this.subscriptions.push(s);
     }

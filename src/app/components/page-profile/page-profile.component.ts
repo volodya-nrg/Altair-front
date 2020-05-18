@@ -3,7 +3,6 @@ import {UserInterface} from '../../interfaces/response/user';
 import {AuthService} from '../../services/auth.service';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
-import {Helpers} from '../../helpers';
 
 @Component({
     selector: 'app-page-profile',
@@ -29,13 +28,10 @@ export class PageProfileComponent implements OnInit, OnDestroy {
 
     logout(): void {
         const s = this.serviceAuth.logout().subscribe(
-            _ => {
+            x => {
                 localStorage.clear();
                 this.serviceAuth.profileBhSubject.next(null);
                 this.router.navigate(['/main']).then();
-            },
-            err => Helpers.handleErr(err),
-            () => {
             }
         );
         this.subscriptions.push(s);
