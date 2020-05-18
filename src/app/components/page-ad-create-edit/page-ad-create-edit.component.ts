@@ -4,7 +4,7 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Observable, Subscription} from 'rxjs';
 import {PropService} from '../../services/prop.service';
 import {PropFullInterface} from '../../interfaces/response/prop';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../services/ad.service';
 import {Helpers} from '../../helpers';
 import {ManagerService} from '../../services/manager.service';
@@ -27,7 +27,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
     private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
-    private ymapsPathScript: string = `https://api-maps.yandex.ru/2.1/?apikey=${environment.ymapKey}&lang=ru_RU`;
+    private ymapsPathScript: string = environment.ymapsPathScript;
     private ym: any;
     private map: any;
     private defaultCenterMap: number[] = [55.76, 37.64];
@@ -340,8 +340,8 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         let owner = target.parentNode;
         let grandFather = owner.parentElement;
         const index = [...grandFather.childNodes].indexOf(owner);
-        this.form.removeControl('filesAlreadyHas[' + index + ']');
 
+        this.form.removeControl('filesAlreadyHas[' + index + ']');
         owner.remove();
 
         if (!grandFather.querySelectorAll('.form_thumbnails_thumbnail').length) {

@@ -1,5 +1,5 @@
 export const environment = {
-    production: false,
+    production: true,
     apiUrl: 'http://localhost:8080',
     emailSupport: 'support@altair.uz',
     curYear: 2020,
@@ -8,5 +8,7 @@ export const environment = {
     minLenPassword: 6,
     minLenHash: 32,
     domain: 'https://www.altair.uz',
-    ymapKey: '777a18a8-eb0d-4f9b-ae88-99aed55c227b',
+    ymapsPathScript: 'https://api-maps.yandex.ru/2.1/?apikey=777a18a8-eb0d-4f9b-ae88-99aed55c227b&lang=ru_RU',
+    youTubeExampleLink: 'https://www.youtube.com/watch?v=zU-LndSG5RE',
+    // походу массивы тут нельзя ставить
 };
