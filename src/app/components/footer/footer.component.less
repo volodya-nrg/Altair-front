@@ -12,15 +12,28 @@ footer {
     justify-content: space-between;
     color: @color_font_basic;
 
-    & > * {
-        flex-basis: 30%;
+    &_column {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: center;
 
         &:not(:first-child) {
             margin-left: 0.5em; // 8px / 16px
         }
 
+        &:first-child {
+            justify-content: flex-start;
+        }
+
         &:last-child {
+            justify-content: flex-end;
             text-align: right;
+        }
+
+        & > ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
     }
 
