@@ -1,6 +1,7 @@
 <div class="dynamic-prop" [formGroup]="prop">
     <div class="dynamic-prop_title">
-        {{ prop.get('title').value }} {{ prop.get('privateComment').value ? '(' + prop.get('privateComment').value + ')' : '' }}
+        {{ prop.get('title').value }}
+        {{ prop.get('privateComment').value ? '(' + prop.get('privateComment').value + ')' : '' }}
     </div>
     <div class="dynamic-prop_content">
         <div>

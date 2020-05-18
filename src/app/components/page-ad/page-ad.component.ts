@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {AdService} from '../../services/ad.service';
 import {Subscription} from 'rxjs';

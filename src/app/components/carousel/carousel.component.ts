@@ -7,8 +7,7 @@ import {
     Input,
     OnDestroy,
     OnInit,
-    ViewChild,
-    ViewEncapsulation
+    ViewChild
 } from '@angular/core';
 
 @Component({
@@ -122,6 +121,9 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit, Afte
         if (!this.items.length) {
             return;
         }
+
+        const row: HTMLBaseElement = this.row.nativeElement;
+
         if (index > this.items.length - 1) {
             index = this.items.length - 1;
         }
@@ -149,13 +151,15 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit, Afte
             }
         }
 
-        this.row.nativeElement.classList.remove('sx-transition');
+        row.classList.remove('sx-transition');
         this.render();
-        setTimeout(() => this.row.nativeElement.classList.add('sx-transition'), this.animationTimeMS);
+        setTimeout(() => row.classList.add('sx-transition'), this.animationTimeMS);
     }
 
     render(): void {
         let offset: number = 0;
+        const btnLeft: HTMLBaseElement = this.btnLeft.nativeElement;
+        const btnRight: HTMLBaseElement = this.btnRight.nativeElement;
 
         for (let i = 0; i < this.sideLeft.length; i++) {
             offset += this.getTrueWidth(this.sideLeft[i].offsetWidth);
@@ -163,17 +167,17 @@ export class CarouselComponent implements OnInit, OnDestroy, AfterViewInit, Afte
 
         this.row.nativeElement.style.transform = ('translateX(' + (-1 * offset).toString() + 'px)');
 
-        if (this.btnLeft.nativeElement.classList.contains(this.classNameDisabled)) {
-            this.btnLeft.nativeElement.classList.remove(this.classNameDisabled);
+        if (btnLeft.classList.contains(this.classNameDisabled)) {
+            btnLeft.classList.remove(this.classNameDisabled);
         }
-        if (this.btnRight.nativeElement.classList.contains(this.classNameDisabled)) {
-            this.btnRight.nativeElement.classList.remove(this.classNameDisabled);
+        if (btnRight.classList.contains(this.classNameDisabled)) {
+            btnRight.classList.remove(this.classNameDisabled);
         }
         if (!this.sideLeft.length) {
-            this.btnLeft.nativeElement.classList.add(this.classNameDisabled);
+            btnLeft.classList.add(this.classNameDisabled);
         }
         if (!this.sideRight.length) {
-            this.btnRight.nativeElement.classList.add(this.classNameDisabled);
+            btnRight.classList.add(this.classNameDisabled);
         }
     }
 }

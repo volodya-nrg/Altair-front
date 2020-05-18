@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AdFullInterface} from '../../../interfaces/response/ad';
 import {AuthService} from '../../../services/auth.service';
 import {Helpers} from '../../../helpers';

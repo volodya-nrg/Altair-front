@@ -1,15 +1,4 @@
-import {
-    AfterViewInit,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    OnDestroy,
-    OnInit,
-    Output,
-    ViewChild,
-    ViewEncapsulation
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {ManagerService} from '../../services/manager.service';
 import {Helpers} from '../../helpers';

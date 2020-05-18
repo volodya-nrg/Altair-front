@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CatService} from '../../services/cat.service';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 import {Observable, Subscription} from 'rxjs';

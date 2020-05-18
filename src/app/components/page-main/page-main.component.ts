@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
 import {Helpers} from '../../helpers';

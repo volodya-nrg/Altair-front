@@ -2,14 +2,16 @@
     <a class="ad_cover" [routerLink]=" '/ad/' + ad.slug ">
         <img *ngIf="ad.images && ad.images.length"
              [src]="url + '/api/v1/resample/224/0/' + ad.images[0].filepath"
+             alt="{{ ad.title }}"
              title="{{ ad.title }}"/>
     </a>
     <div class="ad_data">
         <a class="ad_title" [routerLink]=" '/ad/' + ad.slug " title="{{ ad.title }}">
             {{ ad.title }}
         </a>
-        <div *ngIf="ad.price === 0" class="ad_price"><strong>Бесплатно</strong></div>
-        <div *ngIf="ad.price > 0" class="ad_price text-nowrap"><strong>{{ ad.price | myCurrency }}</strong> сум</div>
+        <div *ngIf="ad.price > 0; else freeCost" class="ad_price text-nowrap">
+            <strong>{{ ad.price | myCurrency }}</strong> сум
+        </div>
         <small *ngIf="ad.cityName" class="ad_city">{{ ad.cityName }}</small>
         <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
         <div *ngIf="inProfile" class="align-right">
@@ -17,3 +19,6 @@
         </div>
     </div>
 </div>
+<ng-template #freeCost>
+    <div class="ad_price"><strong>Бесплатно</strong></div>
+</ng-template>

@@ -1,12 +1,13 @@
-import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
 import {UserInterface} from '../../../interfaces/response/user';
 import {AuthService} from '../../../services/auth.service';
 import {ProfileService} from '../../../services/profile.service';
 import {Router} from '@angular/router';
 import {environment} from '../../../../environments/environment';
+import {ChangeOldPassword} from '../../../validators/change-old-password';
 
 @Component({
     selector: 'app-page-profile-info',
@@ -34,7 +35,7 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
             passwordOld: ['', Validators.minLength(environment.minLenPassword)],
             passwordNew: ['', Validators.minLength(environment.minLenPassword)],
             passwordConfirm: ['', Validators.minLength(environment.minLenPassword)],
-        }, {validators: PasswordsValidator});
+        }, {validators: ChangeOldPassword.PasswordsValidator});
     }
 
     ngOnInit(): void {
@@ -131,25 +132,3 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
         });
     }
 }
-
-export const PasswordsValidator: ValidatorFn = (control: FormGroup): ValidationErrors | null => {
-    let passwordOld = control.get('passwordOld').value;
-    let passwordNew = control.get('passwordNew').value;
-    let passwordConfirm = control.get('passwordConfirm').value;
-
-    if (passwordOld) {
-        passwordOld = passwordOld.trim();
-    }
-    if (passwordNew) {
-        passwordNew = passwordNew.trim();
-    }
-    if (passwordConfirm) {
-        passwordConfirm = passwordConfirm.trim();
-    }
-
-    if (!passwordOld && !passwordNew && !passwordConfirm || passwordOld && passwordNew === passwordConfirm) {
-        return null;
-    }
-
-    return {passwordsError: 'ошибка в паролях'};
-};

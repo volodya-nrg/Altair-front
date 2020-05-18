@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {ValuePropInterface} from '../../interfaces/response/value-prop';

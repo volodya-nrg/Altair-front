@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CatTreeInterface} from '../../interfaces/response/cat';
 
 @Component({
