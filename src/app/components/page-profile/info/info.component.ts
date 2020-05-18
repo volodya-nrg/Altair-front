@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Helpers} from '../../../helpers';
@@ -14,12 +14,15 @@ import {ChangeOldPassword} from '../../../validators/change-old-password';
     templateUrl: './info.component.html',
     styleUrls: ['./info.component.less'],
 })
-export class PageProfileInfoComponent implements OnInit, OnDestroy {
+export class PageProfileInfoComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private attentionMsg: string = 'Вы точно хотите удалить профиль?\nОн и все сопутствующие данные удалятся безвовзравно.\nПосле восстановить уже не получится.';
+    private avatarSave: string = '';
     url: string = environment.apiUrl;
     form: FormGroup;
     profile: UserInterface;
+    isProdMode: boolean = environment.production;
+    @ViewChild('avatar', {static: true}) avatar: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -30,7 +33,6 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
         this.form = this.fb.group({
             files: '',
             avatar: '',
-            email: '',
             name: '',
             passwordOld: ['', Validators.minLength(environment.minLenPassword)],
             passwordNew: ['', Validators.minLength(environment.minLenPassword)],
@@ -39,8 +41,14 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.serviceAuth.profileBhSubject.subscribe(x => {
+        const s = this.serviceAuth.profile$.subscribe(x => {
             this.profile = x;
+
+            // если пришло null, то выходим
+            if (!x) {
+                return;
+            }
+
             this.form.patchValue({
                 email: this.profile.email,
                 avatar: this.profile.avatar,
@@ -52,6 +60,9 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.forEach(x => x.unsubscribe());
+    }
+
+    ngAfterViewInit(): void {
     }
 
     onSubmit({target}): void {
@@ -78,7 +89,13 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
             x => {
                 target.reset();
                 this.form.reset();
-                this.serviceAuth.profileBhSubject.next(x);
+                this.serviceAuth.profile$.next(x);
+                this.avatarSave = '';
+                this.form.patchValue({
+                    passwordOld: '',
+                    passwordNew: '',
+                    passwordConfirm: '',
+                });
             },
             err => {
                 btnSubmit.disabled = false;
@@ -112,5 +129,20 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
 
     addPhoto({target}): void {
         Helpers.addPhoto(target, this.form);
+    }
+
+    deletePhoto({target}): void {
+        const avatarTag = this.avatar.nativeElement;
+
+        if (avatarTag.classList.contains('sx-statement')) {
+            avatarTag.classList.remove('sx-statement');
+            this.form.get('avatar').setValue(this.avatarSave);
+
+        } else {
+            avatarTag.classList.add('sx-statement');
+            this.avatarSave = this.form.get('avatar').value;
+            this.form.get('avatar').setValue('');
+            this.form.markAsDirty();
+        }
     }
 }

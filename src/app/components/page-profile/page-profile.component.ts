@@ -27,13 +27,11 @@ export class PageProfileComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        const s = this.serviceAuth.logout().subscribe(
-            x => {
-                localStorage.clear();
-                this.serviceAuth.profileBhSubject.next(null);
-                this.router.navigate(['/main']).then();
-            }
-        );
+        const s = this.serviceAuth.logout().subscribe(x => {
+            localStorage.clear();
+            this.serviceAuth.profile$.next(null);
+            this.router.navigate(['/main']).then();
+        });
         this.subscriptions.push(s);
     }
 }

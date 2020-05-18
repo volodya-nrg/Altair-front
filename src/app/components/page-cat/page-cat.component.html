@@ -5,16 +5,16 @@
     <ng-container *ngIf="isPathRootCat">
         <h1>Категории:</h1>
         <div #masonry class="page-cat_bricks">
-            <div *ngFor="let cat of pointerOnCatTree?.childes" class="page-cat_brick">
+            <div *ngFor="let cat of catTree?.childes" class="page-cat_brick">
                 <h2>
-                    <a class="text-eclipse" href="javascript:void();" [routerLink]="'/cat/'+cat.slug">
+                    <a class="text-eclipse" href="javascript:void(0);" [routerLink]="'/cat/'+cat.slug">
                         {{ cat.name }}
                     </a>
                 </h2>
                 <ul *ngIf="cat.childes.length">
                     <li *ngFor="let subCat of cat.childes">
                         <h3>
-                            <a class="text-eclipse" href="javascript:void();"
+                            <a class="text-eclipse" href="javascript:void(0);"
                                [routerLink]="'/cat/'+cat.slug+'/'+subCat.slug">
                                 {{ subCat.name }}
                             </a>

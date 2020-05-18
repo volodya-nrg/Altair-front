@@ -39,13 +39,14 @@ export class PageMainComponent implements OnInit, OnDestroy {
             x => {
                 this.lastAdsFull = x.lastAdsFull;
 
-                if (this.lastAdsFull.length) {
+                if (!this.lastAdsFull.length) {
                     return;
                 }
 
                 const needCatId = this.lastAdsFull[0].catId;
                 let listCat = Helpers.getAncestors(catsTree.childes, needCatId);
                 this.lastChainBC = Helpers.buildBCFromCats(listCat);
+
             },
             err => this.isLoading = false,
             () => this.isLoading = false

@@ -22,6 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     // редирект на страницу авторизации с гет-параметром редиректа назад
                 } else {
                     this.serviceMyError.errors$.next({
+                        title: `${err.statusText} (${err.status})`,
                         msg: err.error,
                     });
                 }

@@ -30,9 +30,10 @@ export class PageProfileAdsComponent implements OnInit, OnDestroy, AfterViewInit
     ngOnInit(): void {
         this.loadMoreForScroll = this.loadMore.bind(this);
 
-        const s1 = this.serviceAuth.profileBhSubject.subscribe(x => {
+        const s1 = this.serviceAuth.profile$.subscribe(x => {
             this.profile = x;
 
+            // может прийти null. При этом отправку данных не делаем.
             if (!x) {
                 return;
             }

@@ -16,7 +16,7 @@
                 <input type="submit" [disabled]="form.invalid" value="Изменить"/>
             </div>
             <div *ngIf="!isProdMode" class="form_row">
-                {{ form | json }}
+                {{ form.value | json }}
             </div>
         </form>
     </div>

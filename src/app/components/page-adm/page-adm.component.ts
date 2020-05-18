@@ -11,7 +11,7 @@ import {ManagerService} from '../../services/manager.service';
 export class PageAdmComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     jsonResult: Object;
-    pointerOnCatTree: CatTreeInterface;
+    catTree: CatTreeInterface;
 
     constructor(
         private serviceManager: ManagerService,
@@ -19,7 +19,7 @@ export class PageAdmComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(x => this.pointerOnCatTree = x.catsTree);
+        const s = this.serviceManager.settings$.subscribe(x => this.catTree = x.catsTree);
         this.subscriptions.push(s);
     }
 

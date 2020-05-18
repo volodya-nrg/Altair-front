@@ -20,11 +20,10 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.isLoading = true;
-        const s = this.serviceBreadcrumbs.bhSubject.subscribe(
-            x => this.items = x,
-            err => this.isLoading = false,
-            () => this.isLoading = false
-        );
+        const s = this.serviceBreadcrumbs.sender$.subscribe(x => {
+            this.items = x;
+            this.isLoading = false;
+        });
         this.subscriptions.push(s);
     }
 

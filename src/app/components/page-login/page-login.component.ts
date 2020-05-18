@@ -53,7 +53,7 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
         const s = this.serviceAuth.login(this.form.value).subscribe(
             x => {
                 this.serviceAuth.JWT = x.JWT;
-                this.serviceAuth.profileBhSubject.next(x.user);
+                this.serviceAuth.profile$.next(x.user);
                 this.router.navigate(['/profile']).then();
             },
             err => submit.disabled = false,

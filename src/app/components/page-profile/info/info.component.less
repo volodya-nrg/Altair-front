@@ -16,6 +16,7 @@
     }
 
     &_avatar {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -23,6 +24,26 @@
         height: 20em; // 320px / 16px
         overflow: hidden;
         background-color: whitesmoke;
+
+        &.sx-statement {
+            img {
+                opacity: 0.5;
+            }
+        }
+
+        &_delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em; // 24px / 16px
+            width: 1em; // 24px / 24px
+            height: 1em; // 24px / 24px
+            background-color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
 
         img {
             max-width: 100%;

@@ -32,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 this.serviceAuth.JWT = ''; // т.к. заголовок выставлен, то можно удалить, чтоб не было повторных вызовов
                 this.serviceAuth.refreshTokens().subscribe(x => {
                     this.serviceAuth.JWT = x.JWT;
-                    this.serviceAuth.profileBhSubject.next(x.user);
+                    this.serviceAuth.profile$.next(x.user);
                 });
             }
         }

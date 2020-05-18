@@ -11,7 +11,7 @@ import {JwtPayloadInterface} from '../interfaces/jwt-payload';
 })
 export class AuthService {
     private url: string = environment.apiUrl;
-    profileBhSubject: BehaviorSubject<UserInterface>;
+    profile$: BehaviorSubject<UserInterface> = new BehaviorSubject<UserInterface>(null);
 
     set JWT(data: string) {
         if (data === '') {
@@ -29,7 +29,6 @@ export class AuthService {
     constructor(
         private http: HttpClient,
     ) {
-        this.profileBhSubject = new BehaviorSubject<UserInterface>(null);
     }
 
     login(data: any): Observable<JwtInterface> {
@@ -53,13 +52,10 @@ export class AuthService {
         const s = this.refreshTokens().subscribe(
             x => {
                 this.JWT = x.JWT;
-                this.profileBhSubject.next(x.user);
+                this.profile$.next(x.user);
             },
             err => s.unsubscribe(),
-            () => {
-                console.log('====>', s);
-                s.unsubscribe();
-            }
+            () => s.unsubscribe()
         );
     }
 }

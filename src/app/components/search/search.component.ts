@@ -44,7 +44,7 @@ export class SearchComponent implements OnInit, OnDestroy {
             q: ''
         });
 
-        const s2 = this.serviceSearch.watchForReset.subscribe(_ => this.reset());
+        const s2 = this.serviceSearch.watchForReset.subscribe(x => this.reset());
         this.subscriptions.push(s2);
     }
 

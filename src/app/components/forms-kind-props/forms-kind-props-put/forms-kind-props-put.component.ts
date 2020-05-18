@@ -54,18 +54,17 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
             return;
         }
 
-        const s = this.serviceKindProps.getOne(this.formGetKindPropsKindPropId.get('kindPropId').value).subscribe(
-            x => {
-                // затереть предыдущее
-                this.form = this.fb.group(this.defaultControls);
-                this.editKindProp = null;
+        const kindPropId: number = this.formGetKindPropsKindPropId.get('kindPropId').value;
+        const s = this.serviceKindProps.getOne(kindPropId).subscribe(x => {
+            // затереть предыдущее
+            this.form = this.fb.group(this.defaultControls);
+            this.editKindProp = null;
 
-                this.json.emit(x);
-                this.formPut.nativeElement.classList.remove('hidden');
-                this.form.patchValue(x);
-                this.editKindProp = x;
-            },
-        );
+            this.json.emit(x);
+            this.formPut.nativeElement.classList.remove('hidden');
+            this.form.patchValue(x);
+            this.editKindProp = x;
+        });
         this.subscriptions.push(s);
     }
 

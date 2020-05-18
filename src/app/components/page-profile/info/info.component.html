@@ -1,9 +1,13 @@
 <div class="page-profile-info">
     <div class="page-profile-info_flexbox">
         <div>
-            <div class="page-profile-info_avatar">
-                <img *ngIf="profile && profile.avatar"
-                     [src]="url + '/api/v1/resample/0/320/' + profile.avatar"/>
+            <div #avatar class="page-profile-info_avatar">
+                <ng-container *ngIf="profile && profile.avatar">
+                    <div (click)="deletePhoto($event)"
+                         class="page-profile-info_avatar_delete" title="удалить">&times;
+                    </div>
+                    <img [src]="url + '/api/v1/resample/0/320/' + profile.avatar"/>
+                </ng-container>
             </div>
         </div>
         <div>
@@ -15,7 +19,7 @@
                 </div>
                 <div class="form_row">
                     <div class="form_title">Е-мэйл:</div>
-                    <input formControlName="email" type="email" readonly="readonly"/>
+                    <input name="email" type="email" disabled="disabled" [value]="profile?.email"/>
                 </div>
                 <div class="form_row">
                     <div class="form_title">Имя:</div>
@@ -38,6 +42,9 @@
                 </div>
                 <div class="align-right">
                     <span class="text-mute">Дата регистрации</span>: {{ profile?.createdAt | date }}
+                </div>
+                <div *ngIf="!isProdMode" class="form_row">
+                    {{ form.value | json }}
                 </div>
             </form>
         </div>

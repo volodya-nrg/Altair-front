@@ -19,12 +19,14 @@ export class ErrorsFlyComponent implements OnInit {
     ngOnInit(): void {
         this.serviceMyErrors.errors$.subscribe(x => {
             this.items.push(x);
-            setTimeout(() => this.remove(this.items.length - 1), this.waitTimeSec * 1000);
+            const index: number = this.items.length - 1;
+
+            setTimeout(() => this.remove(index), this.waitTimeSec * 1000);
         });
     }
 
     remove(i: number): void {
-        if (this.items[i]) {
+        if (!this.items[i]) {
             return;
         }
 

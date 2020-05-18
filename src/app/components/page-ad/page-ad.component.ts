@@ -64,8 +64,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
                 let cats: CatInterface[] = [];
                 Helpers.getDescendants(catsTree.childes, this.adFull.catId, cats, 0);
 
-                const bcItems = Helpers.buildBCFromCats(cats);
-                this.serviceBreadcrumbs.bhSubject.next(bcItems);
+                this.serviceBreadcrumbs.sender$.next(Helpers.buildBCFromCats(cats));
             },
             err => this.isLoading = false,
             () => this.isLoading = false

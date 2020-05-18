@@ -81,20 +81,18 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
         }
 
         const catId: number = this.formGet.get('catId').value;
-        const s = this.serviceCats.getCatId(catId, false).subscribe(
-            x => {
-                this.json.emit(x);
-                this.formPutEl.nativeElement.classList.remove('hidden');
+        const s = this.serviceCats.getCatId(catId, false).subscribe(x => {
+            this.json.emit(x);
+            this.formPutEl.nativeElement.classList.remove('hidden');
 
-                this.formPut = this.fb.group(this.defaultControls);
-                this.formPut.get('props').setValue(this.fb.array(this.propsFull));
+            this.formPut = this.fb.group(this.defaultControls);
+            this.formPut.get('props').setValue(this.fb.array(this.propsFull));
 
-                this.formPut.patchValue(x);
-                const tmpProps = this.formPut.get('props') as FormArray;
-                x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));
-                this.dynamicProps.propsFormArray = tmpProps;
-            },
-        );
+            this.formPut.patchValue(x);
+            const tmpProps = this.formPut.get('props') as FormArray;
+            x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));
+            this.dynamicProps.propsFormArray = tmpProps;
+        });
         this.subscriptions.push(s);
     }
 

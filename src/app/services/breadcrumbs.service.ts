@@ -6,9 +6,9 @@ import {BehaviorSubject} from 'rxjs';
     providedIn: 'root'
 })
 export class BreadcrumbsService {
-    bhSubject: BehaviorSubject<BreadcrumbsInterface[]>;
+    sender$: BehaviorSubject<BreadcrumbsInterface[]>;
 
     constructor() {
-        this.bhSubject = new BehaviorSubject([]);
+        this.sender$ = new BehaviorSubject([]); // все же нужен behavior
     }
 }
