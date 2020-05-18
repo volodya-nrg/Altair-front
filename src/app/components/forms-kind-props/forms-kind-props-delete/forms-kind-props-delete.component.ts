@@ -21,15 +21,12 @@ export class FormsKindPropsDeleteComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm kind-props delete');
-
         this.form = this.fb.group({
             kindPropId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm kind-props delete');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

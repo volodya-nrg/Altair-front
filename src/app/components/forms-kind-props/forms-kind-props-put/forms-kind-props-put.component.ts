@@ -30,8 +30,6 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     ngOnInit(): void {
-        console.log('init adm kind-props put');
-
         this.formGetKindPropsKindPropId = this.fb.group({
             kindPropId: [0, [Validators.required, Validators.min(1)]],
         });
@@ -39,7 +37,6 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm kind-props put');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

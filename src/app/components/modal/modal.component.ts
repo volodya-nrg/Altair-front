@@ -12,13 +12,10 @@ export class ModalComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init modal');
         document.body.classList.add('sx-modal');
     }
 
     ngOnDestroy(): void {
-        console.log('destroy modal');
-
         if (!document.body.querySelector('.modal')) {
             document.body.classList.remove('sx-modal');
         }

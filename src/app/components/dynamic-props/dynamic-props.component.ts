@@ -13,8 +13,8 @@ import {Helpers} from '../../helpers';
 export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     props: PropInterface[] = [];
-    @ViewChild('select', {static: true}) select: ElementRef;
     @Input() propsFormArray: FormArray;
+    @ViewChild('select', {static: true}) select: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -23,8 +23,6 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm block-props');
-
         const s = this.serviceManager.settings$.subscribe(
             x => this.props = x.props,
             err => Helpers.handleErr(err.error),
@@ -35,7 +33,6 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm block-props');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

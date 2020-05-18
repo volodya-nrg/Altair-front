@@ -14,6 +14,7 @@ export class PageRecoverCheckHashComponent implements OnInit {
     private subscriptions: Subscription[] = [];
     private attentionMsg: string = 'Пароль успешно изменен.';
     form: FormGroup;
+    isProdMode: boolean = environment.production;
 
     constructor(
         private fb: FormBuilder,
@@ -24,12 +25,7 @@ export class PageRecoverCheckHashComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init PageRecoverComponent');
-
         const hash = this.route.snapshot.paramMap.get('hash');
-
-        console.log(hash);
-
         this.form = this.fb.group({
             hash: [hash, [Validators.required, Validators.minLength(environment.minLenHash)]],
             password: ['', [Validators.required, Validators.minLength(environment.minLenPassword)]],
@@ -38,7 +34,6 @@ export class PageRecoverCheckHashComponent implements OnInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageRecoverComponent');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

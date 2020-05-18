@@ -6,5 +6,4 @@ import {Component} from '@angular/core';
     styleUrls: ['./ok.component.less'],
 })
 export class PageRegisterOkComponent {
-
 }

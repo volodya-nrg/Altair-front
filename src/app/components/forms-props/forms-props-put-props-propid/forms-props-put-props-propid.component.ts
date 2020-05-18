@@ -42,8 +42,6 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm props put');
-
         this.formGetPropsPropId = this.fb.group({
             propId: [0, [Validators.required, Validators.min(1)]],
         });
@@ -59,7 +57,6 @@ export class FormsPropsPutPropsPropidComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm props put');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

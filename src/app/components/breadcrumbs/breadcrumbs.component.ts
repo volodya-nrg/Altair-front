@@ -20,8 +20,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init breadcrumbsComponent');
-
         this.isLoading = true;
         const s = this.serviceBreadcrumbs.bhSubject.subscribe(
             x => {
@@ -40,7 +38,6 @@ export class BreadcrumbsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy breadcrumbsComponent');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 }

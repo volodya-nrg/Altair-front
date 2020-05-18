@@ -27,7 +27,6 @@ export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnInit(): void {
-        console.log('init top-menu-cats-tree comp');
         const s = this.serviceManager.settings$.subscribe(
             x => this.catTree = x.catsTree,
             err => Helpers.handleErr(err.error),
@@ -38,7 +37,6 @@ export class TopMenuCatsTreeComponent implements OnInit, OnDestroy, AfterViewIni
     }
 
     ngOnDestroy(): void {
-        console.log('destroy top-menu-cats-tree component');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

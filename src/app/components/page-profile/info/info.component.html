@@ -2,7 +2,8 @@
     <div class="page-profile-info_flexbox">
         <div>
             <div class="page-profile-info_avatar">
-                <img *ngIf="profile && profile.avatar" [src]="url + '/api/v1/resample/0/320/' + profile.avatar"/>
+                <img *ngIf="profile && profile.avatar"
+                     [src]="url + '/api/v1/resample/0/320/' + profile.avatar"/>
             </div>
         </div>
         <div>

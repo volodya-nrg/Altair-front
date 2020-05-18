@@ -25,7 +25,6 @@ export class FormsPropsGetPropsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm props');
         this.form = this.fb.group({
             catId: ['0', [Validators.required]],
         });
@@ -40,7 +39,6 @@ export class FormsPropsGetPropsComponent implements OnInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm props');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

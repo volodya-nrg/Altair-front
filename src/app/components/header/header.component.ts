@@ -18,13 +18,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init headerComp');
         const s = this.authService.profileBhSubject.subscribe(x => this.profile = x);
         this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
-        console.log('destroy headerComp');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 }

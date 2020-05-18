@@ -21,12 +21,10 @@ export class FormsKindPropsGetAllComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm kind props');
         this.form = this.fb.group({});
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm kind props');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

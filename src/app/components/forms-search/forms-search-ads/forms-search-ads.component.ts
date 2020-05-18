@@ -32,14 +32,9 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm search ads');
-
         this.form = this.fb.group(this.defaultControls);
-
         const s = this.serviceManager.settings$.subscribe(
-            x => {
-                this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
-            },
+            x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree),
             err => Helpers.handleErr(err.error),
             () => {
             }
@@ -48,7 +43,6 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm search ads');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

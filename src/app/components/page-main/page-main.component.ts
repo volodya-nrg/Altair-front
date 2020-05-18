@@ -25,8 +25,6 @@ export class PageMainComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init pageMain');
-
         const s = this.serviceManager.settings$.subscribe(
             x => this.start(x.catsTree),
             err => Helpers.handleErr(err.error),
@@ -37,7 +35,6 @@ export class PageMainComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy pageMain');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

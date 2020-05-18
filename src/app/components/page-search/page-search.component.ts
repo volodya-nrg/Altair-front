@@ -26,8 +26,6 @@ export class PageSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init PageSearch');
-
         const s = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
                 this.send();
@@ -39,7 +37,6 @@ export class PageSearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy searchPage');
         this.subscriptions.forEach(x => x.unsubscribe());
         this.serviceSearch.watchForReset.next(true);
     }

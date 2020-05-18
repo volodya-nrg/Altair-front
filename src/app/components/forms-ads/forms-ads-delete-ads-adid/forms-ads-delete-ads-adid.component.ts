@@ -21,15 +21,12 @@ export class FormsAdsDeleteAdsAdidComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm ads delete');
-
         this.form = this.fb.group({
             adId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm ads delete');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

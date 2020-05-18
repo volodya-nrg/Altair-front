@@ -39,8 +39,6 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init page profile info');
-
         this.serviceAuth.profileBhSubject.subscribe(x => {
             if (!x) {
                 return;
@@ -57,7 +55,6 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy page profile info');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

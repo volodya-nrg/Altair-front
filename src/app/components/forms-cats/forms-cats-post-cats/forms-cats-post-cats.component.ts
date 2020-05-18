@@ -43,8 +43,6 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
-
         this.formPostCats = this.fb.group(this.defaultControls);
         this.formPostCats.get('props').setValue(this.fb.array(this.propsFull));
 
@@ -60,7 +58,6 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

@@ -40,8 +40,6 @@ export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm props post');
-
         this.form = this.fb.group(this.defaultControls);
         this.form.get('kindPropId').valueChanges.subscribe(x => {
             this.curKindPropName = '';
@@ -63,7 +61,6 @@ export class FormsPropsPostPropsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm props post');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

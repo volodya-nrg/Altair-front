@@ -21,12 +21,10 @@ export class FormsTestComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm test');
         this.form = this.fb.group({});
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm test');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

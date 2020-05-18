@@ -21,11 +21,9 @@ export class PageProfileComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init PageProfile');
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageProfile');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

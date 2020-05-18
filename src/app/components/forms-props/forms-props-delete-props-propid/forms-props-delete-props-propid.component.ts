@@ -21,15 +21,12 @@ export class FormsPropsDeletePropsPropidComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm props delete');
-
         this.form = this.fb.group({
             propId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm props delete');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

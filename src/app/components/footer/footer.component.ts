@@ -9,7 +9,4 @@ import {environment} from '../../../environments/environment';
 export class FooterComponent {
     emailSupport: string = environment.emailSupport;
     curYear: number = environment.curYear;
-
-    constructor() {
-    }
 }

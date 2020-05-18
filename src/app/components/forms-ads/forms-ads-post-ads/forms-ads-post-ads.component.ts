@@ -45,8 +45,6 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm ads post');
-
         this.form = this.fb.group(this.defaultControls);
 
         const s = this.serviceManager.settings$.subscribe(
@@ -62,7 +60,6 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm ads post');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
@@ -92,7 +89,6 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         const catId: number = parseInt(this.form.get('catId').value, 10);
 
         if (Helpers.isLeaf(this.catsTree.childes, catId) !== 1) {
-            console.log('Не найдено');
             return;
         }
 

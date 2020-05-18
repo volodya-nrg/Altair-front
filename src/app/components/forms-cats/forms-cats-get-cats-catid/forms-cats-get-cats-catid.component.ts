@@ -27,8 +27,6 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
-
         this.formGetCatsCatId = this.fb.group({
             catId: 0,
             withPropsOnlyFiltered: false,
@@ -43,7 +41,6 @@ export class FormsCatsGetCatsCatidComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

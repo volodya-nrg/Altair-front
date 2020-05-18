@@ -25,8 +25,6 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
     }
 
     ngOnInit(): void {
-        console.log('init adm users put');
-
         this.formGetUsersUserId = this.fb.group({
             userId: [0, [Validators.required, Validators.min(1)]],
         });
@@ -43,7 +41,6 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm users put');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

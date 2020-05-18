@@ -41,6 +41,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     isSendData: boolean = false;
     idMap: string = 'map';
     youTubeLink: string = environment.youTubeExampleLink;
+    isProductionMode: boolean = environment.production;
     @ViewChild('formTag', {static: true}) formTag: ElementRef;
     @ViewChild(CatsHorizAccordionComponent) catsHorizAccordion: CatsHorizAccordionComponent;
 
@@ -71,7 +72,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngOnInit(): void {
-        console.log('init pageAdd');
         this.resetToDefault();
 
         let sAdIdTmp: string = this.route.snapshot.paramMap.get('adId');
@@ -88,7 +88,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     ngOnDestroy(): void {
-        console.log('destroy pageAdd');
         this.subscriptions.forEach(x => x.unsubscribe());
 
         if (this.map) {

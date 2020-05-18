@@ -23,8 +23,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init search Component');
-
         const s1 = this.route.queryParams.subscribe(
             params => {
                 const q = params['q'];
@@ -48,7 +46,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy search comp');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

@@ -20,8 +20,6 @@ export class PageAdmComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm');
-
         const s = this.serviceManager.settings$.subscribe(
             x => {
                 this.pointerOnCatTree = x.catsTree;
@@ -34,7 +32,6 @@ export class PageAdmComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 }

@@ -22,8 +22,6 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm users post');
-
         this.form = this.fb.group({
             email: ['test@test.te', [Validators.required, Validators.email]],
             password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
@@ -35,7 +33,6 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm users post');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

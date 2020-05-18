@@ -49,8 +49,6 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
-
         this.formGet = this.fb.group({
             catId: 0,
         });
@@ -68,7 +66,6 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

@@ -45,8 +45,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        console.log('init pageCat');
-
         this.loadMoreForScroll = this.loadMore.bind(this);
 
         const s = this.serviceManager.settings$.subscribe(
@@ -68,7 +66,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageCat');
         this.subscriptions.forEach(x => x.unsubscribe());
         this.removeScroll();
     }
@@ -88,7 +85,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     start(catsTree: CatTreeInterface): void {
         const s = this.router.events.subscribe(event => {
             if (event instanceof NavigationEnd) {
-                console.log('смена роутинга, тут на странице');
                 this.reset();
                 this.start(catsTree);
             }
@@ -168,8 +164,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     loadMore(): void {
-        console.log('scrolling');
-
         if (this.isPathNotFound || this.isPathRootCat) {
             return;
         }

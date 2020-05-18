@@ -1,5 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Component, Input} from '@angular/core';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {ValuePropInterface} from '../../interfaces/response/value-prop';
 
@@ -8,8 +7,7 @@ import {ValuePropInterface} from '../../interfaces/response/value-prop';
     templateUrl: './dynamic-values.component.html',
     styleUrls: ['./dynamic-values.component.less'],
 })
-export class DynamicValuesComponent implements OnInit, OnDestroy {
-    private subscriptions: Subscription[] = [];
+export class DynamicValuesComponent {
     values: ValuePropInterface[] = [];
     @Input() propId: number;
     @Input() valuesFormArray: FormArray;
@@ -17,15 +15,6 @@ export class DynamicValuesComponent implements OnInit, OnDestroy {
     constructor(
         private fb: FormBuilder,
     ) {
-    }
-
-    ngOnInit(): void {
-        console.log('init adm dynamic values');
-    }
-
-    ngOnDestroy(): void {
-        console.log('destroy adm dynamic values');
-        this.subscriptions.forEach(x => x.unsubscribe());
     }
 
     addItem(): void {

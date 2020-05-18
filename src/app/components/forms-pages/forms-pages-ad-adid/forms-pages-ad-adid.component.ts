@@ -21,15 +21,12 @@ export class FormsPagesAdAdidComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm pages ad adId');
-
         this.form = this.fb.group({
             adId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm pages ad adId');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

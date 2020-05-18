@@ -21,15 +21,12 @@ export class FormsPropsGetPropsPropidComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init adm props propId');
-
         this.form = this.fb.group({
             propId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm props propId');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

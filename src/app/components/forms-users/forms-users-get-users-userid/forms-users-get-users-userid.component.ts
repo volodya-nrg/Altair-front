@@ -21,15 +21,12 @@ export class FormsUsersGetUsersUseridComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
-
         this.form = this.fb.group({
             userId: 0,
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

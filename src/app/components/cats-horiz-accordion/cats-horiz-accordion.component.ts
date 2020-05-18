@@ -25,9 +25,7 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     }
 
     ngOnInit(): void {
-        console.log('init CatsHorizAccordionComponent');
-
-        const s1 = this.managerSettings.settings$.subscribe(
+        const s = this.managerSettings.settings$.subscribe(
             x => {
                 this.catTree = x.catsTree;
                 this.aCols.push(this.catTree); // по умолчанию вставим первый иерархию каталога
@@ -36,11 +34,11 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
             () => {
             }
         );
-        this.subscriptions.push(s1);
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {
-        console.log('destroy CatsHorizAccordionComponent');
+        this.subscriptions.forEach(x => x.unsubscribe());
     }
 
     ngAfterViewInit(): void {
@@ -67,11 +65,9 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
 
         this.changeDetection.detectChanges();
 
-        ids.forEach(id => {
-            const el = this.catCols.nativeElement.querySelector('.cats-horiz-accordion_col_' + id);
-
-            el ? el.classList.add('sx-active') : console.log('Не найден элемент:', id);
-        });
+        ids.forEach(id => this.catCols.nativeElement
+            .querySelector('.cats-horiz-accordion_col_' + id)
+            .classList.add('sx-active'));
     }
 
     reset(): void {

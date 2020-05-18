@@ -25,12 +25,10 @@ export class FormsKindPropsPostComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm kind-props post');
         this.form = this.fb.group(this.defaultControls);
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm kind-props post');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

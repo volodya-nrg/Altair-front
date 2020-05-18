@@ -21,15 +21,12 @@ export class FormsCatsGetCatsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm cats');
-
         this.formGetCats = this.fb.group({
             asTree: false,
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm cats');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

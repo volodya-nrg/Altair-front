@@ -15,6 +15,7 @@ import {environment} from '../../../environments/environment';
 export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
+    isProdMode: boolean = environment.production;
     @ViewChild('submit', {static: true}) submit: ElementRef;
 
     constructor(
@@ -36,7 +37,6 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageLogin');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

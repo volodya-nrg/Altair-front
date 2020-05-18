@@ -43,7 +43,6 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        console.log('init pageAd');
         const s = this.serviceManager.settings$.subscribe(
             x => this.start(x.catsTree),
             err => Helpers.handleErr(err.error),
@@ -54,7 +53,6 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy pageAd');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

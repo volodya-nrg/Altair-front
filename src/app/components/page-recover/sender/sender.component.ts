@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecoverService} from '../../../services/recover.service';
 import {Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-page-recover-sender',
@@ -13,6 +14,7 @@ export class PageRecoverSenderComponent implements OnInit {
     private subscriptions: Subscription[] = [];
     private attentionMsg: string = 'На Ваш е-мэйл отправлен проверочный код.\nСледуйте указаниям в письме.';
     form: FormGroup;
+    isProdMode: boolean = environment.production;
 
     constructor(
         private fb: FormBuilder,
@@ -22,15 +24,12 @@ export class PageRecoverSenderComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('init PageRecoverComponent');
-
         this.form = this.fb.group({
             email: ['test@test.te', [Validators.required, Validators.email]]
         });
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageRecoverComponent');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

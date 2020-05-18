@@ -25,7 +25,6 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init adm ads');
         this.form = this.fb.group({
             catId: ['0', [Validators.required]],
             limit: [10, [Validators.required, Validators.min(1), Validators.max(100)]],
@@ -42,7 +41,6 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm ads');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 

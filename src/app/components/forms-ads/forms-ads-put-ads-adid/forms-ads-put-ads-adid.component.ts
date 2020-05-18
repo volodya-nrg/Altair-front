@@ -58,8 +58,6 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
     }
 
     ngOnInit(): void {
-        console.log('init adm ads put');
-
         this.formGetAdsAdId = this.fb.group({
             adId: [658, [Validators.required, Validators.min(1)]],
         });
@@ -78,7 +76,6 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
     }
 
     ngOnDestroy(): void {
-        console.log('destroy adm ads put');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
@@ -175,10 +172,8 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
 
     onChangeCat(cb: Function): void {
         const catId: number = parseInt(this.form.get('catId').value, 10);
-        console.log('Выбрался каталог:', catId);
 
         if (Helpers.isLeaf(this.catsTree.childes, catId) !== 1) {
-            console.log('Не найдено');
             return;
         }
 
@@ -188,7 +183,7 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
 
                 tmpGroup.get('catId').setValue(this.form.get('catId').value);
                 this.form = tmpGroup;
-                console.log(x, this.tagKindNumber);
+
                 x.props.forEach(y => {
                     let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
                     let aValidators = [];

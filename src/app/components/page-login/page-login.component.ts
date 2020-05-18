@@ -31,7 +31,6 @@ export class PageLoginComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnDestroy(): void {
-        console.log('destroy PageLogin');
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
