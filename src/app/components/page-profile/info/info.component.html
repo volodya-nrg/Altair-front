@@ -2,7 +2,7 @@
     <div class="page-profile-info_flexbox">
         <div>
             <div #avatar class="page-profile-info_avatar">
-                <ng-container *ngIf="profile && profile.avatar">
+                <ng-container *ngIf="profile?.avatar">
                     <div (click)="deletePhoto($event)"
                          class="page-profile-info_avatar_delete" title="удалить">&times;
                     </div>
@@ -19,7 +19,7 @@
                 </div>
                 <div class="form_row">
                     <div class="form_title">Е-мэйл:</div>
-                    <input name="email" type="email" disabled="disabled" [value]="profile?.email"/>
+                    <input formControlName="email" type="email" readonly="readonly"/>
                 </div>
                 <div class="form_row">
                     <div class="form_title">Имя:</div>

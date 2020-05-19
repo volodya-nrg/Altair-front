@@ -24,8 +24,8 @@ import {MyErrorService} from '../../services/my-error.service';
 export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private previousTitleHelp: string;
-    private attentionTextCreate: string = 'Объявление добавлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
-    private attentionTextUpdate: string = 'Объявление обновлено.\nОтправленно на проверку.\nСпасибо что вы с нами!';
+    private attentionTextCreate: string = 'Объявление добавлено и отправленно на проверку';
+    private attentionTextUpdate: string = 'Объявление обновлено и отправленно на проверку';
     private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
     private ymapsPathScript: string = environment.ymapsPathScript;
     private ym: any;

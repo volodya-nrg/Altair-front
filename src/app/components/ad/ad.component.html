@@ -14,8 +14,16 @@
         </div>
         <small *ngIf="ad.cityName" class="ad_city">{{ ad.cityName }}</small>
         <small class="ad_created">{{ ad.createdAt | date: "medium" }}</small>
-        <div *ngIf="inProfile" class="align-right">
-            <a [routerLink]="['/ad/edit/', ad.adId]" href="javascript:void(0);">Изменить</a>
+        <div *ngIf="inProfile">
+            <small class="ad_status">
+                Статус:
+                <strong *ngIf="!ad.isApproved">на модерации</strong>
+                <strong *ngIf="ad.isDisabled">выключено</strong>
+                <strong *ngIf="!ad.isDisabled && ad.isApproved">открыто</strong>
+            </small>
+            <div class="align-right">
+                <a [routerLink]="['/ad/edit/', ad.adId]" href="javascript:void(0);">Изменить</a>
+            </div>
         </div>
     </div>
 </div>

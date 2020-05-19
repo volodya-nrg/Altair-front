@@ -34,6 +34,7 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy, AfterViewIni
             files: '',
             avatar: '',
             name: '',
+            email: '',
             passwordOld: ['', Validators.minLength(environment.minLenPassword)],
             passwordNew: ['', Validators.minLength(environment.minLenPassword)],
             passwordConfirm: ['', Validators.minLength(environment.minLenPassword)],
@@ -44,16 +45,11 @@ export class PageProfileInfoComponent implements OnInit, OnDestroy, AfterViewIni
         const s = this.serviceAuth.profile$.subscribe(x => {
             this.profile = x;
 
-            // если пришло null, то выходим
             if (!x) {
                 return;
             }
 
-            this.form.patchValue({
-                email: this.profile.email,
-                avatar: this.profile.avatar,
-                name: this.profile.name,
-            });
+            this.form.patchValue(x);
         });
         this.subscriptions.push(s);
     }

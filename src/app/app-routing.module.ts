@@ -15,7 +15,6 @@ import {PageProfileAdsComponent} from './components/page-profile/ads/ads.compone
 import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-ad-create-edit.component';
 import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
 import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
-import {PageAdmComponent} from './components/page-adm/page-adm.component';
 import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
 
 const routes: Routes = [
@@ -57,7 +56,7 @@ const routes: Routes = [
             {path: 'check/:hash', component: PageRecoverCheckHashComponent}, // стр. смены пароля
         ]
     },
-    {path: 'adm', component: PageAdmComponent},
+    {path: 'adm', loadChildren: () => import('./modules/adm/adm.module').then(m => m.AdmModule)},
     {path: 'info', loadChildren: () => import('./modules/info/info.module').then(m => m.InfoModule)},
     {path: '**', component: PageNotFoundComponent},
 ];
