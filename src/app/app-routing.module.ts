@@ -16,20 +16,7 @@ import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-a
 import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
 import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
 import {PageAdmComponent} from './components/page-adm/page-adm.component';
-
-// Пример:
-// path: 'admin',
-//     component: AdminComponent,
-//     children: [
-//     {
-//         path: '',
-//         children: [
-//             { path: 'crises', component: ManageCrisesComponent },
-//             { path: 'heroes', component: ManageHeroesComponent },
-//             { path: '', component: AdminDashboardComponent }
-//         ]
-//     }
-// ]
+import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
 
 const routes: Routes = [
     {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -54,6 +41,7 @@ const routes: Routes = [
         ]
     },
     {path: 'login', component: PageLoginComponent},
+    {path: 'check-email-through/:hash', component: PageCheckEmailThroughHashComponent},
     {path: 'profile', redirectTo: 'profile/info', pathMatch: 'full'},
     {
         path: 'profile', component: PageProfileComponent, children: [

@@ -70,11 +70,12 @@ import {FormsKindPropsGetOneComponent} from './components/forms-kind-props/forms
 import {FormsKindPropsPostComponent} from './components/forms-kind-props/forms-kind-props-post/forms-kind-props-post.component';
 import {FormsKindPropsPutComponent} from './components/forms-kind-props/forms-kind-props-put/forms-kind-props-put.component';
 import {FormsKindPropsDeleteComponent} from './components/forms-kind-props/forms-kind-props-delete/forms-kind-props-delete.component';
-import { FormsPagesAdAdidComponent } from './components/forms-pages/forms-pages-ad-adid/forms-pages-ad-adid.component';
-import { FormsPagesMainComponent } from './components/forms-pages/forms-pages-main/forms-pages-main.component';
-import { FormsSearchAdsComponent } from './components/forms-search/forms-search-ads/forms-search-ads.component';
-import { FormsTestComponent } from './components/forms-test/forms-test.component';
-import { ErrorsFlyComponent } from './components/errors-fly/errors-fly.component';
+import {FormsPagesAdAdidComponent} from './components/forms-pages/forms-pages-ad-adid/forms-pages-ad-adid.component';
+import {FormsPagesMainComponent} from './components/forms-pages/forms-pages-main/forms-pages-main.component';
+import {FormsSearchAdsComponent} from './components/forms-search/forms-search-ads/forms-search-ads.component';
+import {FormsTestComponent} from './components/forms-test/forms-test.component';
+import {ErrorsFlyComponent} from './components/errors-fly/errors-fly.component';
+import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
 
 @NgModule({
     declarations: [
@@ -145,6 +146,7 @@ import { ErrorsFlyComponent } from './components/errors-fly/errors-fly.component
         FormsSearchAdsComponent,
         FormsTestComponent,
         ErrorsFlyComponent,
+        PageCheckEmailThroughHashComponent,
     ],
     imports: [
         BrowserModule,

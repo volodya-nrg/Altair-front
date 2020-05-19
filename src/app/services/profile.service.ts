@@ -48,4 +48,8 @@ export class ProfileService {
     getAd(adId: number): Observable<AdFullInterface> {
         return this.http.get<AdFullInterface>(`${this.url}/api/v1/profile/ads/${adId}`);
     }
+
+    checkEmailThroughHash(hash: string): Observable<void> {
+        return this.http.get<void>(`${this.url}/api/v1/profile/check-email-through/${hash}`);
+    }
 }
