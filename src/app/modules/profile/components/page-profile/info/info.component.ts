@@ -1,13 +1,13 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Helpers} from '../../../helpers';
-import {UserInterface} from '../../../interfaces/response/user';
-import {AuthService} from '../../../services/auth.service';
-import {ProfileService} from '../../../services/profile.service';
 import {Router} from '@angular/router';
-import {environment} from '../../../../environments/environment';
-import {ChangeOldPassword} from '../../../validators/change-old-password';
+import {Helpers} from '../../../../../helpers';
+import {UserInterface} from '../../../../../interfaces/response/user';
+import {AuthService} from '../../../../../services/auth.service';
+import {ProfileService} from '../../../../../services/profile.service';
+import {environment} from '../../../../../../environments/environment';
+import {ChangeOldPassword} from '../../../../../validators/change-old-password';
 
 @Component({
     selector: 'app-page-profile-info',

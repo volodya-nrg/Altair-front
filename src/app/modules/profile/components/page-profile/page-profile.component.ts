@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {UserInterface} from '../../interfaces/response/user';
-import {AuthService} from '../../services/auth.service';
+import {UserInterface} from '../../../../interfaces/response/user';
+import {AuthService} from '../../../../services/auth.service';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 

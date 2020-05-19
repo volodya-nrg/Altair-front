@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {AdFullInterface} from '../../../interfaces/response/ad';
-import {AuthService} from '../../../services/auth.service';
 import {Subscription} from 'rxjs';
-import {UserInterface} from '../../../interfaces/response/user';
-import {ProfileService} from '../../../services/profile.service';
+import {AdFullInterface} from '../../../../../interfaces/response/ad';
+import {AuthService} from '../../../../../services/auth.service';
+import {UserInterface} from '../../../../../interfaces/response/user';
+import {ProfileService} from '../../../../../services/profile.service';
 
 @Component({
     selector: 'app-page-profile-ads',

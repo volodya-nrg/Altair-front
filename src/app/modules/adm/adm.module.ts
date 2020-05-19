@@ -37,7 +37,7 @@ import {FormsSearchAdsComponent} from './components/forms-search/forms-search-ad
 import {FormsTestComponent} from './components/forms-test/forms-test.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 import {AdmRoutingModule} from './adm-routing.module';
-import {ToggleActiveDirective} from './directives/toggle-active.directive';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -76,12 +76,12 @@ import {ToggleActiveDirective} from './directives/toggle-active.directive';
         FormsSearchAdsComponent,
         FormsTestComponent,
         PrettyJsonPipe,
-        ToggleActiveDirective,
     ],
     imports: [
         CommonModule,
         ReactiveFormsModule,
         AdmRoutingModule,
+        SharedModule,
     ],
     exports: [],
 })

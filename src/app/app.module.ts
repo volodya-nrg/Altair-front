@@ -14,12 +14,8 @@ import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
 import {TopMenuCatsTreeComponent} from './components/top-menu-cats-tree/top-menu-cats-tree.component';
 import {SearchComponent} from './components/search/search.component';
-import {AdComponent} from './components/ad/ad.component';
-import {SafeHtmlPipe} from './pipes/safe-html.pipe';
 import {BreadcrumbsComponent} from './components/breadcrumbs/breadcrumbs.component';
 import {PageSearchComponent} from './components/page-search/page-search.component';
-import {PreloaderComponent} from './components/preloader/preloader.component';
-import {MyCurrencyPipe} from './pipes/my-currency.pipe';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {TreeInTheTopComponent} from './components/tree-in-the-top/tree-in-the-top.component';
 import {ModalComponent} from './components/modal/modal.component';
@@ -28,11 +24,7 @@ import {PageRegisterComponent} from './components/page-register/page-register.co
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {ErrorInterceptor} from './interceptors/error.interceptor';
 import {PageLoginComponent} from './components/page-login/page-login.component';
-import {PageProfileComponent} from './components/page-profile/page-profile.component';
 import {PageRegisterOkComponent} from './components/page-register/ok/ok.component';
-import {PageProfileInfoComponent} from './components/page-profile/info/info.component';
-import {PageProfileSettingsComponent} from './components/page-profile/settings/settings.component';
-import {PageProfileAdsComponent} from './components/page-profile/ads/ads.component';
 import {AuthService} from './services/auth.service';
 import {ManagerService} from './services/manager.service';
 import {CatsHorizAccordionComponent} from './components/cats-horiz-accordion/cats-horiz-accordion.component';
@@ -40,6 +32,7 @@ import {PageRecoverSenderComponent} from './components/page-recover/sender/sende
 import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
 import {ErrorsFlyComponent} from './components/errors-fly/errors-fly.component';
 import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
+import {SharedModule} from './modules/shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -52,23 +45,15 @@ import {PageCheckEmailThroughHashComponent} from './components/page-check-email-
         HeaderComponent,
         TopMenuCatsTreeComponent,
         SearchComponent,
-        AdComponent,
-        SafeHtmlPipe,
         BreadcrumbsComponent,
         PageSearchComponent,
-        PreloaderComponent,
-        MyCurrencyPipe,
         NotFoundComponent,
         TreeInTheTopComponent,
         ModalComponent,
         CarouselComponent,
         PageRegisterComponent,
         PageLoginComponent,
-        PageProfileComponent,
         PageRegisterOkComponent,
-        PageProfileInfoComponent,
-        PageProfileSettingsComponent,
-        PageProfileAdsComponent,
         PageAdCreateEditComponent,
         CatsHorizAccordionComponent,
         PageRecoverSenderComponent,
@@ -81,6 +66,7 @@ import {PageCheckEmailThroughHashComponent} from './components/page-check-email-
         AppRoutingModule,
         ReactiveFormsModule,
         HttpClientModule,
+        SharedModule,
     ],
     providers: [
         {
@@ -99,7 +85,6 @@ import {PageCheckEmailThroughHashComponent} from './components/page-check-email-
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     ],
-    exports: [],
     bootstrap: [AppComponent]
 })
 export class AppModule {
