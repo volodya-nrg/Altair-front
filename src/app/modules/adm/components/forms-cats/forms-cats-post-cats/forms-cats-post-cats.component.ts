@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
 import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
-import {PropFullInterface, PropInterface} from '../../../../../interfaces/response/prop';
+import {PropsAssignedInterface} from '../../../../../interfaces/response/prop';
 import {CatService} from '../../../../../services/cat.service';
 import {ManagerService} from '../../../../../services/manager.service';
 import {Helpers} from '../../../../../helpers';
@@ -15,12 +15,9 @@ import {Helpers} from '../../../../../helpers';
 })
 export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    formPostCats: FormGroup;
+    form: FormGroup;
     settings: SettingsInterface;
     catTreeOneLevel: CatWithDeepInterface[] = [];
-    propsFull: PropFullInterface[] = [];
-    props: PropInterface[] = [];
-    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -28,22 +25,20 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
         private serviceCats: CatService,
         private serviceManager: ManagerService,
     ) {
-        this.defaultControls = {
+    }
+
+    ngOnInit(): void {
+        this.form = this.fb.group({
             name: ['', [Validators.required, Validators.minLength(2)]],
             parentId: [0, Validators.min(0)],
             pos: [0, Validators.min(0)],
-            isDisabled: false,
             priceAlias: '',
             priceSuffix: '',
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            props: this.fb.array(this.propsFull),
-        };
-    }
-
-    ngOnInit(): void {
-        this.formPostCats = this.fb.group(this.defaultControls);
+            propsAssigned: this.fb.array(<PropsAssignedInterface[]> []),
+        });
 
         const s = this.serviceManager.settings$
             .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
@@ -55,9 +50,9 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
     }
 
     submitFormPostCats({target}): void {
-        if (this.formPostCats.invalid) {
-            for (let key in this.formPostCats.controls) {
-                const formControl = this.formPostCats.get(key);
+        if (this.form.invalid) {
+            for (let key in this.form.controls) {
+                const formControl = this.form.get(key);
 
                 if (formControl.status === 'INVALID') {
                     console.log('INVALID:', key);
@@ -66,13 +61,11 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceCats.post(this.formPostCats.value).subscribe(x => {
+        const s = this.serviceCats.post(this.form.value).subscribe(x => {
             this.json.emit(x);
             target.reset();
-            this.formPostCats.reset(this.defaultControls);
-
-            const tmpProps = this.formPostCats.get('props') as FormArray;
-            tmpProps.clear();
+            this.form.reset();
+            (this.form.get('propsAssigned') as FormArray).clear();
         });
         this.subscriptions.push(s);
     }

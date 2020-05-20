@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
-import {CatFull, CatWithDeepInterface} from '../../../../../interfaces/response/cat';
-import {PropInterface} from '../../../../../interfaces/response/prop';
+import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
+import {PropInterface, PropsAssigned, PropsAssignedInterface} from '../../../../../interfaces/response/prop';
 import {DynamicPropsComponent} from '../../dynamic-props/dynamic-props.component';
 import {CatService} from '../../../../../services/cat.service';
 import {ManagerService} from '../../../../../services/manager.service';
@@ -20,10 +20,7 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
     formPut: FormGroup;
     settings: SettingsInterface;
     catTreeOneLevel: CatWithDeepInterface[] = [];
-    props: PropInterface[] = [];
-    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
-    @ViewChild(DynamicPropsComponent) dynamicProps: DynamicPropsComponent;
     @ViewChild('formPutEl', {static: true}) formPutEl: ElementRef;
 
     constructor(
@@ -37,8 +34,20 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
         this.formGet = this.fb.group({
             catId: 0,
         });
-
-        this.formPut = this.fb.group(new CatFull());
+        this.formPut = this.fb.group({
+            catId: [0, [Validators.required, Validators.min(1)]],
+            name: ['', [Validators.required, Validators.minLength(2)]],
+            slug: '',
+            parentId: [0, Validators.min(0)],
+            pos: [0, Validators.min(0)],
+            isDisabled: false,
+            priceAlias: '',
+            priceSuffix: '',
+            titleHelp: '',
+            titleComment: '',
+            isAutogenerateTitle: false,
+            propsAssigned: this.fb.array(<PropsAssignedInterface[]> []),
+        });
 
         const s = this.serviceManager.settings$
             .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
@@ -69,16 +78,13 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             this.json.emit(x);
             this.formPutEl.nativeElement.classList.remove('hidden');
 
-            this.formPut = this.fb.group(new CatFull());
-            this.formPut.setValue(x);
+            this.formPut.reset();
+            (this.formPut.get('propsAssigned') as FormArray).clear();
+            this.formPut.patchValue(x);
 
             // преобразуем нормально в массивы св-ва и их значения
-            const aProps = x.props.map(y => {
-                let g = this.fb.group(y);
-                g.setControl('values', this.fb.array((!y.values ? [] : y.values.map(z => this.fb.group(z)))));
-                return g;
-            });
-            this.formPut.setControl('props', this.fb.array(aProps));
+            const aProps = x.props.map(y => this.fb.group(new PropsAssigned(y)));
+            this.formPut.setControl('propsAssigned', this.fb.array(aProps));
         });
         this.subscriptions.push(s);
     }

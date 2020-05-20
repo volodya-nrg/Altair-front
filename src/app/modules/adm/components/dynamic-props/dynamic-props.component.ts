@@ -1,9 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
-import {PropInterface} from '../../../../interfaces/response/prop';
+import {PropFullInterface, PropInterface, PropsAssigned} from '../../../../interfaces/response/prop';
 import {ManagerService} from '../../../../services/manager.service';
-import {ValuePropInterface} from '../../../../interfaces/response/value-prop';
 
 @Component({
     selector: 'app-dynamic-props',
@@ -12,9 +11,8 @@ import {ValuePropInterface} from '../../../../interfaces/response/value-prop';
 })
 export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
-    props: PropInterface[] = [];
-    valueProp: ValuePropInterface[] = [];
-    @Input() propsFormArray: FormArray;
+    propsReserv: PropInterface[] = [];
+    @Input() propsAssignedFormArray: FormArray;
     @ViewChild('select', {static: true}) select: ElementRef;
 
     constructor(
@@ -24,7 +22,7 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(x => this.props = x.props);
+        const s = this.serviceManager.settings$.subscribe(x => this.propsReserv = x.props);
         this.subscriptions.push(s);
     }
 
@@ -42,26 +40,27 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        this.props.forEach(x => {
+        this.propsReserv.forEach((x, i) => {
             if (x.propId !== propId) {
                 return;
             }
 
-            this.propsFormArray.push(this.fb.group({
+            const tmp: PropFullInterface = {
                 propId: x.propId,
                 title: x.title,
-                kindPropId: x.kindPropId,
-                name: x.name,
-                suffix: x.suffix,
                 comment: x.comment,
+                propPos: this.propsAssignedFormArray.length + 1,
                 privateComment: x.privateComment,
-                kindPropName: '',
-                propPos: this.propsFormArray.length + 1, // с единицы
                 propIsRequire: false,
                 propIsCanAsFilter: false,
+                kindPropId: 0,
+                name: '',
+                suffix: '',
+                kindPropName: '',
                 propComment: '',
-                values: this.fb.array(this.valueProp),
-            }));
+                values: [],
+            };
+            this.propsAssignedFormArray.push(this.fb.group(new PropsAssigned(tmp)));
             return false; // только один раз
         });
 
@@ -71,11 +70,11 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     isSelected(id: number): boolean {
         let result: boolean = false;
 
-        if (!this.propsFormArray.length) {
+        if (!this.propsAssignedFormArray.length) {
             return result;
         }
 
-        this.propsFormArray.controls.forEach(x => {
+        this.propsAssignedFormArray.controls.forEach(x => {
             if (x.get('propId').value === id) {
                 result = true;
                 return false;

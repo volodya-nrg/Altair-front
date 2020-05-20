@@ -8,6 +8,6 @@ import {FormGroup} from '@angular/forms';
 })
 export class DynamicPropComponent {
     @Input() index: number;
-    @Input() prop: FormGroup;
+    @Input() propAssigned: FormGroup;
     @Output() removed: EventEmitter<number> = new EventEmitter<number>();
 }

@@ -1,4 +1,4 @@
-import {ValueProp, ValuePropInterface} from './value-prop';
+import {ValuePropInterface} from './value-prop';
 
 export interface PropInterface {
     propId: number;
@@ -22,18 +22,29 @@ interface PropDopInterface {
     values: ValuePropInterface[];
 }
 
-export class PropFull {
+export interface PropsAssignedInterface {
+    propId: number;
+    title: string;
+    comment: string;
+    pos: number;
+    isRequire: boolean;
+    isCanAsFilter: boolean;
+}
+
+export class PropsAssigned implements PropsAssignedInterface {
     propId: number = 0;
     title: string = '';
-    kindPropId: number = 0;
-    name: string = '';
-    suffix: string = '';
     comment: string = '';
-    privateComment: string = '';
-    kindPropName: string = '';
-    propPos: number = 0;
-    propIsRequire: boolean = false;
-    propIsCanAsFilter: boolean = false;
-    propComment: string = '';
-    values: ValueProp[] = [];
+    pos: number = 1;
+    isRequire: boolean = false;
+    isCanAsFilter: boolean = false;
+
+    constructor(x: PropFullInterface) {
+        this.propId = x.propId;
+        this.title = x.title + (x.privateComment ? ` (${x.privateComment})` : '');
+        this.comment = x.propComment;
+        this.pos = x.propPos;
+        this.isRequire = x.propIsRequire;
+        this.isCanAsFilter = x.propIsCanAsFilter;
+    }
 }

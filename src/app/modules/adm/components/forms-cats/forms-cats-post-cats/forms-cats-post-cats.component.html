@@ -3,7 +3,7 @@
         POST: /api/v1/cats
     </div>
     <div class="page-adm_box_body">
-        <form [formGroup]="formPostCats" (ngSubmit)="submitFormPostCats($event)" class="form">
+        <form [formGroup]="form" (ngSubmit)="submitFormPostCats($event)" class="form">
             <div class="form_row">
                 <div class="form_title">название</div>
                 <input formControlName="name" class="form_100" type="text"/>
@@ -44,14 +44,14 @@
             </div>
             <div class="form_row">
                 <div class="form_title">назначенные свойства</div>
-                <app-dynamic-props formArrayName="props"
-                                   [propsFormArray]="formPostCats.get('props')"></app-dynamic-props>
+                <app-dynamic-props formArrayName="propsAssigned"
+                                   [propsAssignedFormArray]="form.get('propsAssigned')"></app-dynamic-props>
             </div>
             <div class="form_row">
                 <input type="submit"/>
             </div>
             <div class="form_row">
-                {{ formPostCats.value | json }}
+                {{ form.value | json }}
             </div>
         </form>
     </div>

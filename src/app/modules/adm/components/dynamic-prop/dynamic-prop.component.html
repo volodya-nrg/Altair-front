@@ -1,29 +1,29 @@
-<div class="dynamic-prop" [formGroup]="prop">
+<div class="dynamic-prop" [formGroup]="propAssigned">
+    <input type="hidden" formControlName="propId"/>
+
     <div class="dynamic-prop_title">
-        {{ prop.get('title').value }}
-        {{ prop.get('privateComment').value ? '(' + prop.get('privateComment').value + ')' : '' }}
+        {{ propAssigned.get('title').value }}
     </div>
     <div class="dynamic-prop_content">
         <div>
             <div class="dynamic-prop_inputs">
                 <div>
-                    <input formControlName="propComment" type="text"
-                           placeholder="комментарий (покажется под свойством)"/>
+                    <input formControlName="comment" type="text" placeholder="комментарий (покажется под свойством)"/>
                 </div>
                 <div>
-                    <input formControlName="propPos" type="number" placeholder="позиция"/>
+                    <input formControlName="pos" type="number" placeholder="позиция"/>
                 </div>
             </div>
             <div class="dynamic-prop_dop">
                 <div>
                     <label>
-                        <input formControlName="propIsRequire" type="checkbox"/>
+                        <input formControlName="isRequire" type="checkbox"/>
                         обязателен
                     </label>
                 </div>
                 <div>
                     <label>
-                        <input formControlName="propIsCanAsFilter" type="checkbox"/>
+                        <input formControlName="isCanAsFilter" type="checkbox"/>
                         как фильтр (тоже)
                     </label>
                 </div>

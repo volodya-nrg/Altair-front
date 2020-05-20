@@ -21,9 +21,11 @@ export class ErrorInterceptor implements HttpInterceptor {
                     console.log('Редирект на стр. авторизации');
                     // редирект на страницу авторизации с гет-параметром редиректа назад
                 } else {
+                    let msg = typeof err.error === 'string' ? err.error : err.message;
+
                     this.serviceMyError.errors$.next({
                         title: `${err.statusText} (${err.status})`,
-                        msg: err.error,
+                        msg: msg,
                     });
                 }
 
