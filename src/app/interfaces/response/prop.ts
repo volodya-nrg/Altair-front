@@ -22,7 +22,7 @@ interface PropDopInterface {
     values: ValuePropInterface[];
 }
 
-export interface PropsAssignedInterface {
+export interface PropAssignedForCatInterface {
     propId: number;
     title: string;
     comment: string;
@@ -31,7 +31,7 @@ export interface PropsAssignedInterface {
     isCanAsFilter: boolean;
 }
 
-export class PropsAssigned implements PropsAssignedInterface {
+export class PropsAssignedForCat implements PropAssignedForCatInterface {
     propId: number = 0;
     title: string = '';
     comment: string = '';

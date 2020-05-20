@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
-import {PropFullInterface, PropInterface, PropsAssigned} from '../../../../interfaces/response/prop';
+import {PropFullInterface, PropInterface, PropsAssignedForCat} from '../../../../interfaces/response/prop';
 import {ManagerService} from '../../../../services/manager.service';
 
 @Component({
@@ -60,7 +60,7 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
                 propComment: '',
                 values: [],
             };
-            this.propsAssignedFormArray.push(this.fb.group(new PropsAssigned(tmp)));
+            this.propsAssignedFormArray.push(this.fb.group(new PropsAssignedForCat(tmp)));
             return false; // только один раз
         });
 

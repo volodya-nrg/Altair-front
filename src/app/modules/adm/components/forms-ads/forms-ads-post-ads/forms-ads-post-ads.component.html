@@ -17,74 +17,78 @@
                     </option>
                 </select>
 
-                <div class="dynamic-props-full">
-                    <div *ngFor="let propFull of propsFull">
+                <div class="dynamic-props-full" formArrayName="propsAssigned">
+                    <!--
+                        Пройдемся по списку (последний от запроса).
+                        Перебираем именно ответ сервера, а не эл. формы.
+                    -->
+                    <div *ngFor="let p of propsFullReserved; let i = index" [formGroupName]="i">
                         <div class="page-adm_prop-full">
                             <div class="page-adm_prop-full_title">
-                                {{ propFull.title }}
-                                {{ propFull.privateComment ? '(' + propFull.privateComment + ')' : '' }}
-                                {{ propFull.propIsRequire ? ' *' : '' }}
+                                {{ p.title }}
+                                {{ p.privateComment ? '(' + p.privateComment + ')' : '' }}
+                                {{ p.propIsRequire ? ' *' : '' }}
                             </div>
-
                             <div class="page-adm_prop-full_input">
                                 <input
-                                    *ngIf=" propFull.kindPropName === 'input' || propFull.kindPropName === 'ymaps' "
+                                    *ngIf=" p.kindPropName === 'input' || p.kindPropName === 'ymaps' "
                                     type="text"
                                     class="form_100"
-                                    formControlName="{{propFull.name}}"/>
+                                    [formControlName]="p.name"/>
 
-                                <input *ngIf=" propFull.kindPropName === 'input_number' "
+                                <input *ngIf=" p.kindPropName === 'input_number' "
                                        type="number"
                                        class="form_100"
-                                       formControlName="{{propFull.name}}"/>
+                                       [formControlName]="p.name"/>
 
-                                <input *ngIf=" propFull.kindPropName === 'input_date' "
+                                <input *ngIf=" p.kindPropName === 'input_date' "
                                        type="date"
                                        class="form_100"
-                                       [formControlName]="propFull.name"/>
+                                       [formControlName]="p.name"/>
 
-                                <input *ngIf=" propFull.kindPropName === 'input_datetime' "
+                                <input *ngIf=" p.kindPropName === 'input_datetime' "
                                        type="datetime-local"
                                        class="form_100"
-                                       [formControlName]="propFull.name"/>
+                                       [formControlName]="p.name"/>
 
-                                <textarea *ngIf=" propFull.kindPropName === 'textarea' "
-                                          [formControlName]="propFull.name"></textarea>
+                                <textarea *ngIf=" p.kindPropName === 'textarea' "
+                                          [formControlName]="p.name"></textarea>
 
-                                <div *ngIf=" propFull.kindPropName === 'photo' ">
+                                <div *ngIf=" p.kindPropName === 'photo' ">
                                     <!-- name="files" -->
-                                    <input type="hidden" [formControlName]="propFull.name"/>
+                                    <input type="hidden" [formControlName]="p.name"/>
                                     <input class="form_100"
                                            type="file"
                                            accept="image/jpeg,image/png"
-                                           [multiple]="convertToInt(propFull.propComment) > 1"
-                                           [disabled]="!convertToInt(propFull.propComment)"
+                                           [multiple]="convertToInt(p.propComment) > 1"
+                                           [disabled]="!convertToInt(p.propComment)"
                                            (change)="addPhoto($event)"/>
                                 </div>
 
-                                <div *ngIf=" propFull.kindPropName === 'radio' && propFull.values.length ">
-                                    <span *ngFor="let val of propFull.values; let i = index" class="form_radio-chain">
-                                        <input formControlName="{{propFull.name}}" id="{{propFull.name}}_{{ i }}"
+                                <div *ngIf=" p.kindPropName === 'radio' && p.values && p.values.length ">
+                                    <span class="form_radio-chain" *ngFor="let val of p.values; let j = index">
+                                        <input id="{{ p.name }}_{{ j }}"
+                                               [formControlName]="p.name"
                                                type="radio"
                                                [value]="val.valueId"/>
-                                        <label for="{{propFull.name}}_{{ i }}">
+                                        <label for="{{ p.name }}_{{ j }}">
                                             {{ val.title }}
                                         </label>
                                     </span>
                                 </div>
 
-                                <div *ngIf=" propFull.kindPropName === 'checkbox' ">
-                                    <label *ngFor="let checkbox of propFull.values; let j = index">
-                                        <input type="checkbox" formControlName="{{propFull.name}}[{{ j }}]"/>
+                                <div *ngIf=" p.kindPropName === 'checkbox' && p.values && p.values.length ">
+                                    <label *ngFor="let checkbox of p.values; let j = index">
+                                        <input type="checkbox"
+                                               formControlName="{{ p.name }}[{{ j }}]"/>
                                         {{ checkbox.title }}
                                     </label>
                                 </div>
 
-                                <select *ngIf="propFull.kindPropName === 'select' && propFull.values.length"
-                                        class="form_100"
-                                        [formControlName]="propFull.name">
+                                <select *ngIf="p.kindPropName === 'select' && p.values && p.values.length"
+                                        class="form_100" [formControlName]="p.name">
                                     <option selected="selected" value=""></option>
-                                    <option *ngFor="let option of propFull.values"
+                                    <option *ngFor="let option of p.values"
                                             [value]="option.valueId">{{ option.title }}</option>
                                 </select>
                             </div>

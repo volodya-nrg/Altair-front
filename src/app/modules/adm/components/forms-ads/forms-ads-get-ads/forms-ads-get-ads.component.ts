@@ -26,7 +26,7 @@ export class FormsAdsGetAdsComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            catId: ['0', [Validators.required]],
+            catId: ['0', Validators.required],
             limit: [10, [Validators.required, Validators.min(1), Validators.max(100)]],
             offset: [0, Validators.min(0)],
         });

@@ -3,7 +3,7 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
 import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
-import {PropsAssignedInterface} from '../../../../../interfaces/response/prop';
+import {PropAssignedForCatInterface} from '../../../../../interfaces/response/prop';
 import {CatService} from '../../../../../services/cat.service';
 import {ManagerService} from '../../../../../services/manager.service';
 import {Helpers} from '../../../../../helpers';
@@ -37,7 +37,7 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            propsAssigned: this.fb.array(<PropsAssignedInterface[]> []),
+            propsAssigned: this.fb.array(<PropAssignedForCatInterface[]> []),
         });
 
         const s = this.serviceManager.settings$

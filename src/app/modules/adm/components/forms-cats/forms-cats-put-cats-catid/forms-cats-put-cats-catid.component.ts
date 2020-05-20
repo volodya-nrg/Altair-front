@@ -3,8 +3,7 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
 import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
-import {PropInterface, PropsAssigned, PropsAssignedInterface} from '../../../../../interfaces/response/prop';
-import {DynamicPropsComponent} from '../../dynamic-props/dynamic-props.component';
+import {PropAssignedForCatInterface, PropsAssignedForCat} from '../../../../../interfaces/response/prop';
 import {CatService} from '../../../../../services/cat.service';
 import {ManagerService} from '../../../../../services/manager.service';
 import {Helpers} from '../../../../../helpers';
@@ -46,7 +45,7 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            propsAssigned: this.fb.array(<PropsAssignedInterface[]> []),
+            propsAssigned: this.fb.array(<PropAssignedForCatInterface[]> []),
         });
 
         const s = this.serviceManager.settings$
@@ -83,7 +82,7 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             this.formPut.patchValue(x);
 
             // преобразуем нормально в массивы св-ва и их значения
-            const aProps = x.props.map(y => this.fb.group(new PropsAssigned(y)));
+            const aProps = x.props.map(y => this.fb.group(new PropsAssignedForCat(y)));
             this.formPut.setControl('propsAssigned', this.fb.array(aProps));
         });
         this.subscriptions.push(s);

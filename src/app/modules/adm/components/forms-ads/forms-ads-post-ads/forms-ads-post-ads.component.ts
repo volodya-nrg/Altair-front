@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CatTreeInterface, CatWithDeepInterface} from '../../../../../interfaces/response/cat';
 import {PropFullInterface} from '../../../../../interfaces/response/prop';
 import {AdService} from '../../../../../services/ad.service';
@@ -19,8 +19,7 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
     form: FormGroup;
     catTreeOneLevel: CatWithDeepInterface[] = [];
-    propsFull: PropFullInterface[] = [];
-    defaultControls: Object = {};
+    propsFullReserved: PropFullInterface[] = [];
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -29,7 +28,10 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         private serviceManager: ManagerService,
         private serviceCats: CatService,
     ) {
-        this.defaultControls = {
+    }
+
+    ngOnInit(): void {
+        this.form = this.fb.group({
             title: '',
             catId: [0, [Validators.required, Validators.min(1)]],
             userId: [0, [Validators.min(0)]],
@@ -41,11 +43,8 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
             longitude: 0,
             cityName: '',
             countryName: '',
-        };
-    }
-
-    ngOnInit(): void {
-        this.form = this.fb.group(this.defaultControls);
+            propsAssigned: this.fb.array([]),
+        });
 
         const s = this.serviceManager.settings$.subscribe(x => {
             this.catsTree = x.catsTree;
@@ -83,31 +82,32 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
         }
 
         const s = this.serviceCats.getCatId(catId, false).subscribe(x => {
-            let tmpGroup = this.fb.group(this.defaultControls);
+            const aPropsFull = this.form.get('propsAssigned') as FormArray;
 
-            tmpGroup.get('catId').setValue(this.form.get('catId').value);
-            this.form = tmpGroup;
+            aPropsFull.clear();
 
-            x.props.forEach(y => {
+            x.props.forEach((y, i) => {
+                const newPropsFullGroup = this.fb.group({});
                 let defaultValue = (this.tagKindNumber.indexOf(y.kindPropName) !== -1) ? 0 : '';
                 let aValidators = [];
 
-                // если данное св-во обязательно, то подключим валидатор
                 if (y.propIsRequire) {
                     aValidators.push(Validators.required);
                 }
 
                 if (y.kindPropName === 'checkbox') {
                     y.values.forEach((z, i) => {
-                        this.form.addControl(y.name + '[' + i + ']', this.fb.control(z.propId, aValidators));
+                        newPropsFullGroup.addControl(y.name + '[' + i + ']', this.fb.control(z.propId, aValidators));
                     });
 
                 } else {
-                    this.form.addControl(y.name, this.fb.control(defaultValue, aValidators));
+                    newPropsFullGroup.addControl(y.name, this.fb.control(defaultValue, aValidators));
                 }
+
+                aPropsFull.push(newPropsFullGroup);
             });
 
-            this.propsFull = x.props;
+            this.propsFullReserved = x.props; // сохраним чтоб после на него опираться
         });
         this.subscriptions.push(s);
     }
@@ -117,6 +117,20 @@ export class FormsAdsPostAdsComponent implements OnInit, OnDestroy {
     }
 
     addPhoto({target}): void {
-        Helpers.addPhoto(target, this.form);
+        const tmp = this.form.get('propsAssigned') as FormArray;
+
+        tmp.controls.forEach(x => {
+            let y = x as FormGroup;
+
+            if (y.contains('files')) {
+                if (target.files.length) {
+                    this.form.markAsDirty();
+                    y.get('files').setValue(target.files);
+
+                } else {
+                    y.get('files').setValue(''); // null
+                }
+            }
+        });
     }
 }
