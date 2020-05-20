@@ -1,4 +1,4 @@
-import {PropFullInterface} from './prop';
+import {PropFull, PropFullInterface} from './prop';
 
 export interface CatInterface {
     catId: number;
@@ -40,4 +40,19 @@ interface PropsFullInterface {
 
 interface WithDeepInterface {
     deep: number;
+}
+
+export class CatFull {
+    catId: number = 0;
+    name: string = '';
+    slug: string = '';
+    parentId: number = 0;
+    pos: number = 0;
+    isDisabled: boolean = false;
+    priceAlias: string = '';
+    priceSuffix: string = '';
+    titleHelp: string = '';
+    titleComment: string = '';
+    isAutogenerateTitle: boolean = false;
+    props: PropFull[] = [];
 }

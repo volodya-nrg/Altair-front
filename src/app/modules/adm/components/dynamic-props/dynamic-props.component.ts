@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {FormArray, FormBuilder} from '@angular/forms';
 import {PropInterface} from '../../../../interfaces/response/prop';
 import {ManagerService} from '../../../../services/manager.service';
+import {ValuePropInterface} from '../../../../interfaces/response/value-prop';
 
 @Component({
     selector: 'app-dynamic-props',
@@ -12,6 +13,7 @@ import {ManagerService} from '../../../../services/manager.service';
 export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     props: PropInterface[] = [];
+    valueProp: ValuePropInterface[] = [];
     @Input() propsFormArray: FormArray;
     @ViewChild('select', {static: true}) select: ElementRef;
 
@@ -44,6 +46,7 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
             if (x.propId !== propId) {
                 return;
             }
+
             this.propsFormArray.push(this.fb.group({
                 propId: x.propId,
                 title: x.title,
@@ -53,11 +56,11 @@ export class DynamicPropsComponent implements OnInit, OnDestroy, AfterViewInit {
                 comment: x.comment,
                 privateComment: x.privateComment,
                 kindPropName: '',
-                propPos: this.propsFormArray.length,
+                propPos: this.propsFormArray.length + 1, // с единицы
                 propIsRequire: false,
                 propIsCanAsFilter: false,
                 propComment: '',
-                values: [],
+                values: this.fb.array(this.valueProp),
             }));
             return false; // только один раз
         });

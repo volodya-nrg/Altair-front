@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
 import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
 import {PropFullInterface, PropInterface} from '../../../../../interfaces/response/prop';
@@ -38,13 +38,12 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            props: [],
+            props: this.fb.array(this.propsFull),
         };
     }
 
     ngOnInit(): void {
         this.formPostCats = this.fb.group(this.defaultControls);
-        this.formPostCats.get('props').setValue(this.fb.array(this.propsFull));
 
         const s = this.serviceManager.settings$
             .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
@@ -70,7 +69,10 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
         const s = this.serviceCats.post(this.formPostCats.value).subscribe(x => {
             this.json.emit(x);
             target.reset();
-            this.formPostCats.reset();
+            this.formPostCats.reset(this.defaultControls);
+
+            const tmpProps = this.formPostCats.get('props') as FormArray;
+            tmpProps.clear();
         });
         this.subscriptions.push(s);
     }

@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {SettingsInterface} from '../../../../../interfaces/response/settings';
-import {CatWithDeepInterface} from '../../../../../interfaces/response/cat';
-import {PropFullInterface, PropInterface} from '../../../../../interfaces/response/prop';
+import {CatFull, CatWithDeepInterface} from '../../../../../interfaces/response/cat';
+import {PropInterface} from '../../../../../interfaces/response/prop';
 import {DynamicPropsComponent} from '../../dynamic-props/dynamic-props.component';
 import {CatService} from '../../../../../services/cat.service';
 import {ManagerService} from '../../../../../services/manager.service';
@@ -20,7 +20,6 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
     formPut: FormGroup;
     settings: SettingsInterface;
     catTreeOneLevel: CatWithDeepInterface[] = [];
-    propsFull: PropFullInterface[] = [];
     props: PropInterface[] = [];
     defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
@@ -32,20 +31,6 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
         private serviceCats: CatService,
         private serviceManager: ManagerService,
     ) {
-        this.defaultControls = {
-            catId: [0, [Validators.required, Validators.min(0)]],
-            name: ['', [Validators.required, Validators.minLength(2)]],
-            slug: '',
-            parentId: [0, Validators.min(0)],
-            pos: [0, Validators.min(0)],
-            isDisabled: false,
-            priceAlias: '',
-            priceSuffix: '',
-            titleHelp: '',
-            titleComment: '',
-            isAutogenerateTitle: false,
-            props: [],
-        };
     }
 
     ngOnInit(): void {
@@ -53,8 +38,7 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             catId: 0,
         });
 
-        this.formPut = this.fb.group(this.defaultControls);
-        this.formPut.get('props').setValue(this.fb.array(this.propsFull));
+        this.formPut = this.fb.group(new CatFull());
 
         const s = this.serviceManager.settings$
             .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
@@ -85,13 +69,16 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             this.json.emit(x);
             this.formPutEl.nativeElement.classList.remove('hidden');
 
-            this.formPut = this.fb.group(this.defaultControls);
-            this.formPut.get('props').setValue(this.fb.array(this.propsFull));
+            this.formPut = this.fb.group(new CatFull());
+            this.formPut.setValue(x);
 
-            this.formPut.patchValue(x);
-            const tmpProps = this.formPut.get('props') as FormArray;
-            x.props.forEach(tmpPropFull => tmpProps.push(this.fb.group(tmpPropFull)));
-            this.dynamicProps.propsFormArray = tmpProps;
+            // преобразуем нормально в массивы св-ва и их значения
+            const aProps = x.props.map(y => {
+                let g = this.fb.group(y);
+                g.setControl('values', this.fb.array((!y.values ? [] : y.values.map(z => this.fb.group(z)))));
+                return g;
+            });
+            this.formPut.setControl('props', this.fb.array(aProps));
         });
         this.subscriptions.push(s);
     }

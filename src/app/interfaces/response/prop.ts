@@ -1,4 +1,4 @@
-import {ValuePropInterface} from './value-prop';
+import {ValueProp, ValuePropInterface} from './value-prop';
 
 export interface PropInterface {
     propId: number;
@@ -20,4 +20,20 @@ interface PropDopInterface {
     propIsCanAsFilter: boolean;
     propComment: string;
     values: ValuePropInterface[];
+}
+
+export class PropFull {
+    propId: number = 0;
+    title: string = '';
+    kindPropId: number = 0;
+    name: string = '';
+    suffix: string = '';
+    comment: string = '';
+    privateComment: string = '';
+    kindPropName: string = '';
+    propPos: number = 0;
+    propIsRequire: boolean = false;
+    propIsCanAsFilter: boolean = false;
+    propComment: string = '';
+    values: ValueProp[] = [];
 }
