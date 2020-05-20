@@ -10,7 +10,7 @@ import {UserService} from '../../../../../services/user.service';
 })
 export class FormsUsersGetUsersComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
-    formGetUsers: FormGroup;
+    form: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -20,7 +20,7 @@ export class FormsUsersGetUsersComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.formGetUsers = this.fb.group({});
+        this.form = this.fb.group({});
     }
 
     ngOnDestroy(): void {

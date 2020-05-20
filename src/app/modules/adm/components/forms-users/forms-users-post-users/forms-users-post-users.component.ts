@@ -36,7 +36,7 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    submitFormPostUsers({target}): void {
+    submitForm({target}): void {
         if (this.form.invalid) {
             for (let key in this.form.controls) {
                 const formControl = this.form.get(key);
@@ -49,7 +49,11 @@ export class FormsUsersPostUsersComponent implements OnInit, OnDestroy {
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
-        const s = this.serviceUsers.create(newFormData).subscribe(x => this.json.emit(x));
+        const s = this.serviceUsers.create(newFormData).subscribe(x => {
+            this.json.emit(x);
+            target.reset();
+            this.form.reset();
+        });
         this.subscriptions.push(s);
     }
 

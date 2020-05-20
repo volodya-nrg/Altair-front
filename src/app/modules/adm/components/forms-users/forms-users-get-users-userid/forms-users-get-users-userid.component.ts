@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../../../../services/user.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class FormsUsersGetUsersUseridComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            userId: 0,
+            userId: [0, [Validators.required, Validators.min(1)]],
         });
     }
 

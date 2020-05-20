@@ -84,15 +84,9 @@ export class FormsUsersPutUsersUseridComponent implements OnInit, OnDestroy, Aft
             this.json.emit(x);
             target.reset();
             this.formPut.reset();
-            this.formPut.patchValue({
-                userId: x.userId,
-                email: x.email,
-                avatar: x.avatar,
-                name: x.name,
-                password: '',
-                passwordConfirm: '', // не null, проверка не нужна
-                isEmailConfirmed: x.isEmailConfirmed,
-            });
+            this.formPut.patchValue(x);
+            this.formPut.get('password').setValue(''); // чтоб не было null
+            this.formPut.get('passwordConfirm').setValue(''); // чтоб не было null
         });
         this.subscriptions.push(s);
     }
