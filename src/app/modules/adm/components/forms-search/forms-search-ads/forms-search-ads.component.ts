@@ -15,7 +15,6 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
     catTreeOneLevel: CatWithDeepInterface[] = [];
-    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
@@ -23,16 +22,15 @@ export class FormsSearchAdsComponent implements OnInit, OnDestroy {
         private serviceSearch: SearchService,
         private serviceManager: ManagerService,
     ) {
-        this.defaultControls = {
+    }
+
+    ngOnInit(): void {
+        this.form = this.fb.group({
             query: ['', [Validators.required, Validators.minLength(2)]],
             catId: ['0', [Validators.required]],
             limit: [5, [Validators.required, Validators.min(1), Validators.max(10)]],
             offset: [0, [Validators.required, Validators.min(0)]],
-        };
-    }
-
-    ngOnInit(): void {
-        this.form = this.fb.group(this.defaultControls);
+        });
         const s = this.serviceManager.settings$
             .subscribe(x => this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree));
         this.subscriptions.push(s);
