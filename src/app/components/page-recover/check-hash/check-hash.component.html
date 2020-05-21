@@ -13,7 +13,7 @@
                 <input formControlName="passwordConfirm" class="form_100" type="text"/>
             </div>
             <div class="form_row sx-submit align-right">
-                <input type="submit" [disabled]="form.invalid" value="Изменить"/>
+                <input #submitBtn type="submit" [disabled]="form.invalid" value="Изменить"/>
             </div>
             <div *ngIf="!isProdMode" class="form_row">
                 {{ form.value | json }}

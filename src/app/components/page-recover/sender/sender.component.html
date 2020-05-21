@@ -7,7 +7,7 @@
                 <input formControlName="email" class="form_100" type="email"/>
             </div>
             <div class="form_row sx-submit align-right">
-                <input type="submit" [disabled]="form.invalid" value="Отправить"/>
+                <input #submitBtn type="submit" [disabled]="form.invalid" value="Отправить"/>
             </div>
             <div *ngIf="!isProdMode" class="form_row">
                 {{ form.value | json }}

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecoverService} from '../../../services/recover.service';
@@ -10,11 +10,12 @@ import {environment} from '../../../../environments/environment';
     templateUrl: './check-hash.component.html',
     styleUrls: ['./check-hash.component.less']
 })
-export class PageRecoverCheckHashComponent implements OnInit, OnDestroy {
+export class PageRecoverCheckHashComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private msg: string = 'Пароль успешно изменен.';
     form: FormGroup;
     isProdMode: boolean = environment.production;
+    @ViewChild('submitBtn', {static: true}) submitBtn: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -37,6 +38,9 @@ export class PageRecoverCheckHashComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
+    ngAfterViewInit() {
+    }
+
     onSubmit({target}): void {
         if (this.form.invalid) {
             for (let key in this.form.controls) {
@@ -49,7 +53,7 @@ export class PageRecoverCheckHashComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const btnSubmit = target.querySelector('[type="submit"]');
+        const btnSubmit = this.submitBtn.nativeElement;
         btnSubmit.disabled = true;
         const s = this.serviceRecover.changePassword(this.form.value).subscribe(
             x => {

@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RecoverService} from '../../../services/recover.service';
@@ -10,11 +10,12 @@ import {environment} from '../../../../environments/environment';
     templateUrl: './sender.component.html',
     styleUrls: ['./sender.component.less']
 })
-export class PageRecoverSenderComponent implements OnInit, OnDestroy {
+export class PageRecoverSenderComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private msg: string = 'На Ваш е-мэйл отправлен проверочный код.\nСледуйте указаниям в письме.';
     form: FormGroup;
     isProdMode: boolean = environment.production;
+    @ViewChild('submitBtn', {static: true}) submitBtn: ElementRef;
 
     constructor(
         private fb: FormBuilder,
@@ -33,6 +34,9 @@ export class PageRecoverSenderComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
+    ngAfterViewInit() {
+    }
+
     onSubmit({target}): void {
         if (this.form.invalid) {
             for (let key in this.form.controls) {
@@ -45,7 +49,7 @@ export class PageRecoverSenderComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const btnSubmit = target.querySelector('[type="submit"]');
+        const btnSubmit = this.submitBtn.nativeElement;
         btnSubmit.disabled = true;
         const s = this.serviceRecover.sendHash(this.form.value).subscribe(
             x => {

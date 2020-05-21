@@ -33,6 +33,7 @@ import {PageRecoverCheckHashComponent} from './components/page-recover/check-has
 import {ErrorsFlyComponent} from './components/errors-fly/errors-fly.component';
 import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
 import {SharedModule} from './modules/shared/shared.module';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
     declarations: [
@@ -60,6 +61,7 @@ import {SharedModule} from './modules/shared/shared.module';
         PageRecoverCheckHashComponent,
         ErrorsFlyComponent,
         PageCheckEmailThroughHashComponent,
+        LoginComponent,
     ],
     imports: [
         BrowserModule,

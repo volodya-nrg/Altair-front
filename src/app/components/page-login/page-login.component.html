@@ -1,36 +1,5 @@
 <div class="page-login">
     <div class="page-login_box">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
-            <div class="form_row align-center">
-                <h1>Вход</h1>
-            </div>
-            <div class="form_row">
-                <div class="form_title">Е-мэйл:</div>
-                <div>
-                    <input formControlName="email" class="form_100" type="email"/>
-                </div>
-            </div>
-            <div class="form_row">
-                <div class="form_title">Пароль:</div>
-                <div>
-                    <input formControlName="password" class="form_100" type="password"/>
-                </div>
-            </div>
-            <div class="form_row align-right">
-                <a href="javascript:void(0);" routerLink="/recover/sender">Забыли пароль?</a>
-            </div>
-            <div class="form_row">
-                <input #submit type="submit" [disabled]="form.invalid" value="Отправить"/>
-            </div>
-        </form>
-        <div class="page-login_register align-center">
-            <p>
-                <a href="javascript:void(0);" routerLink="/register">Зарегистрироваться</a>
-            </p>
-            <p class="text-mute">
-                <small>При входе вы подтверждаете согласие с <a href="javascript:void(0);" routerLink="/info/agreement">условиями
-                    использования Altair.uz</a>.</small>
-            </p>
-        </div>
+        <app-login></app-login>
     </div>
 </div>
