@@ -1,0 +1,167 @@
+<form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+    <input type="hidden" formControlName="adId"/>
+
+    <div class="form_row">
+        <div class="form_title">название</div>
+        <input type="text" formControlName="title" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">slug</div>
+        <input type="text" formControlName="slug" class="form_100" readonly="readonly"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">id категории</div>
+        <select formControlName="catId" (change)="onChangeCat(null)" class="form_100">
+            <option value="0"></option>
+            <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+            </option>
+        </select>
+
+        <div class="dynamic-props-full">
+            <!--
+                Пройдемся по списку (последний от запроса).
+                Перебираем именно ответ сервера, а не эл. формы.
+                В массив не вставляем, все в одном списке.
+            -->
+            <div *ngFor="let p of propsFullReserved; let i = index">
+                <div class="page-adm_prop-full">
+                    <div class="page-adm_prop-full_title">
+                        {{ p.title }}
+                        {{ p.privateComment ? '(' + p.privateComment + ')' : '' }}
+                        {{ p.propIsRequire ? ' *' : '' }}
+                    </div>
+                    <div class="page-adm_prop-full_input">
+                        <input
+                            *ngIf=" p.kindPropName === 'input' || p.kindPropName === 'ymaps' "
+                            type="text"
+                            class="form_100"
+                            formControlName="p{{p.propId}}"/>
+
+                        <input *ngIf=" p.kindPropName === 'input_number' "
+                               type="number"
+                               class="form_100"
+                               formControlName="p{{p.propId}}"/>
+
+                        <input *ngIf=" p.kindPropName === 'input_date' "
+                               type="date"
+                               class="form_100"
+                               formControlName="p{{p.propId}}"/>
+
+                        <input *ngIf=" p.kindPropName === 'input_datetime' "
+                               type="datetime-local"
+                               class="form_100"
+                               formControlName="p{{p.propId}}"/>
+
+                        <textarea *ngIf=" p.kindPropName === 'textarea' "
+                                  formControlName="p{{p.propId}}"></textarea>
+
+                        <div *ngIf=" p.kindPropName === 'photo' ">
+                            <!--добавляем явно доп. input-->
+                            <input type="hidden" formControlName="files"/>
+                            <!--disabled тут не нужен-->
+                            <input class="form_100"
+                                   type="file"
+                                   accept="image/jpeg,image/png"
+                                   formControlName="p{{p.propId}}"
+                                   [multiple]="convertToInt(p.propComment) > 1"
+                                   (change)="addPhoto($event)"/>
+
+                            <div *ngIf="editAd?.images?.length" class="form_thumbnails">
+                                <div *ngFor="let img of editAd.images" class="form_thumbnails_thumbnail">
+                                    <div class="form_thumbnails_thumbnail_close"
+                                         title="удалить" (click)="removeImage($event)"></div>
+                                    <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf=" p.kindPropName === 'radio' && p.values && p.values.length ">
+                            <span class="form_radio-chain" *ngFor="let val of p.values; let j = index">
+                                <input id="{{ p.name }}_{{ j }}"
+                                       formControlName="p{{p.propId}}"
+                                       type="radio"
+                                       [value]="val.valueId"/>
+                                <label for="{{ p.name }}_{{ j }}">
+                                    {{ val.title }}
+                                </label>
+                            </span>
+                        </div>
+
+                        <div *ngIf=" p.kindPropName === 'checkbox' && p.values && p.values.length ">
+                            <label *ngFor="let checkbox of p.values; let j = index">
+                                <input type="checkbox" formControlName="p{{ p.propId }}[{{ j }}]"/>
+                                {{ checkbox.title }}
+                            </label>
+                        </div>
+
+                        <select *ngIf="p.kindPropName === 'select' && p.values && p.values.length"
+                                class="form_100" formControlName="p{{p.propId}}">
+                            <option selected="selected" value=""></option>
+                            <option *ngFor="let option of p.values"
+                                    [value]="option.valueId">{{ option.title }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form_row">
+        <div class="form_title">id пользователя</div>
+        <input type="number" formControlName="userId" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <label>
+            <input type="checkbox" formControlName="isDisabled" value="true"/>
+            если выбран, то выключен
+        </label>
+    </div>
+    <div class="form_row">
+        <label>
+            <input type="checkbox" formControlName="isApproved" value="true"/>
+            если выбран, то заапрувлен
+        </label>
+    </div>
+    <div class="form_row">
+        <div class="form_title">описание *</div>
+        <textarea formControlName="description" class="form_100"></textarea>
+    </div>
+    <div class="form_row">
+        <div class="form_title">цена</div>
+        <input type="number" formControlName="price" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">Youtube</div>
+        <input type="text" formControlName="youtube" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">Широта</div>
+        <input type="number" formControlName="latitude" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">Долгота</div>
+        <input type="number" formControlName="longitude" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">Назнвание города</div>
+        <input type="text" formControlName="cityName" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">Назнвание страны</div>
+        <input type="text" formControlName="countryName" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">created_at</div>
+        <input type="text" formControlName="createdAt" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">updated_at</div>
+        <input type="text" formControlName="updatedAt" class="form_100"/>
+    </div>
+    <div class="form_row">
+        <input type="submit"/>
+    </div>
+    <div class="form_row">
+        {{ form.value | json }}
+    </div>
+</form>

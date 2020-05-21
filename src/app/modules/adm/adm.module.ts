@@ -38,6 +38,7 @@ import {FormsTestComponent} from './components/forms-test/forms-test.component';
 import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 import {AdmRoutingModule} from './adm-routing.module';
 import {SharedModule} from '../shared/shared.module';
+import { FormsAdsPostPutAdComponent } from './components/forms-ads/forms-ads-post-put-ad/forms-ads-post-put-ad.component';
 
 @NgModule({
     declarations: [
@@ -76,6 +77,7 @@ import {SharedModule} from '../shared/shared.module';
         FormsSearchAdsComponent,
         FormsTestComponent,
         PrettyJsonPipe,
+        FormsAdsPostPutAdComponent,
     ],
     imports: [
         CommonModule,

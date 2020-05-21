@@ -55,21 +55,24 @@ export class Helpers {
     }
 
     static getNewFormData(obj: Object): FormData {
-        const formData = new FormData();
+        let form = new FormData();
 
-        for (const key in obj) {
+        // выставляем одномерно
+        Object.keys(obj).forEach(key => {
             if (key === 'files') {
                 if (obj[key]) { // файлов может и не быть
                     for (let i = 0; i < obj[key].length; i++) {
-                        formData.append(key, obj[key][i]);
+                        form.append(key, obj[key][i]);
                     }
                 }
-                continue;
-            }
-            formData.append(key, obj[key]);
-        }
 
-        return formData;
+                return true;
+            }
+
+            form.append(key, obj[key]);
+        });
+
+        return form;
     }
 
     static getAncestors(listCatTree: CatTreeInterface[], findCatId: number): CatInterface[] {
@@ -200,10 +203,6 @@ export class Helpers {
         }
 
         return catId;
-    }
-
-    static handleErr(err: any): void {
-        console.log('handleErr:', err);
     }
 
     static masonry(parent: HTMLBaseElement, selectorChildes: string, margin: number = 10): boolean {
@@ -346,13 +345,18 @@ export class Helpers {
 
     static addPhoto(target: HTMLFormElement, form: FormGroup): void {
         const cFiles = form.get('files');
+        const totalFiles = target.files.length;
 
-        if (target.files.length) {
-            form.markAsDirty();
+        if (totalFiles) {
+            // form.markAsDirty();
             cFiles.setValue(target.files);
 
         } else {
             cFiles.setValue(''); // null
         }
+    }
+
+    static isArrayMdnOfficial(objToCheck) {
+        return Object.prototype.toString.call(objToCheck) === '[object Array]';
     }
 }
