@@ -3,7 +3,7 @@
         PUT: /api/v1/kind_props/:kindPropId
     </div>
     <div class="page-adm_box_body">
-        <form [formGroup]="formGetKindPropsKindPropId" (ngSubmit)="submitFormGet($event)" class="form">
+        <form [formGroup]="formGet" (ngSubmit)="submitFormGet($event)" class="form">
             <div class="form_row">
                 <div class="form_title">id вида св-ва</div>
                 <input type="number" formControlName="kindPropId" class="form_100"/>

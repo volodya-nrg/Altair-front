@@ -1,7 +1,6 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {KindPropInterface} from '../../../../../interfaces/response/kind-prop';
 import {KindPropsService} from '../../../../../services/kind-props.service';
 
 @Component({
@@ -11,10 +10,8 @@ import {KindPropsService} from '../../../../../services/kind-props.service';
 })
 export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
-    formGetKindPropsKindPropId: FormGroup;
+    formGet: FormGroup;
     form: FormGroup;
-    defaultControls: Object = {};
-    editKindProp: KindPropInterface;
     @Output() json: EventEmitter<any> = new EventEmitter();
     @ViewChild('formPut', {static: true}) formPut: ElementRef;
 
@@ -22,17 +19,16 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
         private fb: FormBuilder,
         private serviceKindProps: KindPropsService,
     ) {
-        this.defaultControls = {
-            kindPropId: [0, [Validators.required, Validators.min(0)]],
-            name: ['', Validators.required],
-        };
     }
 
     ngOnInit(): void {
-        this.formGetKindPropsKindPropId = this.fb.group({
+        this.formGet = this.fb.group({
             kindPropId: [0, [Validators.required, Validators.min(1)]],
         });
-        this.form = this.fb.group(this.defaultControls);
+        this.form = this.fb.group({
+            kindPropId: [0, [Validators.required, Validators.min(0)]],
+            name: ['', Validators.required],
+        });
     }
 
     ngOnDestroy(): void {
@@ -43,9 +39,9 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
     }
 
     submitFormGet({target}): void {
-        if (this.formGetKindPropsKindPropId.invalid) {
-            for (let key in this.formGetKindPropsKindPropId.controls) {
-                const formControl = this.formGetKindPropsKindPropId.get(key);
+        if (this.formGet.invalid) {
+            for (let key in this.formGet.controls) {
+                const formControl = this.formGet.get(key);
 
                 if (formControl.status === 'INVALID') {
                     console.log('INVALID:', key);
@@ -54,16 +50,12 @@ export class FormsKindPropsPutComponent implements OnInit, OnDestroy, AfterViewI
             return;
         }
 
-        const kindPropId: number = this.formGetKindPropsKindPropId.get('kindPropId').value;
+        const kindPropId: number = this.formGet.get('kindPropId').value;
         const s = this.serviceKindProps.getOne(kindPropId).subscribe(x => {
-            // затереть предыдущее
-            this.form = this.fb.group(this.defaultControls);
-            this.editKindProp = null;
-
             this.json.emit(x);
             this.formPut.nativeElement.classList.remove('hidden');
+            this.form.reset();
             this.form.patchValue(x);
-            this.editKindProp = x;
         });
         this.subscriptions.push(s);
     }

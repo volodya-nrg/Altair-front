@@ -11,20 +11,17 @@ import {KindPropsService} from '../../../../../services/kind-props.service';
 export class FormsKindPropsPostComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     form: FormGroup;
-    defaultControls: Object = {};
     @Output() json: EventEmitter<any> = new EventEmitter();
 
     constructor(
         private fb: FormBuilder,
         private serviceKindProps: KindPropsService,
-    ) {
-        this.defaultControls = {
-            name: ['', Validators.required],
-        };
-    }
+    ) {}
 
     ngOnInit(): void {
-        this.form = this.fb.group(this.defaultControls);
+        this.form = this.fb.group({
+            name: ['', Validators.required],
+        });
     }
 
     ngOnDestroy(): void {
@@ -43,7 +40,10 @@ export class FormsKindPropsPostComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const s = this.serviceKindProps.create(this.form.value).subscribe(x => this.json.emit(x));
+        const s = this.serviceKindProps.create(this.form.value).subscribe(x => {
+            this.json.emit(x);
+            this.form.reset();
+        });
         this.subscriptions.push(s);
     }
 }
