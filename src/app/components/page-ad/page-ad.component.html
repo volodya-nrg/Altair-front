@@ -59,10 +59,10 @@
                 {{ adFull?.description }}
             </div>
         </div>
-        <div *ngIf="adFull?.youtube" class="page-ad_row">
+        <div *ngIf="youTubeLink" class="page-ad_row">
             <h2>Видео</h2>
             <div class="page-ad_youtube">
-                <iframe [src]="adFull.youtube"
+                <iframe [src]="youTubeLink"
                         frameborder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen></iframe>

@@ -359,4 +359,9 @@ export class Helpers {
     static isArrayMdnOfficial(objToCheck) {
         return Object.prototype.toString.call(objToCheck) === '[object Array]';
     }
+
+    static youTubeLink(hash: string): string {
+        // именно урл такой
+        return 'https://www.youtube.com/embed/' + hash;
+    }
 }

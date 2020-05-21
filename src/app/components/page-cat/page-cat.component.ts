@@ -20,7 +20,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     private loadMoreForScroll: () => void;
     private masonry: ElementRef;
     private form: FormGroup;
-    private defaultControls: Object = {};
     isLoadAll: boolean = false;
     ads: AdFullInterface[] = [];
     isLoading: boolean = false;
@@ -46,16 +45,15 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
         private route: ActivatedRoute,
         private changeDetection: ChangeDetectorRef,
     ) {
-        this.defaultControls = {
-            catId: [0, [Validators.required, Validators.min(0)]],
-            limit: [10, [Validators.required, Validators.min(1)]],
-            offset: [0, Validators.min(0)],
-        };
     }
 
     ngOnInit(): void {
         this.loadMoreForScroll = this.loadMore.bind(this);
-        this.form = this.fb.group(this.defaultControls);
+        this.form = this.fb.group({
+            catId: [0, [Validators.required, Validators.min(0)]],
+            limit: [10, [Validators.required, Validators.min(1)]],
+            offset: [0, Validators.min(0)],
+        });
         const s = this.serviceManager.settings$.subscribe(x => {
             this.catTree = x.catsTree; // перед стартом
             this.start();
@@ -151,7 +149,6 @@ export class PageCatComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     renderBC(): void {
-        console.log(this.catTree);
         if (!this.catTree) {
             return;
         }

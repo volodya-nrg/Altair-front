@@ -10,6 +10,7 @@ import {Helpers} from '../../helpers';
 import {ModalComponent} from '../modal/modal.component';
 import {CarouselComponent} from '../carousel/carousel.component';
 import {ManagerService} from '../../services/manager.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
     selector: 'app-page-ad',
@@ -24,6 +25,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
     adId: number;
     isLoading: boolean = false;
     isShowModalPhotos: boolean = false;
+    youTubeLink: SafeResourceUrl;
     @ViewChild(ModalComponent) modal: ModalComponent;
     @ViewChild(CarouselComponent) carousel: CarouselComponent;
 
@@ -33,6 +35,7 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
         private serviceBreadcrumbs: BreadcrumbsService,
         private serviceManager: ManagerService,
         private changeDetection: ChangeDetectorRef,
+        private sanitizer: DomSanitizer,
     ) {
         this.adId = Helpers.getAdIdFromUrl();
 
@@ -59,6 +62,12 @@ export class PageAdComponent implements OnInit, OnDestroy, AfterViewInit {
         const s = this.servicePages.pageAd(this.adId).subscribe(
             x => {
                 this.adFull = x.adFull;
+
+                if (this.adFull.youtube) {
+                    const link = Helpers.youTubeLink(this.adFull.youtube);
+                    this.youTubeLink = this.sanitizer.bypassSecurityTrustResourceUrl(link);
+                }
+
                 this.catFull = x.catFull;
 
                 let cats: CatInterface[] = [];

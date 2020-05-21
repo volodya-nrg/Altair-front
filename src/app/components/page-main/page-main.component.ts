@@ -14,6 +14,7 @@ import {CatTreeInterface} from '../../interfaces/response/cat';
 })
 export class PageMainComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
+    private catsTree: CatTreeInterface;
     lastAdsFull: AdFullInterface[] = [];
     lastChainBC: BreadcrumbsInterface[] = [];
     isLoading: boolean = false;
@@ -25,7 +26,10 @@ export class PageMainComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.serviceManager.settings$.subscribe(x => this.start(x.catsTree));
+        const s = this.serviceManager.settings$.subscribe(x => {
+            this.catsTree = x.catsTree;
+            this.start();
+        });
         this.subscriptions.push(s);
     }
 
@@ -33,7 +37,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(x => x.unsubscribe());
     }
 
-    start(catsTree: CatTreeInterface): void {
+    start(): void {
         this.isLoading = true;
         const s = this.servicePages.pageMain(10).subscribe(
             x => {
@@ -44,7 +48,7 @@ export class PageMainComponent implements OnInit, OnDestroy {
                 }
 
                 const needCatId = this.lastAdsFull[0].catId;
-                let listCat = Helpers.getAncestors(catsTree.childes, needCatId);
+                let listCat = Helpers.getAncestors(this.catsTree.childes, needCatId);
                 this.lastChainBC = Helpers.buildBCFromCats(listCat);
 
             },
