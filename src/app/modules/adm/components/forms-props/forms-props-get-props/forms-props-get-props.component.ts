@@ -49,8 +49,7 @@ export class FormsPropsGetPropsComponent implements OnInit {
             return;
         }
 
-        const s = this.serviceProps.getPropsFullForCat(this.form.get('catId').value)
-            .subscribe(x => this.json.emit(x));
+        const s = this.serviceProps.getPropsFullForCat(this.form.get('catId').value).subscribe(x => this.json.emit(x));
         this.subscriptions.push(s);
     }
 }

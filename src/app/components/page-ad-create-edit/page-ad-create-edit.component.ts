@@ -345,7 +345,7 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
         owner.remove();
 
         if (!grandFather.querySelectorAll('.form_thumbnails_thumbnail').length) {
-            this.form.get('files').setValue(null); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
+            this.form.get('files').setValue(''); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
         }
     }
 

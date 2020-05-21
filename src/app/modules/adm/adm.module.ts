@@ -39,6 +39,7 @@ import {PrettyJsonPipe} from './pipes/pretty-json.pipe';
 import {AdmRoutingModule} from './adm-routing.module';
 import {SharedModule} from '../shared/shared.module';
 import { FormsAdsPostPutAdComponent } from './components/forms-ads/forms-ads-post-put-ad/forms-ads-post-put-ad.component';
+import { FormsPropsPostPutPropComponent } from './components/forms-props/forms-props-post-put-prop/forms-props-post-put-prop.component';
 
 @NgModule({
     declarations: [
@@ -78,6 +79,7 @@ import { FormsAdsPostPutAdComponent } from './components/forms-ads/forms-ads-pos
         FormsTestComponent,
         PrettyJsonPipe,
         FormsAdsPostPutAdComponent,
+        FormsPropsPostPutPropComponent,
     ],
     imports: [
         CommonModule,
