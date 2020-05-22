@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -35,6 +35,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
 
     @Input() mode: string;
     @Output() json: EventEmitter<any> = new EventEmitter();
+    @ViewChild('formTag', {static: true}) formTag: ElementRef;
 
     isProdMode: boolean = environment.production;
     url: string = environment.apiUrl;
@@ -123,6 +124,8 @@ export class AdFormComponent implements OnInit, OnDestroy {
     set newCatId(catIdSrc: number) {
         this._catId = catIdSrc;
         this.ad = null;
+        this.formTag.nativeElement.reset();
+        this.form.reset();
         this.form.get('catId').setValue(this._catId);
         this.onChangeCat();
     }
@@ -134,6 +137,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
             return;
         }
 
+        this.saveControlNameYmaps = '';
         this.isLoadingProps = true;
         const s = this.serviceCats.getCatId(catId, false).subscribe(
             c => this.responseCat(c),
@@ -200,6 +204,10 @@ export class AdFormComponent implements OnInit, OnDestroy {
                 value = this.form.get('p' + p.propId).value;
             }
 
+            if (p.kindPropName === 'ymaps') {
+                this.saveControlNameYmaps = 'p' + p.propId;
+            }
+
             if (p.kindPropName === 'photo') {
                 // в value может стоить старое значение, либо пустота
                 newForm.addControl('files', this.fb.control(value, aValidators));
@@ -208,18 +216,11 @@ export class AdFormComponent implements OnInit, OnDestroy {
                     this._ad.images.forEach((img, k) => {
                         newForm.addControl('filesAlreadyHas[' + k + ']', this.fb.control(img.filepath));
                     });
-                    aValidators = []; // затрем валидатор для type=file
                 }
-
-                value = ''; // сбросим значение для type=file (p91)
             }
 
-            if (p.kindPropName === 'ymaps') {
-                this.saveControlNameYmaps = 'p' + p.propId;
-                // если есть ранее введеный адрес, то выставить его на карте
-            }
-
-            // у фото оставляем св-во, т.к. на беке будет проверка данного св-ва
+            // у фото оставляем св-во, т.к. на беке будет проверка данного св-ва.
+            // если это фото, то создатся доп-но еще псевдо элемент
             newForm.addControl('p' + p.propId, this.fb.control(value, aValidators));
         });
 
@@ -311,9 +312,9 @@ export class AdFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    addPhoto({target}): void {
+    addPhoto({target}, pseudoControlName): void {
         if (!target.files.length) {
-            let val = null; // если ни чего нет, то нужен null, иначе любая цифра
+            let val = ''; // если ни чего нет, то нужен null, иначе любая цифра
             let filesAlreadyHas: string[] = [];
 
             for (let controlsKey in this.form.controls) {
@@ -323,17 +324,19 @@ export class AdFormComponent implements OnInit, OnDestroy {
             }
 
             if (filesAlreadyHas.length) {
-                val = filesAlreadyHas.length; // добавим цифру, чтоб не было деления на массив
+                val = filesAlreadyHas.length.toString(); // добавим цифру, чтоб не было деления на массив
             }
 
             this.form.get('files').setValue(val);
+            this.form.get(pseudoControlName).setValue(val);
             return;
         }
 
-        Helpers.addPhoto(target, this.form);
+        this.form.get('files').setValue(target.files);
+        this.form.get(pseudoControlName).setValue(target.files.length);
     }
 
-    removePhoto({target}): void {
+    removePhoto({target}, pseudoControlName): void {
         let owner = target.parentNode;
         let grandFather = owner.parentElement;
         const index = [...grandFather.childNodes].indexOf(owner);
@@ -343,6 +346,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
 
         if (!grandFather.querySelectorAll('.form_thumbnails_thumbnail').length) {
             this.form.get('files').setValue(''); // нельзя пустой объект ставить, т.к. валидатор считает его не пустым
+            this.form.get(pseudoControlName).setValue('');
         }
     }
 
@@ -364,40 +368,56 @@ export class AdFormComponent implements OnInit, OnDestroy {
 
         window['ymaps'].ready().done(ym => {
             this.ym = ym;
+            let center: number[] = this.defaultCenterMap;
+            let latitude: number = this.form.get('latitude').value;
+            let longitude: number = this.form.get('longitude').value;
+            let pm = null;
+
+            if (latitude && longitude) {
+                center = [latitude, longitude];
+            }
+
             this.map = new this.ym.Map(this.idMap, {
-                center: this.defaultCenterMap,
+                center: center,
                 zoom: 10,
             });
-            this.addEventClickForYmapForListen(null);
+
+            if (latitude && longitude) {
+                pm = this.createPlacemark(center);
+                pm.properties.set('iconCaption', this.form.get(this.saveControlNameYmaps).value);
+                this.map.geoObjects.add(pm);
+            }
+
+            this.addEventClickForYmapForListen(pm);
         });
     }
 
     // установка событий на карту
-    addEventClickForYmapForListen(myPlacemark: any): void {
+    addEventClickForYmapForListen(pm: any): void {
         // Слушаем клик на карте.
         this.map.events.add('click', (e) => {
             var coords = e.get('coords');
 
             // Если метка уже создана – просто передвигаем ее.
-            if (myPlacemark) {
-                myPlacemark.geometry.setCoordinates(coords);
+            if (pm) {
+                pm.geometry.setCoordinates(coords);
             }
             // Если нет – создаем.
             else {
-                myPlacemark = this.createPlacemark(coords);
-                this.map.geoObjects.add(myPlacemark);
+                pm = this.createPlacemark(coords);
+                this.map.geoObjects.add(pm);
                 // Слушаем событие окончания перетаскивания на метке.
-                myPlacemark.events.add('dragend', () => {
-                    this.getAddress(myPlacemark.geometry.getCoordinates(), myPlacemark);
+                pm.events.add('dragend', () => {
+                    this.getAddress(pm.geometry.getCoordinates(), pm);
                 });
             }
 
-            this.getAddress(coords, myPlacemark);
+            this.getAddress(coords, pm);
         });
     }
 
     // создание метки
-    createPlacemark(coords): void {
+    createPlacemark(coords) {
         return new this.ym.Placemark(coords, {
             iconCaption: 'поиск...'
         }, {

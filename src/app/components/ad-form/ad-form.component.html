@@ -1,7 +1,5 @@
 <div class="ad-form{{ mode ? ' sx-' + mode: '' }}">
-    <form [formGroup]="form" class="form" (ngSubmit)="onSubmit($event)"
-          [class.sx-loading]="isLoadingProps">
-
+    <form #formTag [formGroup]="form" class="form" [class.sx-loading]="isLoadingProps" (ngSubmit)="onSubmit($event)">
         <input type="hidden" formControlName="adId"/>
         <input type="hidden" formControlName="createdAt"/>
         <input type="hidden" formControlName="updatedAt"/>
@@ -47,11 +45,11 @@
 
                             <div *ngIf=" p.kindPropName === 'photo' ">
                                 <input type="hidden" formControlName="files"/>
+                                <input type="hidden" formControlName="p{{p.propId}}"/>
                                 <input type="file"
-                                       formControlName="p{{p.propId}}"
                                        accept="image/jpeg,image/png"
                                        [multiple]="convertToInt(p.propComment)"
-                                       (change)="addPhoto($event)"/>
+                                       (change)="addPhoto($event, 'p'+p.propId)"/>
                             </div>
 
                             <div *ngIf=" p.kindPropName === 'ymaps' ">
@@ -77,7 +75,7 @@
                     <div *ngIf="p.kindPropName === 'photo' && ad?.images?.length" class="form_thumbnails">
                         <div *ngFor="let img of ad.images" class="form_thumbnails_thumbnail">
                             <div class="form_thumbnails_thumbnail_close" title="удалить"
-                                 (click)="removePhoto($event)"></div>
+                                 (click)="removePhoto($event, 'p'+p.propId)"></div>
                             <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
                         </div>
                     </div>
