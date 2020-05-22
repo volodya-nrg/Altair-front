@@ -71,7 +71,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
             catId: [0, [Validators.required, Validators.min(1)]],
             userId: [0, [Validators.min(0)]],
             description: ['', Validators.required],
-            price: 0,
+            price: [0, Validators.min(1)],
             isDisabled: false,
             isApproved: false,
             youtube: '',
@@ -156,7 +156,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
         for (let key in this.form.controls) {
             if (newForm.contains(key)) {
                 const control = this.form.get(key);
-                let value = control.value;
+                let value = control.value || '';
 
                 if (key === 'youtube') {
                     value = Helpers.youTubeLink(value);
