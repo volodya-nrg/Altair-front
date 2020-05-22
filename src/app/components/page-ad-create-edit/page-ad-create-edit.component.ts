@@ -51,7 +51,6 @@ export class PageAdCreateEditComponent implements OnInit, OnDestroy, AfterViewIn
     };
 
     selectLeaf(signal: EmitCatsHorizAccordionInterface): void {
-        console.log(3333);
         this.adForm.newCatId = signal.cat.catId;
     }
 }
