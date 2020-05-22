@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, O
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AdService} from '../../../../../services/ad.service';
-import {FormsAdsPostPutAdComponent} from '../forms-ads-post-put-ad/forms-ads-post-put-ad.component';
+import {AdFormComponent} from '../../../../../components/ad-form/ad-form.component';
 
 @Component({
     selector: 'app-forms-ads-put-ads-adid',
@@ -14,7 +14,7 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
     form: FormGroup;
     @Output() json: EventEmitter<any> = new EventEmitter();
     @ViewChild('formPostPutWrap', {static: true}) formPostPutWrap: ElementRef;
-    @ViewChild(FormsAdsPostPutAdComponent) formPostPut: FormsAdsPostPutAdComponent;
+    @ViewChild(AdFormComponent) adForm: AdFormComponent;
 
     constructor(
         private fb: FormBuilder,
@@ -50,7 +50,7 @@ export class FormsAdsPutAdsAdidComponent implements OnInit, OnDestroy, AfterView
         const s = this.serviceAds.getOne(this.form.get('adId').value).subscribe(x => {
             this.json.emit(x);
             this.formPostPutWrap.nativeElement.classList.remove('hidden');
-            this.formPostPut.editAd = x;
+            this.adForm.ad = x;
         });
         this.subscriptions.push(s);
     }

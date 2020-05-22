@@ -2,7 +2,7 @@
     <ul *ngFor="let subCat of aCols" class="cats-horiz-accordion_col">
         <li *ngFor="let cat of subCat.childes"
             class="cats-horiz-accordion_col_{{ cat.catId }}"
-            (click)="render(cat.catId, true, $event)">
+            (click)="render(cat.catId, $event)">
             {{ cat.name }}
         </li>
     </ul>

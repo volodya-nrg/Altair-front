@@ -13,7 +13,6 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     private subscriptions: Subscription[] = [];
     private catTree: CatTreeInterface;
     aCols: CatTreeInterface[] = []; // динамическая переменная
-
     @Output() onSelectLeaf: EventEmitter<EmitCatsHorizAccordionInterface> = new EventEmitter();
     @ViewChild('catCols', {static: true}) catCols: ElementRef;
 
@@ -38,7 +37,7 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
     ngAfterViewInit(): void {
     };
 
-    render(catId: number, isResetFormOnParent: boolean, event): void {
+    render(catId: number, event): void {
         if (event && event.target.classList.contains('sx-active')) {
             return;
         }
@@ -46,7 +45,7 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
         this.reset();
         this.aCols.length = 0;
         this.aCols = [this.catTree];
-        let tmpCats = this.getArrayAncestorsCatTree(this.catTree, catId, isResetFormOnParent).reverse();
+        let tmpCats = this.getArrayAncestorsCatTree(this.catTree, catId, event).reverse();
         let ids: number[] = [catId];
 
         tmpCats.forEach(tmpCat => {
@@ -74,7 +73,7 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
             .forEach(x => x.classList.remove('sx-active'));
     }
 
-    private getArrayAncestorsCatTree(catTree: CatTreeInterface, catId: number, isResetFormOnParent: boolean): CatTreeInterface[] {
+    private getArrayAncestorsCatTree(catTree: CatTreeInterface, catId: number, eventSrc: Event): CatTreeInterface[] {
         let result: CatTreeInterface[] = [];
 
         for (let i = 0; i < catTree.childes.length; i++) {
@@ -83,17 +82,17 @@ export class CatsHorizAccordionComponent implements OnInit, OnDestroy, AfterView
             if (cat.catId === catId) {
                 result.push(cat);
 
-                if (!cat.childes || !cat.childes.length) {
+                // если быбирается нативно и это лист, то уведомляем назад. Иначе уведомление не даем.
+                if ((!cat.childes || !cat.childes.length) && eventSrc) {
                     this.onSelectLeaf.emit({
                         cat: cat,
-                        reset: isResetFormOnParent,
                     });
                 }
 
                 return result;
             }
             if (cat.childes && cat.childes.length) {
-                result = this.getArrayAncestorsCatTree(cat, catId, isResetFormOnParent);
+                result = this.getArrayAncestorsCatTree(cat, catId, eventSrc);
 
                 if (result.length) {
                     result.push(cat);

@@ -1,0 +1,58 @@
+.ad-form {
+    &_dynamic-inputs {
+        display: flex;
+
+        & > * {
+            &:not(:first-child) {
+                margin-left: 1em;
+            }
+        }
+
+        &.sx-input {
+            & > * {
+                flex-basis: 100%;
+            }
+        }
+
+        &.sx-input_number {
+        }
+
+        &.sx-select {
+        }
+
+        &.sx-radio {
+        }
+
+        &.sx-textarea {
+            & > * {
+                flex-basis: 100%;
+
+                &:last-child {
+                    flex-basis: auto;
+                }
+            }
+        }
+
+        &.sx-photo {
+        }
+
+        &.sx-ymaps {
+            & > * {
+                flex-basis: 100%;
+            }
+        }
+    }
+
+    &_map {
+        margin-top: 1em;
+
+        #map {
+            margin-top: 0.5em;
+        }
+    }
+
+    #map {
+        height: 15em; // 240px / 16px
+        background-color: whitesmoke;
+    }
+}
