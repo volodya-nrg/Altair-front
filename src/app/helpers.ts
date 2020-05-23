@@ -360,8 +360,31 @@ export class Helpers {
         return Object.prototype.toString.call(objToCheck) === '[object Array]';
     }
 
-    static youTubeLink(hash: string): string {
-        // именно урл такой
-        return 'https://www.youtube.com/embed/' + hash;
+    static youTubeLink(str: string): string {
+        let result: string = '';
+        let hash: string = '';
+        const parser = document.createElement('a');
+
+        parser.href = str;
+
+        if (parser.search) {
+            let str: string[] = parser.search.substr(1).split('&');
+            hash = str[0];
+
+            if (hash.indexOf('=') !== -1) {
+                const lastIndex: number = hash.lastIndexOf('=');
+                hash = hash.substr(lastIndex + 1);
+            }
+
+        } else if (parser.pathname) {
+            let str: string[] = parser.pathname.split('/');
+            hash = str[1];
+        }
+
+        if (hash) {
+            result = 'https://www.youtube.com/embed/' + hash;
+        }
+
+        return result;
     }
 }

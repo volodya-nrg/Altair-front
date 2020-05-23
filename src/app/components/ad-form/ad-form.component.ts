@@ -109,6 +109,8 @@ export class AdFormComponent implements OnInit, OnDestroy {
         this._ad = x;
 
         if (this._ad === null) {
+            this.formTag.nativeElement.reset();
+            this.form.reset();
             return;
         }
 
@@ -209,14 +211,17 @@ export class AdFormComponent implements OnInit, OnDestroy {
             }
 
             if (p.kindPropName === 'photo') {
-                // в value может стоить старое значение, либо пустота
-                newForm.addControl('files', this.fb.control(value, aValidators));
+                value = '';
 
                 if (this._ad && this._ad.images && this._ad.images.length) { // images может и не быть
                     this._ad.images.forEach((img, k) => {
                         newForm.addControl('filesAlreadyHas[' + k + ']', this.fb.control(img.filepath));
                     });
+                    value = this._ad.images.length.toString(); // если есть старые фото, обозначим их
                 }
+
+                // при смене категории надо сбрасывать files, p91
+                newForm.addControl('files', this.fb.control(value, aValidators));
             }
 
             // у фото оставляем св-во, т.к. на беке будет проверка данного св-ва.
@@ -261,30 +266,14 @@ export class AdFormComponent implements OnInit, OnDestroy {
 
     onSubmit({target}): void {
         if (this.form.invalid) {
-            let totalOldFiles = 0;
-            let hasError = false;
-
-            for (let key in this.form.controls) {
-                if (key.substr(0, 'filesAlreadyHas'.length) === 'filesAlreadyHas') {
-                    totalOldFiles++;
-                }
-            }
-
             for (let key in this.form.controls) {
                 const formControl = this.form.get(key);
 
-                if ((key === 'files' || key === 'p91') && totalOldFiles) {
-                    continue;
-                }
                 if (formControl.status === 'INVALID') {
-                    hasError = true;
                     console.log('INVALID:', key);
                 }
             }
-
-            if (hasError) {
-                return;
-            }
+            return;
         }
 
         const newFormData = Helpers.getNewFormData(this.form.value);
@@ -295,6 +284,14 @@ export class AdFormComponent implements OnInit, OnDestroy {
             x => {
                 if (this.mode === 'private') {
                     this.json.emit(x);
+
+                    if (!this._ad) {
+                        this.ad = null;
+
+                    } else {
+                        this.ad = x;
+                    }
+
                     return;
                 }
 

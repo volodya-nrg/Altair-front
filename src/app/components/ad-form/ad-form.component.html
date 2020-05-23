@@ -1,9 +1,27 @@
-<div class="ad-form{{ mode ? ' sx-' + mode: '' }}">
-    <form #formTag [formGroup]="form" class="form" [class.sx-loading]="isLoadingProps" (ngSubmit)="onSubmit($event)">
+<div class="ad-form">
+    <form #formTag [formGroup]="form"
+          class="form"
+          [class.sx-loading]="isLoadingProps"
+          [class.sx-cols-as-column]=" mode === 'private' "
+          (ngSubmit)="onSubmit($event)">
+
         <input type="hidden" formControlName="adId"/>
         <input type="hidden" formControlName="createdAt"/>
         <input type="hidden" formControlName="updatedAt"/>
 
+        <div *ngIf=" mode === 'private' " class="form_row">
+            <div class="form_cols">
+                <div class="form_cols_col">id категории</div>
+                <div class="form_cols_col">
+                    <select formControlName="catId" (change)="onChangeCat()" class="form_100">
+                        <option value="0"></option>
+                        <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
+                            {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <div *ngFor="let p of cat?.props" class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
@@ -82,7 +100,6 @@
                 </div>
             </div>
         </div>
-
         <div *ngIf="!cat || cat && !cat.isAutogenerateTitle" class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">
@@ -95,25 +112,11 @@
                 </div>
             </div>
         </div>
-
         <div *ngIf=" mode === 'private' " class="form_row">
             <div class="form_cols">
                 <div class="form_cols_col">Slug</div>
                 <div class="form_cols_col">
                     <input formControlName="slug" readonly="readonly" class="form_100" type="text"/>
-                </div>
-            </div>
-        </div>
-        <div *ngIf=" mode === 'private' " class="form_row">
-            <div class="form_cols">
-                <div class="form_cols_col">id категории</div>
-                <div class="form_cols_col">
-                    <select formControlName="catId" (change)="onChangeCat()" class="form_100">
-                        <option value="0"></option>
-                        <option *ngFor="let cat of catTreeOneLevel" [value]="cat.catId">
-                            {{ '|----'.repeat(cat.deep) }} {{ cat.name }}
-                        </option>
-                    </select>
                 </div>
             </div>
         </div>
