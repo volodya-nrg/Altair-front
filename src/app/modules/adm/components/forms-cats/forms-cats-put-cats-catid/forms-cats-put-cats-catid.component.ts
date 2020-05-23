@@ -45,7 +45,7 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            propsAssigned: this.fb.array(<PropAssignedForCatInterface[]> []),
+            propsAssignedForCat: this.fb.array(<PropAssignedForCatInterface[]> []),
         });
 
         const s = this.serviceManager.settings$
@@ -78,12 +78,12 @@ export class FormsCatsPutCatsCatidComponent implements OnInit, OnDestroy, AfterV
             this.formPutEl.nativeElement.classList.remove('hidden');
 
             this.formPut.reset();
-            (this.formPut.get('propsAssigned') as FormArray).clear();
+            (this.formPut.get('propsAssignedForCat') as FormArray).clear();
             this.formPut.patchValue(x);
 
             // преобразуем нормально в массивы св-ва и их значения
             const aProps = x.props.map(y => this.fb.group(new PropsAssignedForCat(y)));
-            this.formPut.setControl('propsAssigned', this.fb.array(aProps));
+            this.formPut.setControl('propsAssignedForCat', this.fb.array(aProps));
         });
         this.subscriptions.push(s);
     }

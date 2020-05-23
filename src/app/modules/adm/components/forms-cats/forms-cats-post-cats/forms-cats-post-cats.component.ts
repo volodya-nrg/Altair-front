@@ -37,7 +37,7 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             titleHelp: '',
             titleComment: '',
             isAutogenerateTitle: false,
-            propsAssigned: this.fb.array(<PropAssignedForCatInterface[]> []),
+            propsAssignedForCat: this.fb.array(<PropAssignedForCatInterface[]> []),
         });
 
         const s = this.serviceManager.settings$
@@ -65,7 +65,7 @@ export class FormsCatsPostCatsComponent implements OnInit, OnDestroy {
             this.json.emit(x);
             target.reset();
             this.form.reset();
-            (this.form.get('propsAssigned') as FormArray).clear();
+            (this.form.get('propsAssignedForCat') as FormArray).clear();
         });
         this.subscriptions.push(s);
     }

@@ -14,9 +14,9 @@
         </div>
     </div>
     <div class="dynamic-props_body">
-        <app-dynamic-prop *ngFor="let propAssigned of propsAssignedFormArray.controls; let i = index"
+        <app-dynamic-prop *ngFor="let p of propsAssignedFormArray.controls; let i = index"
                           [index]="i"
-                          [propAssigned]="propAssigned"
+                          [propAssigned]="p"
                           (removed)="propsAssignedFormArray.removeAt($event)">
         </app-dynamic-prop>
     </div>
