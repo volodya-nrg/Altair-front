@@ -71,7 +71,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
             catId: [0, [Validators.required, Validators.min(1)]],
             userId: [0, [Validators.min(0)]],
             description: ['', Validators.required],
-            price: [0, Validators.min(1)],
+            price: [0, Validators.min(0)],
             isDisabled: false,
             isApproved: false,
             youtube: '',
@@ -183,11 +183,15 @@ export class AdFormComponent implements OnInit, OnDestroy {
                     const el = this._ad.detailsExt[k];
 
                     if (el.propId === p.propId) {
-                        value = el.value;
+                        value = el.value || '';
 
                         // если это цифровой тип, то конвертнем его в цифру
                         if (this.tagKindNumber.indexOf(el.kindPropName) !== -1) {
                             value = parseInt(el.value, 10);
+
+                            if (!value) {
+                                value = 0;
+                            }
                         }
 
                         return false;
@@ -203,7 +207,7 @@ export class AdFormComponent implements OnInit, OnDestroy {
             }
 
             if (this.form.contains('p' + p.propId)) {
-                value = this.form.get('p' + p.propId).value;
+                value = this.form.get('p' + p.propId).value || '';
             }
 
             if (p.kindPropName === 'ymaps') {

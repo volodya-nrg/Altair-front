@@ -189,8 +189,7 @@
         <div class="form_row align-right">
             <input type="submit" [disabled]="form.invalid || isSendData" [value]=" ad ? 'Изменить':'Создать' "/>
         </div>
-        <div *ngIf="!isProdMode">
-            <br/>
+        <div *ngIf="!isProdMode" class="form_row">
             {{ form.value | json }}
         </div>
     </form>

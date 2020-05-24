@@ -40,7 +40,7 @@
                 <div class="form_row">
                     <input type="submit" [disabled]="form.invalid || form.pristine" value="Сохранить"/>
                 </div>
-                <div class="align-right">
+                <div class="form_row align-right">
                     <span class="text-mute">Дата регистрации</span>: {{ profile?.createdAt | date }}
                 </div>
                 <div *ngIf="!isProdMode" class="form_row">
@@ -53,6 +53,6 @@
     <hr class="hr"/>
     <br/>
     <div class="align-right">
-        <button (click)="deleteProfile($event)">Удалить</button>
+        <button (click)="deleteProfile($event)">Удалить профиль</button>
     </div>
 </div>
