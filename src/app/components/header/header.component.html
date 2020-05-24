@@ -19,7 +19,7 @@
             <div>
                 <div class="header_flexbox">
                     <div>
-                        <a href="javascript:void(0);" routerLink="/adm">Адм.</a>
+                        <a *ngIf="isAdmin" href="javascript:void(0);" routerLink="/adm">Адм.</a>
                     </div>
                     <div>
                         <a *ngIf="!profile" href="javascript:void(0);" routerLink="/login">Вход</a>

@@ -29,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
             // если осталось 10 секунд до окончания access-token-а
             if (diffSec < this.minOffsetTimeLifeAccessToken) {
-                this.serviceAuth.JWT = ''; // т.к. заголовок выставлен, то можно удалить, чтоб не было повторных вызовов
                 this.serviceAuth.refreshTokens().subscribe(x => {
                     this.serviceAuth.JWT = x.JWT;
                     this.serviceAuth.profile$.next(x.user);

@@ -11,6 +11,7 @@ import {UserInterface} from '../../interfaces/response/user';
 export class HeaderComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
     profile: UserInterface;
+    isAdmin: boolean;
 
     constructor(
         private authService: AuthService,
@@ -18,7 +19,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        const s = this.authService.profile$.subscribe(x => this.profile = x);
+        const s = this.authService.profile$.subscribe(x => {
+            this.profile = x;
+            this.isAdmin = this.authService.isAdmin();
+        });
         this.subscriptions.push(s);
     }
 

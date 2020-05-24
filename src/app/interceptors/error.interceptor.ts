@@ -20,6 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log('ErrorInterceptor', err);
 
                 if (err.status === 401) {
+                    this.serviceAuth.JWT = '';
                     this.serviceAuth.toggleModalAuth$.next(true);
 
                 } else {

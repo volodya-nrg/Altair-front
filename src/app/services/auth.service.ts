@@ -49,7 +49,7 @@ export class AuthService {
         return JSON.parse(atob(part));
     }
 
-    check() {
+    check(): void {
         const s = this.refreshTokens().subscribe(
             x => {
                 this.JWT = x.JWT;
@@ -58,5 +58,18 @@ export class AuthService {
             err => s.unsubscribe(),
             () => s.unsubscribe()
         );
+    }
+
+    isAdmin(): boolean {
+        let result: boolean = false;
+
+        if (!this.JWT) {
+            return result;
+        }
+
+        const jwt = this.parseJWT(this.JWT);
+        result = jwt.UserRole === 'admin';
+
+        return result;
     }
 }

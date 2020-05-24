@@ -12,6 +12,7 @@ import {PageAdCreateEditComponent} from './components/page-ad-create-edit/page-a
 import {PageRecoverSenderComponent} from './components/page-recover/sender/sender.component';
 import {PageRecoverCheckHashComponent} from './components/page-recover/check-hash/check-hash.component';
 import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
+import {AuthGuardService} from './services/auth-guard.service';
 
 const routes: Routes = [
     {path: '', redirectTo: 'main', pathMatch: 'full'},
@@ -24,7 +25,7 @@ const routes: Routes = [
     {
         path: 'ad', children: [
             {path: 'create', component: PageAdCreateEditComponent},
-            {path: 'edit/:adId', component: PageAdCreateEditComponent},
+            {path: 'edit/:adId', component: PageAdCreateEditComponent, canActivate: [AuthGuardService]},
             {path: ':slug', component: PageAdComponent},
         ]
     },
@@ -44,8 +45,18 @@ const routes: Routes = [
             {path: 'check/:hash', component: PageRecoverCheckHashComponent}, // стр. смены пароля
         ]
     },
-    {path: 'profile', loadChildren: () => import('./modules/profile/profile.module').then(m => m.ProfileModule)},
-    {path: 'adm', loadChildren: () => import('./modules/adm/adm.module').then(m => m.AdmModule)},
+    {
+        path: 'profile',
+        loadChildren: () => import('./modules/profile/profile.module').then(m => m.ProfileModule),
+        canLoad: [AuthGuardService],
+        canActivate: [AuthGuardService],
+    },
+    {
+        path: 'adm',
+        loadChildren: () => import('./modules/adm/adm.module').then(m => m.AdmModule),
+        canLoad: [AuthGuardService],
+        canActivate: [AuthGuardService],
+    },
     {path: 'info', loadChildren: () => import('./modules/info/info.module').then(m => m.InfoModule)},
     {path: '**', component: PageNotFoundComponent},
 ];

@@ -28,6 +28,7 @@ export class PageProfileComponent implements OnInit, OnDestroy {
 
     logout(): void {
         const s = this.serviceAuth.logout().subscribe(x => {
+            this.serviceAuth.JWT = '';
             localStorage.clear();
             this.serviceAuth.profile$.next(null);
             this.router.navigate(['/main']).then();

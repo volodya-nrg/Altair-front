@@ -34,6 +34,7 @@ import {ErrorsFlyComponent} from './components/errors-fly/errors-fly.component';
 import {PageCheckEmailThroughHashComponent} from './components/page-check-email-through-hash/page-check-email-through-hash.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {LoginComponent} from './components/login/login.component';
+import {AuthGuardService} from './services/auth-guard.service';
 
 @NgModule({
     declarations: [
@@ -86,6 +87,7 @@ import {LoginComponent} from './components/login/login.component';
         },
         {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+        AuthGuardService,
     ],
     bootstrap: [AppComponent]
 })
