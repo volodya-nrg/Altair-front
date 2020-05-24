@@ -3,12 +3,14 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/com
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {MyErrorService} from '../services/my-error.service';
+import {AuthService} from '../services/auth.service';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
     constructor(
         private serviceMyError: MyErrorService,
+        private serviceAuth: AuthService,
     ) {
     }
 
@@ -18,8 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
                 console.log('ErrorInterceptor', err);
 
                 if (err.status === 401) {
-                    console.log('Редирект на стр. авторизации');
-                    // редирект на страницу авторизации с гет-параметром редиректа назад
+                    this.serviceAuth.toggleModalAuth$.next(true);
+
                 } else {
                     let msg = typeof err.error === 'string' ? err.error : err.message;
 

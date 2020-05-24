@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from
 import {Subscription} from 'rxjs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/auth.service';
-import {Router} from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import {environment} from '../../../environments/environment';
 
 @Component({
@@ -27,6 +27,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
             email: ['test@test.te', [Validators.required, Validators.email]],
             password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
         });
+
+        const s = this.router.events.subscribe(event => {
+            if (event instanceof NavigationEnd) {
+                this.serviceAuth.toggleModalAuth$.next(false);
+            }
+        });
+        this.subscriptions.push(s);
     }
 
     ngOnDestroy(): void {

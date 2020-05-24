@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     selector: 'app-modal',
@@ -6,9 +7,12 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
     styleUrls: ['./modal.component.less'],
 })
 export class ModalComponent implements OnInit, OnDestroy {
+    @Input() width: string;
     @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-    constructor() {
+    constructor(
+        private serviceAuth: AuthService,
+    ) {
     }
 
     ngOnInit(): void {
@@ -23,5 +27,6 @@ export class ModalComponent implements OnInit, OnDestroy {
 
     hide(): void {
         this.onClose.emit(true);
+        this.serviceAuth.toggleModalAuth$.next(false);
     }
 }

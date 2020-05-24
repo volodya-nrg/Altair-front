@@ -1,4 +1,15 @@
-import {ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import {AdFullInterface} from '../../interfaces/response/ad';
 import {Subscription} from 'rxjs';
 import {environment} from '../../../environments/environment';
@@ -18,13 +29,12 @@ import {Helpers} from '../../helpers';
     templateUrl: './ad-form.component.html',
     styleUrls: ['./ad-form.component.less']
 })
-export class AdFormComponent implements OnInit, OnDestroy {
+export class AdFormComponent implements OnInit, OnDestroy, AfterViewInit {
     private subscriptions: Subscription[] = [];
     private previousTitleHelp: string;
     private attentionTextCreate: string = 'Объявление добавлено и отправленно на проверку';
     private attentionTextUpdate: string = 'Объявление обновлено и отправленно на проверку';
     private tagKindNumber: string[] = this.serviceManager.tagKindNumber;
-    private ymapsPathScript: string = environment.ymapsPathScript;
     private ym: any;
     private map: any;
     private defaultCenterMap: number[] = [55.76, 37.64];
@@ -90,8 +100,6 @@ export class AdFormComponent implements OnInit, OnDestroy {
             this.catTreeOneLevel = Helpers.getCatTreeAsOneLevel(x.catsTree);
         });
         this.subscriptions.push(s);
-
-        Helpers.addScript(this.ymapsPathScript);
     }
 
     ngOnDestroy(): void {
@@ -103,6 +111,9 @@ export class AdFormComponent implements OnInit, OnDestroy {
 
         this.map = null;
         this.ym = null;
+    }
+
+    ngAfterViewInit(): void {
     }
 
     set ad(x: AdFullInterface) {

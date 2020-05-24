@@ -1,4 +1,6 @@
-<div class="modal">
+<div class="modal"
+     [class.sx-md]=" width === 'md' "
+     [class.sx-sm]=" width === 'sm' ">
     <div class="modal_dark" (click)="hide()"></div>
     <div class="modal_box">
         <div class="modal_close" (click)="hide()">&times;</div>

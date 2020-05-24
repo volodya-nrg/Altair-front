@@ -11,6 +11,17 @@
     height: 100%;
     z-index: 11;
 
+    &.sx-md {
+        .modal_box {
+            width: @modalWidthMd;
+        }
+    }
+    &.sx-sm {
+        .modal_box {
+            width: @modalWidthSm;
+        }
+    }
+
     &_dark {
         position: absolute;
         top: 0;
@@ -24,7 +35,7 @@
     &_box {
         position: relative;
         box-sizing: border-box;
-        width: @maxWidth;
+        width: @modalWidthLg;
         height: auto;
         // overflow: hidden;
         padding: 1em; // 16px / 16px

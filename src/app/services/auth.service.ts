@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {JwtInterface} from '../interfaces/response/jwt';
 import {UserInterface} from '../interfaces/response/user';
@@ -12,6 +12,7 @@ import {JwtPayloadInterface} from '../interfaces/jwt-payload';
 export class AuthService {
     private url: string = environment.apiUrl;
     profile$: BehaviorSubject<UserInterface> = new BehaviorSubject<UserInterface>(null);
+    toggleModalAuth$: Subject<boolean> = new Subject<boolean>();
 
     set JWT(data: string) {
         if (data === '') {
