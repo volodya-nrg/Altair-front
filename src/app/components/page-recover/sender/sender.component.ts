@@ -26,7 +26,7 @@ export class PageRecoverSenderComponent implements OnInit, OnDestroy, AfterViewI
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: ['test@test.te', [Validators.required, Validators.email]]
+            email: ['', [Validators.required, Validators.email]]
         });
     }
 

@@ -17,16 +17,13 @@ export class ManagerService {
     }
 
     private load(): Observable<SettingsInterface> {
-        return this.http.get<SettingsInterface>(environment.apiUrl, {
-            params: {
-                format: 'json'
-            }
-        });
+        return this.http.get<SettingsInterface>(environment.apiUrl);
     }
 
     getFirstSettings(): void {
         const s = this.load().subscribe(
             x => {
+                console.log(x);
                 this.settings$.next(x); // дерево пошлем по дороге
                 this.settings$.complete();
             },

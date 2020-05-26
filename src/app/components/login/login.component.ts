@@ -24,8 +24,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: ['test@test.te', [Validators.required, Validators.email]],
-            password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required, Validators.minLength(environment.minLenPassword)]],
         });
 
         const s = this.router.events.subscribe(event => {

@@ -27,11 +27,11 @@ export class PageRegisterComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnInit(): void {
         this.form = this.fb.group({
-            email: ['test@test.te', [Validators.required, Validators.email]],
-            password: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
-            passwordConfirm: ['test123', [Validators.required, Validators.minLength(environment.minLenPassword)]],
-            agreeOffer: [true, Validators.requiredTrue],
-            agreePolicy: [true, Validators.requiredTrue],
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', [Validators.required, Validators.minLength(environment.minLenPassword)]],
+            passwordConfirm: ['', [Validators.required, Validators.minLength(environment.minLenPassword)]],
+            agreeOffer: [false, Validators.requiredTrue],
+            agreePolicy: [false, Validators.requiredTrue],
         });
     }
 
