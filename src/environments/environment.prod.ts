@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://localhost:8080',
+    apiUrl: 'http://91.245.227.115:8080',
     emailSupport: 'support@altair.uz',
     curYear: 2020,
     dirImages: '/api/v1/images',
