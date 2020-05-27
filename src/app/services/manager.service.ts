@@ -23,7 +23,6 @@ export class ManagerService {
     getFirstSettings(): void {
         const s = this.load().subscribe(
             x => {
-                console.log(x);
                 this.settings$.next(x); // дерево пошлем по дороге
                 this.settings$.complete();
             },
