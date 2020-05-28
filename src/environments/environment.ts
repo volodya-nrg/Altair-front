@@ -4,11 +4,9 @@
 
 export const environment = {
     production: false,
-    apiUrl: 'http://localhost:8080',
+    apiUrl: 'http://localhost:8080/api/v1',
     emailSupport: 'support@altair.uz',
     curYear: 2020,
-    dirImages: '/api/v1/images',
-    dirResample: '/api/v1/resample',
     minLenPassword: 6,
     minLenHash: 32,
     domain: 'http://localhost:4200',

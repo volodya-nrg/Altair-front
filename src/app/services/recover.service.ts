@@ -15,10 +15,10 @@ export class RecoverService {
     }
 
     sendHash(data: any): Observable<void> {
-        return this.http.post<void>(`${this.url}/api/v1/recover/send-hash`, data);
+        return this.http.post<void>(`${this.url}/recover/send-hash`, data);
     }
 
     changePassword(data: any): Observable<void> {
-        return this.http.post<void>(`${this.url}/api/v1/recover/change-pass`, data);
+        return this.http.post<void>(`${this.url}/recover/change-pass`, data);
     }
 }

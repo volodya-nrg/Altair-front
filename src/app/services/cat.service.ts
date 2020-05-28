@@ -16,7 +16,7 @@ export class CatService {
     }
 
     getList(): Observable<CatInterface> {
-        return this.http.get<CatInterface>(`${this.url}/api/v1/cats`, {
+        return this.http.get<CatInterface>(`${this.url}/cats`, {
             params: {
                 asTree: 'false',
             }
@@ -24,7 +24,7 @@ export class CatService {
     }
 
     getTree(): Observable<CatTreeInterface> {
-        return this.http.get<CatTreeInterface>(`${this.url}/api/v1/cats`, {
+        return this.http.get<CatTreeInterface>(`${this.url}/cats`, {
             params: {
                 asTree: 'true'
             }
@@ -32,7 +32,7 @@ export class CatService {
     }
 
     getCatId(catId: number, isWithPropsOnlyFiltered: boolean): Observable<CatFullInterface> {
-        return this.http.get<CatFullInterface>(`${this.url}/api/v1/cats/${catId}`, {
+        return this.http.get<CatFullInterface>(`${this.url}/cats/${catId}`, {
             params: {
                 withPropsOnlyFiltered: isWithPropsOnlyFiltered ? 'true' : 'false',
             }
@@ -40,14 +40,14 @@ export class CatService {
     }
 
     post(data: any): Observable<CatFullInterface> {
-        return this.http.post<CatFullInterface>(`${this.url}/api/v1/cats`, data);
+        return this.http.post<CatFullInterface>(`${this.url}/cats`, data);
     }
 
     put(catId: number, data: any): Observable<CatFullInterface> {
-        return this.http.put<CatFullInterface>(`${this.url}/api/v1/cats/${catId}`, data);
+        return this.http.put<CatFullInterface>(`${this.url}/cats/${catId}`, data);
     }
 
     delete(catId: number): Observable<void> {
-        return this.http.delete<void>(`${this.url}/api/v1/cats/${catId}`);
+        return this.http.delete<void>(`${this.url}/cats/${catId}`);
     }
 }

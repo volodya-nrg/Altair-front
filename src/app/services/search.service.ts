@@ -18,7 +18,7 @@ export class SearchService {
     }
 
     ads(query: string, catId: string, limit: number, offset: number): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/search/ads`, {
+        return this.http.get<AdFullInterface[]>(`${this.url}/search/ads`, {
             params: {
                 q: query,
                 catId: catId,

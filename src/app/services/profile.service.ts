@@ -17,27 +17,27 @@ export class ProfileService {
     }
 
     getInfo(): Observable<UserInterface> {
-        return this.http.get<UserInterface>(`${this.url}/api/v1/profile/info`);
+        return this.http.get<UserInterface>(`${this.url}/profile/info`);
     }
 
     getSettings(): Observable<string> {
-        return this.http.get<string>(`${this.url}/api/v1/profile/settings`);
+        return this.http.get<string>(`${this.url}/profile/settings`);
     }
 
     create(data: any): Observable<UserInterface> {
-        return this.http.post<UserInterface>(`${this.url}/api/v1/profile`, data);
+        return this.http.post<UserInterface>(`${this.url}/profile`, data);
     }
 
     update(data: any): Observable<UserInterface> {
-        return this.http.put<UserInterface>(`${this.url}/api/v1/profile`, data);
+        return this.http.put<UserInterface>(`${this.url}/profile`, data);
     }
 
     delete(): Observable<void> {
-        return this.http.delete<void>(`${this.url}/api/v1/profile`);
+        return this.http.delete<void>(`${this.url}/profile`);
     }
 
     getAds(limit: number, offset: number): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/profile/ads`, {
+        return this.http.get<AdFullInterface[]>(`${this.url}/profile/ads`, {
             params: {
                 limit: limit.toString(),
                 offset: offset.toString(),
@@ -46,10 +46,10 @@ export class ProfileService {
     }
 
     getAd(adId: number): Observable<AdFullInterface> {
-        return this.http.get<AdFullInterface>(`${this.url}/api/v1/profile/ads/${adId}`);
+        return this.http.get<AdFullInterface>(`${this.url}/profile/ads/${adId}`);
     }
 
     checkEmailThroughHash(hash: string): Observable<void> {
-        return this.http.get<void>(`${this.url}/api/v1/profile/check-email-through/${hash}`);
+        return this.http.get<void>(`${this.url}/profile/check-email-through/${hash}`);
     }
 }

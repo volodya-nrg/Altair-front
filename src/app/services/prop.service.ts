@@ -16,7 +16,7 @@ export class PropService {
     }
 
     getPropsFullForCat(catId: number): Observable<PropFullInterface[]> {
-        return this.http.get<PropFullInterface[]>(`${this.url}/api/v1/props`, {
+        return this.http.get<PropFullInterface[]>(`${this.url}/props`, {
             params: {
                 catId: catId.toString(),
             }
@@ -24,18 +24,18 @@ export class PropService {
     }
 
     getOne(propId: number): Observable<PropFullInterface> {
-        return this.http.get<PropFullInterface>(`${this.url}/api/v1/props/${propId}`);
+        return this.http.get<PropFullInterface>(`${this.url}/props/${propId}`);
     }
 
     create(data: any): Observable<PropFullInterface> {
-        return this.http.post<PropFullInterface>(`${this.url}/api/v1/props`, data);
+        return this.http.post<PropFullInterface>(`${this.url}/props`, data);
     }
 
     update(propId: number, data: any): Observable<PropFullInterface> {
-        return this.http.put<PropFullInterface>(`${this.url}/api/v1/props/${propId}`, data);
+        return this.http.put<PropFullInterface>(`${this.url}/props/${propId}`, data);
     }
 
     delete(propId: number): Observable<void> {
-        return this.http.delete<void>(`${this.url}/api/v1/props/${propId}`);
+        return this.http.delete<void>(`${this.url}/props/${propId}`);
     }
 }

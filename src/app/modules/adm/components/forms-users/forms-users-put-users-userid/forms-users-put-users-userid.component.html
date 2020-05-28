@@ -26,7 +26,7 @@
                     <div *ngIf="formPut.get('avatar').value" class="form_thumbnails">
                         <div class="form_thumbnails_thumbnail">
                             <div (click)="removePhoto($event)" class="form_thumbnails_thumbnail_close"></div>
-                            <img [src]="url + '/api/v1/resample/0/100/' + formPut.get('avatar').value"/>
+                            <img [src]="url + '/resample/0/100/' + formPut.get('avatar').value"/>
                         </div>
                     </div>
                 </div>

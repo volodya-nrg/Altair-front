@@ -94,7 +94,7 @@
                         <div *ngFor="let img of ad.images" class="form_thumbnails_thumbnail">
                             <div class="form_thumbnails_thumbnail_close" title="удалить"
                                  (click)="removePhoto($event, 'p'+p.propId)"></div>
-                            <img src="{{ url }}/api/v1/resample/0/48/{{ img.filepath }}"/>
+                            <img src="{{ url }}/resample/0/48/{{ img.filepath }}"/>
                         </div>
                     </div>
                 </div>

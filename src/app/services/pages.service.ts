@@ -16,11 +16,11 @@ export class PagesService {
     }
 
     pageAd(adId: number): Observable<PagesAdInterface> {
-        return this.http.get<PagesAdInterface>(`${this.url}/api/v1/pages/ad/${adId}`);
+        return this.http.get<PagesAdInterface>(`${this.url}/pages/ad/${adId}`);
     }
 
     pageMain(limit: number): Observable<PagesMainInterface> {
-        return this.http.get<PagesMainInterface>(`${this.url}/api/v1/pages/main`, {
+        return this.http.get<PagesMainInterface>(`${this.url}/pages/main`, {
             params: {
                 limit: limit.toString(),
             }

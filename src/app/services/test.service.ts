@@ -15,6 +15,6 @@ export class TestService {
     }
 
     request(): Observable<any> {
-        return this.http.get<any>(`${this.url}/api/v1/test`);
+        return this.http.get<any>(`${this.url}/test`);
     }
 }

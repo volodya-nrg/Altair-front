@@ -1,10 +1,8 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://www.altair.uz:8080',
+    apiUrl: 'https://www.altair.uz/api/v1',
     emailSupport: 'support@altair.uz',
     curYear: 2020,
-    dirImages: '/api/v1/images',
-    dirResample: '/api/v1/resample',
     minLenPassword: 6,
     minLenHash: 32,
     domain: 'https://www.altair.uz',

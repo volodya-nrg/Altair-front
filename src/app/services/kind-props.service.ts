@@ -16,22 +16,22 @@ export class KindPropsService {
     }
 
     getAll(): Observable<KindPropInterface[]> {
-        return this.http.get<KindPropInterface[]>(`${this.url}/api/v1/kind_props`);
+        return this.http.get<KindPropInterface[]>(`${this.url}/kind_props`);
     }
 
     getOne(elId: number): Observable<KindPropInterface> {
-        return this.http.get<KindPropInterface>(`${this.url}/api/v1/kind_props/${elId}`);
+        return this.http.get<KindPropInterface>(`${this.url}/kind_props/${elId}`);
     }
 
     create(data: any): Observable<KindPropInterface> {
-        return this.http.post<KindPropInterface>(`${this.url}/api/v1/kind_props`, data);
+        return this.http.post<KindPropInterface>(`${this.url}/kind_props`, data);
     }
 
     update(elId: number, data: any): Observable<KindPropInterface> {
-        return this.http.put<KindPropInterface>(`${this.url}/api/v1/kind_props/${elId}`, data);
+        return this.http.put<KindPropInterface>(`${this.url}/kind_props/${elId}`, data);
     }
 
     delete(elId: number): Observable<void> {
-        return this.http.delete<void>(`${this.url}/api/v1/kind_props/${elId}`);
+        return this.http.delete<void>(`${this.url}/kind_props/${elId}`);
     }
 }

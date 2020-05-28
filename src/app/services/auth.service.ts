@@ -33,15 +33,15 @@ export class AuthService {
     }
 
     login(data: any): Observable<JwtInterface> {
-        return this.http.post<JwtInterface>(`${this.url}/api/v1/auth/login`, data);
+        return this.http.post<JwtInterface>(`${this.url}/auth/login`, data);
     }
 
     logout(): Observable<void> {
-        return this.http.get<void>(`${this.url}/api/v1/auth/logout`);
+        return this.http.get<void>(`${this.url}/auth/logout`);
     }
 
     refreshTokens(): Observable<JwtInterface> {
-        return this.http.post<JwtInterface>(`${this.url}/api/v1/auth/refresh-tokens`, null);
+        return this.http.post<JwtInterface>(`${this.url}/auth/refresh-tokens`, null);
     }
 
     parseJWT(str: string): JwtPayloadInterface {

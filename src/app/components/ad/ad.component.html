@@ -34,7 +34,7 @@
 <ng-template #coverBasic>
     <a [routerLink]=" '/ad/' + ad.slug " class="ad_cover">
         <img *ngIf="ad.images && ad.images.length"
-             [src]="url + '/api/v1/resample/224/0/' + ad.images[0].filepath"
+             [src]="url + '/resample/224/0/' + ad.images[0].filepath"
              alt="{{ ad.title }}"
              title="{{ ad.title }}"/>
     </a>
@@ -42,7 +42,7 @@
 <ng-template #coverCut>
     <a class="ad_cover">
         <img *ngIf="ad.images && ad.images.length"
-             [src]="url + '/api/v1/resample/224/0/' + ad.images[0].filepath"
+             [src]="url + '/resample/224/0/' + ad.images[0].filepath"
              alt="{{ ad.title }}"
              title="{{ ad.title }}"/>
     </a>

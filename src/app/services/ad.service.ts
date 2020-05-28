@@ -16,23 +16,23 @@ export class AdService {
     }
 
     getOne(adId: number): Observable<AdFullInterface> {
-        return this.http.get<AdFullInterface>(`${this.url}/api/v1/ads/${adId}`);
+        return this.http.get<AdFullInterface>(`${this.url}/ads/${adId}`);
     }
 
     create(data: any): Observable<AdFullInterface> {
-        return this.http.post<AdFullInterface>(`${this.url}/api/v1/ads`, data);
+        return this.http.post<AdFullInterface>(`${this.url}/ads`, data);
     }
 
     update(adId: number, data: any): Observable<AdFullInterface> {
-        return this.http.put<AdFullInterface>(`${this.url}/api/v1/ads/${adId}`, data);
+        return this.http.put<AdFullInterface>(`${this.url}/ads/${adId}`, data);
     }
 
     delete(adId: number): Observable<void> {
-        return this.http.delete<void>(`${this.url}/api/v1/ads/${adId}`);
+        return this.http.delete<void>(`${this.url}/ads/${adId}`);
     }
 
     getFromCat(data: Object): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/ads`, {
+        return this.http.get<AdFullInterface[]>(`${this.url}/ads`, {
             params: {
                 catId: data['catId'].toString(),
                 limit: data['limit'].toString(),
@@ -42,7 +42,7 @@ export class AdService {
     }
 
     getByQuery(query: string, catId: number): Observable<AdFullInterface[]> {
-        return this.http.get<AdFullInterface[]>(`${this.url}/api/v1/search/ads`, {
+        return this.http.get<AdFullInterface[]>(`${this.url}/search/ads`, {
             params: {
                 q: query,
                 catId: catId.toString(),
