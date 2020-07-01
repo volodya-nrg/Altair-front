@@ -1,0 +1,50 @@
+<div class="login">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+        <input formControlName="code" type="hidden"/>
+        <input formControlName="state" type="hidden"/>
+
+        <div class="form_row align-center">
+            <h1>Вход</h1>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Е-мэйл:</div>
+            <div>
+                <input formControlName="email" class="form_100" type="email"/>
+            </div>
+        </div>
+        <div class="form_row">
+            <div class="form_title">Пароль:</div>
+            <div>
+                <input formControlName="password" class="form_100" type="password"/>
+            </div>
+        </div>
+        <div class="form_row align-right">
+            <a href="javascript:void(0);" routerLink="/recover/sender">Забыли пароль?</a>
+        </div>
+        <div class="form_row">
+            <input #submit type="submit" [disabled]="form.invalid" value="Отправить"/>
+        </div>
+    </form>
+    <div class="login_soc">
+        <div class="login_soc_cell text-mute">
+            или через соц. сети:
+        </div>
+        <div class="login_soc_cell">
+            <app-soc-auth></app-soc-auth>
+        </div>
+    </div>
+    <div class="login_register align-center">
+        <p>
+            <a href="javascript:void(0);" routerLink="/register">Зарегистрироваться</a>
+        </p>
+        <p>
+            <small class="text-mute">
+                При входе вы подтверждаете согласие с
+                <br/>
+                <a href="javascript:void(0);" routerLink="/info/agreement">пользовательским соглашением</a>
+                и
+                <a href="javascript:void(0);" routerLink="/info/privacy-policy">политикой конфиденциальности</a>.
+            </small>
+        </p>
+    </div>
+</div>

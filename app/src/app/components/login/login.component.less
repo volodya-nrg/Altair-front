@@ -1,0 +1,23 @@
+@import "../../../css_variables";
+
+.login {
+    &_register {
+        border-top: whitesmoke solid @1px;
+        margin-top: 2em; // 32px / 16px
+    }
+
+    &_soc {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        border-top: whitesmoke solid @1px;
+        margin-top: 2em; // 32px / 16px
+        padding-top: 2em; // 32px / 16px
+
+        &_cell {
+            &:not(:first-child) {
+                margin-left: 1em; // 16px / 16px
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+    front:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        container_name: altair.uz_front
+        ports:
+            - 1027:4000
+
+networks:
+    default:
+        external:
+            name: mynet

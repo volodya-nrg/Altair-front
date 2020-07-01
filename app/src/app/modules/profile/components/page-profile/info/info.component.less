@@ -1,0 +1,58 @@
+.page-profile-info {
+    &_flexbox {
+        display: flex;
+
+        & > * {
+            flex-basis: 100%;
+
+            &:first-child {
+                flex: 0 0 15em; // 240px / 16px
+            }
+
+            &:not(:first-child) {
+                margin-left: 1em; // 16px / 16px
+            }
+        }
+    }
+
+    &_avatar {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15em; // 240px / 16px
+        height: 20em; // 320px / 16px
+        overflow: hidden;
+        background-color: whitesmoke;
+        margin-bottom: 1em;
+
+        &.sx-statement {
+            img {
+                opacity: 0.5;
+            }
+        }
+
+        &_delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em; // 24px / 16px
+            width: 1em; // 24px / 24px
+            height: 1em; // 24px / 24px
+            background-color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+    }
+
+    .form.sx-loading {
+        opacity: 0.7;
+    }
+}
