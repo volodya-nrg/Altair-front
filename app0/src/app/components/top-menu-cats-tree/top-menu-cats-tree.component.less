@@ -1,0 +1,23 @@
+@import "../../../css_variables";
+
+.top-menu-cats-tree {
+    position: relative;
+    z-index: 10;
+
+    &_emblem {
+        box-sizing: border-box;
+        width: 2em; // 32px / 16px
+        height: 2em; // 32px / 16px
+        border-radius: 0.125em; // 2px / 16px
+        cursor: pointer;
+        border: lightgray solid @1px; // 1px / 16px
+        background: white url("@{imgPath}/icon-bars-solid.svg") center center no-repeat;
+        background-size: 1em;
+    }
+
+    &_tree {
+        position: absolute;
+        top: 2em; // 32px / 16px
+        left: 0;
+    }
+}

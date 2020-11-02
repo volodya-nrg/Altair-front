@@ -1,0 +1,10 @@
+<div class="page-ad-create-edit">
+    <h1 *ngIf="isEditingAd">Редактирование объявления</h1>
+    <h1 *ngIf="!isEditingAd">Добавить объявление</h1>
+
+    <h2>Каталог:</h2>
+    <app-cats-horiz-accordion (selectLeaf)="selectLeaf($event)"></app-cats-horiz-accordion>
+
+    <h2>Параметры:</h2>
+    <app-ad-form mode="public"></app-ad-form>
+</div>

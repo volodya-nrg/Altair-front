@@ -1,0 +1,97 @@
+@import "./css_variables";
+
+// z-index:
+//      nav = 10
+//      modal = 11 // 4 еще на запас
+//      errors-fly = 15
+
+// тело документа делать в процентах, остальное в em
+body {
+    margin: 0;
+    font-family: @font_family;
+    -webkit-font-smoothing: antialiased;
+    font-size: 100%;
+    background-color: white; // необходимо для надежности
+    color: @color_dark_light;
+
+    &.sx-modal {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    &.sx-adm {
+        .app_mid > .container {
+            max-width: 100%;
+            padding: 0 1em;
+            margin: 0;
+        }
+    }
+}
+
+@import "./css_typography";
+@import "./css_form";
+
+a {
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+.text-eclipse {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.text-mute {
+    color: @color_text_mute;
+
+    a {
+        color: darken(@color_text_mute, 20%);
+    }
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.container {
+    box-sizing: border-box;
+    max-width: @maxWidth;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.hidden {
+    display: none !important; // для перекрытия искусственно повышаем важность, более не делаем
+}
+
+.not-visible {
+    visibility: hidden;
+}
+
+.hr {
+    height: 1px;
+    margin: 10px 0;
+    border: 0;
+    background-color: whitesmoke;
+}
+
+@media screen and (max-width: @maxWidth) {
+    .container {
+        max-width: 100%;
+    }
+}

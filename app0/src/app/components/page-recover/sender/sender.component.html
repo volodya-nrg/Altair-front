@@ -1,0 +1,17 @@
+<div class="page-recover-sender">
+    <div class="page-recover-sender_box">
+        <h1>Восстановление пароля</h1>
+        <form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">Е-мэйл:</div>
+                <input formControlName="email" type="email"/>
+            </div>
+            <div class="form_row sx-submit align-right">
+                <input #submitBtn type="submit" [disabled]="form.invalid" value="Отправить"/>
+            </div>
+            <div *ngIf="!isProdMode" class="form_row">
+                {{ form.value | json }}
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="search">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="search_form">
+        <input class="search_form_query" formControlName="q" type="text"/>
+        <input class="search_form_submit-desktop" type="submit" value="Поиск"/>
+        <button class="search_form_submit-mobile" type="submit">
+            <img src="/assets/images/icon-search-solid.svg"/>
+        </button>
+    </form>
+</div>

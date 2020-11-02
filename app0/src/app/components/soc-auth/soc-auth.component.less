@@ -1,0 +1,36 @@
+@import "../../../css_variables";
+
+.soc-auth {
+    display: flex;
+    justify-content: center;
+
+    & > * {
+        &:not(:first-child) {
+            margin-left: 1em; // 16px / 16px
+        }
+    }
+
+    &_item {
+        width: 3em; // 48px / 16px
+        height: 3em; // 48px / 16px
+        border-radius: 50%;
+        background: whitesmoke none center center no-repeat;
+        background-size: 1.5em; // 24px / 16px
+
+        &.sx-vk {
+            background-image: url("@{imgPath}/logo-vk-gray.svg");
+        }
+
+        &.sx-ok {
+            background-image: url("@{imgPath}/logo-ok-gray.svg");
+        }
+
+        &.sx-fb {
+            background-image: url("@{imgPath}/logo-fb-gray.svg");
+        }
+
+        &.sx-ggl {
+            background-image: url("@{imgPath}/logo-google-gray.svg");
+        }
+    }
+}

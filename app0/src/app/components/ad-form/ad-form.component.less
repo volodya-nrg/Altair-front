@@ -1,0 +1,63 @@
+@import "../../../css_variables";
+
+.ad-form {
+    &_dynamic-inputs {
+        display: flex;
+
+        & > * {
+            &:not(:first-child) {
+                margin-left: 1em;
+            }
+        }
+
+        &.sx-input {
+            & > * {
+                flex-basis: 100%;
+            }
+        }
+
+        &.sx-textarea {
+            & > * {
+                flex-basis: 100%;
+
+                &:last-child {
+                    flex-basis: auto;
+                }
+            }
+        }
+
+        &.sx-ymaps {
+            & > * {
+                flex-basis: 100%;
+            }
+        }
+    }
+
+    &_map {
+        margin-top: 1em;
+
+        #map {
+            margin-top: 0.5em;
+        }
+    }
+
+    #map {
+        height: 15em; // 240px / 16px
+        background-color: whitesmoke;
+    }
+}
+
+@media screen and (max-width: @maxWidth) {
+    .ad-form {
+        &_dynamic-inputs {
+            flex-direction: column;
+
+            & > * {
+                &:not(:first-child) {
+                    margin-top: 0.3em; // 5px / 16px
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}

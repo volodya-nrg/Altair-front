@@ -1,0 +1,27 @@
+@import "../../../../../css_variables";
+
+.dynamic-values {
+    &_header {
+        display: flex;
+
+        & > * {
+            flex-basis: 100%;
+
+            &:not(:first-child) {
+                margin-left: 1em; // 16px / 16px
+            }
+
+            &:first-child {
+                background-color: whitesmoke;
+            }
+
+            &:last-child {
+                flex: 0 0 1em; // 16px / 16px
+            }
+        }
+    }
+
+    &_body {
+        margin-top: 1em;
+    }
+}

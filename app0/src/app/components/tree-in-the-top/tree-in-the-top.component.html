@@ -1,0 +1,20 @@
+<ul class="tree-in-the-top_ul">
+    <li *ngFor="let cat of catTree.childes">
+        <a *ngIf="cat.childes && cat.childes.length"
+           (click)="showChildes($event)"
+           class="text-eclipse sx-has-childes"
+           [title]="cat.name">{{cat.name}}</a>
+
+        <a *ngIf="!cat.childes || !cat.childes.length"
+           class="tree-in-the-top_go text-eclipse"
+           href="javascript:void(0);"
+           [routerLink]="url + '/' + cat.slug"
+           [title]="cat.name">{{cat.name}}</a>
+
+        <div class="tree-in-the-top_list">
+            <app-tree-in-the-top *ngIf="cat.childes && cat.childes.length"
+                                 [catTree]="cat"
+                                 [url]="url + '/' + cat.slug"></app-tree-in-the-top>
+        </div>
+    </li>
+</ul>

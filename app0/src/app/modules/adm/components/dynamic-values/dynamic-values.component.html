@@ -1,0 +1,15 @@
+<div class="dynamic-values">
+    <div class="dynamic-values_header">
+        <div></div>
+        <div>
+            <button (click)="addItem()" type="button">+</button>
+        </div>
+    </div>
+    <div class="dynamic-values_body">
+        <app-dynamic-value *ngFor="let value of valuesFormArray.controls; let i = index"
+                           [index]="i"
+                           [value]="value"
+                           (removed)="valuesFormArray.removeAt($event)">
+        </app-dynamic-value>
+    </div>
+</div>

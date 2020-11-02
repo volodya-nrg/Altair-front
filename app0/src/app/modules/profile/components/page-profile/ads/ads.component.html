@@ -1,0 +1,8 @@
+<div class="page-profile-ads">
+    <div *ngIf="ads.length">
+        <app-ad *ngFor="let ad of ads" [ad]="ad" viewOpt="line" [inProfile]="true"></app-ad>
+    </div>
+    <div #preloader [hidden]="isLoadAll" [class.not-visible]="!isLoading">
+        <app-preloader></app-preloader>
+    </div>
+</div>

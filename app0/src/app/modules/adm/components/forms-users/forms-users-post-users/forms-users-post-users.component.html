@@ -1,0 +1,44 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        POST: /api/v1/users
+    </div>
+    <div class="page-adm_box_body">
+        <div>
+            <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+                <div class="form_row">
+                    <div class="form_title">avatar</div>
+                    <input type="hidden" formControlName="files"/>
+                    <input type="file" accept="image/jpeg,image/png" (change)="addPhoto($event)"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">name</div>
+                    <input type="text" formControlName="name"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">email</div>
+                    <input type="email" formControlName="email"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">password</div>
+                    <input type="text" formControlName="password"/>
+                </div>
+                <div class="form_row">
+                    <div class="form_title">passwordConfirm</div>
+                    <input type="text" formControlName="passwordConfirm"/>
+                </div>
+                <div class="form_row">
+                    <label>
+                        <input type="checkbox" formControlName="isEmailConfirmed" value="true"/>
+                        is_email_confirmed
+                    </label>
+                </div>
+                <div class="form_row">
+                    <input type="submit"/>
+                </div>
+                <div class="form_row">
+                    {{ form.value | json }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

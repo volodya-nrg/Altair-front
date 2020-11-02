@@ -1,0 +1,19 @@
+<div class="page-adm_box">
+    <div class="page-adm_box_title" appToggleActive>
+        PUT: /api/v1/ads/:adID
+    </div>
+    <div class="page-adm_box_body">
+        <form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+            <div class="form_row">
+                <div class="form_title">ID объявления</div>
+                <input type="number" formControlName="adID"/>
+            </div>
+            <div class="form_row">
+                <input type="submit"/>
+            </div>
+        </form>
+        <div #formPostPutWrap class="hidden">
+            <app-ad-form mode="private" (json)="json.emit($event)"></app-ad-form>
+        </div>
+    </div>
+</div>

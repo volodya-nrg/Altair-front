@@ -1,0 +1,59 @@
+@import "../../../../../css_variables";
+
+.page-profile {
+    margin-top: 1em; // 16px / 16px
+
+    &_cols {
+        display: flex;
+
+        &_col {
+            & + & {
+                margin-left: 1em; // 16px / 16px
+            }
+
+            &.sx-menu {
+            }
+
+            &.sx-content {
+                flex-basis: 100%;
+            }
+        }
+    }
+
+    &_links {
+        display: block;
+        width: 15em; // 240px / 16px
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        & > li + li {
+            margin-top: 0.5em; // 8px / 16px
+            padding-top: 0.5em; // 8px / 16px
+            border-top: whitesmoke solid @1px;
+        }
+
+        a.active {
+            text-decoration: none;
+        }
+    }
+}
+
+@media screen and (max-width: @maxWidth) {
+    .page-profile {
+        &_cols {
+            flex-direction: column;
+
+            &_col {
+                & + & {
+                    margin-top: 1em; // 16px / 16px
+                    margin-left: 0;
+                }
+            }
+        }
+
+        &_links {
+            width: 100%;
+        }
+    }
+}

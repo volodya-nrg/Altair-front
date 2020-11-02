@@ -1,0 +1,39 @@
+@import "../../../css_variables";
+
+.search {
+    &_form {
+        display: flex;
+        width: 100%;
+
+        &_query {
+            flex-basis: 100%;
+            width: inherit;
+        }
+
+        &_submit-desktop {
+            width: 5em; // 80px / 16px
+        }
+
+        &_submit-mobile {
+            display: none;
+
+            img {
+                height: 1em; // 16px / 16px
+            }
+        }
+    }
+}
+
+@media screen and (max-width: @maxWidth) {
+    .search {
+        &_form {
+            &_submit-desktop {
+                display: none;
+            }
+
+            &_submit-mobile {
+                display: block;
+            }
+        }
+    }
+}

@@ -1,0 +1,18 @@
+@import "../../../../css_variables";
+
+.page-recover-sender {
+    margin-top: 1em; // 16px / 16px
+
+    &_box {
+        width: calc(~'@{maxWidth}/2');
+        margin: 0 auto;
+    }
+}
+
+@media screen and (max-width: @maxWidth) {
+    .page-recover-sender {
+        &_box {
+            width: 100%;
+        }
+    }
+}

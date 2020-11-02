@@ -1,0 +1,17 @@
+<div class="breadcrumbs">
+    <div *ngIf="!isLoading" class="breadcrumbs_items">
+        <ng-container *ngFor="let item of items; let i = index">
+            <a class="breadcrumbs_item text-eclipse"
+               href="javascript:void(0);"
+               [routerLink]="item.url"><small>{{ item.name }}</small></a>
+            <div *ngIf="i != items.length-1" class="breadcrumbs_sep">/</div>
+        </ng-container>
+    </div>
+    <div *ngIf="isLoading" class="breadcrumbs_items">
+        <div class="breadcrumbs_item sx-default">&nbsp;</div>
+        <div class="breadcrumbs_sep">/</div>
+        <div class="breadcrumbs_item sx-default">&nbsp;</div>
+        <div class="breadcrumbs_sep">/</div>
+        <div class="breadcrumbs_item sx-default">&nbsp;</div>
+    </div>
+</div>

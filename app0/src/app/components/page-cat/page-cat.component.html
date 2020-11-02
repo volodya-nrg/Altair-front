@@ -1,0 +1,28 @@
+<app-breadcrumbs></app-breadcrumbs>
+<div class="page-cat">
+    <app-not-found *ngIf="isPathNotFound"></app-not-found>
+    <app-ad *ngFor="let ad of ads" [ad]="ad"></app-ad>
+    <ng-container *ngIf="isPathRootCat">
+        <h1>Категории:</h1>
+        <div #masonry class="page-cat_bricks">
+            <div *ngFor="let cat of catTree?.childes" class="page-cat_brick">
+                <h2>
+                    <a class="text-eclipse" href="javascript:void(0);" [routerLink]="'/cat/'+cat.slug">
+                        {{ cat.name }}
+                    </a>
+                </h2>
+                <ul *ngIf="cat.childes.length">
+                    <li *ngFor="let subCat of cat.childes">
+                        <h3>
+                            <a class="text-eclipse" href="javascript:void(0);"
+                               [routerLink]="'/cat/'+cat.slug+'/'+subCat.slug">
+                                {{ subCat.name }}
+                            </a>
+                        </h3>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </ng-container>
+    <app-preloader #preloader [hidden]="isLoadAll" [class.not-visible]="!isLoading" [height]="3"></app-preloader>
+</div>

@@ -1,0 +1,82 @@
+@import "../../../css_variables";
+
+.carousel {
+    position: relative;
+
+    // зарезервированно для ячеек. sx-empty - название класса для дефолтных значений
+    &_cell {
+        position: relative;
+
+        &.sx-empty {
+        }
+    }
+
+    &_btn {
+        position: absolute;
+        box-sizing: border-box;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 3em; // 48px / 16px
+        height: 3em; // 48px / 16px
+        margin: auto 0;
+        border: whitesmoke solid @1px;
+        border-radius: 50%;
+        cursor: pointer;
+        background-color: white;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 0.5em; // 8px / 16px
+        box-shadow: 0 -0.2em 0.5em rgba(0, 0, 0, 0.1);
+        z-index: 1;
+
+        &.sx-left {
+            left: -1.5em; // 24px / 16px
+            right: auto;
+            background-image: url("@{imgPath}/arrow-gray.svg");
+        }
+
+        &.sx-right {
+            left: auto;
+            right: -1.5em; // 24px / 16px
+            background-image: url("@{imgPath}/arrow-gray.svg");
+            transform: rotate(~"180deg");
+        }
+
+        &.sx-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    &_frame {
+        width: inherit;
+        height: auto;
+        min-height: 3em; // 48px / 16px
+        overflow: hidden;
+    }
+
+    &_row {
+        display: flex;
+
+        &.sx-transition {
+            transition: transform 500ms ease 0s;
+        }
+    }
+}
+
+@media screen and (max-width: @maxWidth) {
+    .carousel {
+        &_btn {
+            &.sx-left {
+                left: 0;
+            }
+
+            &.sx-right {
+                right: 0;
+            }
+        }
+    }
+}

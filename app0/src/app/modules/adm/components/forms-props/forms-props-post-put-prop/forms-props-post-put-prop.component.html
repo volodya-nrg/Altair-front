@@ -1,0 +1,49 @@
+<form [formGroup]="form" (ngSubmit)="submitForm($event)" class="form">
+    <input type="hidden" formControlName="propID"/>
+
+    <div class="form_row">
+        <div class="form_title">заголовок *</div>
+        <input type="text" formControlName="title"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">[name=] *</div>
+        <input type="text" formControlName="name"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">суффикс</div>
+        <input type="text" formControlName="suffix"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">комментарий</div>
+        <input type="text" formControlName="comment"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">приватный комментарий</div>
+        <input type="text" formControlName="privateComment"/>
+    </div>
+    <div class="form_row">
+        <div class="form_title">разновидность тега</div>
+        <select formControlName="kindPropID">
+            <option value="0" selected="selected"></option>
+            <option *ngFor="let kind of kindProps" [value]="kind.kindPropID">
+                {{ kind.name }}
+            </option>
+        </select>
+        <div [hidden]=" editPropFull || curKindPropName != 'select' ">
+            <br/>
+            <textarea formControlName="selectAsTextarea"></textarea>
+        </div>
+    </div>
+    <div class="form_row">
+        <div class="form_title">значения для св-ва</div>
+        <app-dynamic-values formArrayName="values"
+                            [propID]="form.get('propID').value"
+                            [valuesFormArray]="form.get('values')"></app-dynamic-values>
+    </div>
+    <div class="form_row">
+        <input type="submit"/>
+    </div>
+    <div class="form_row">
+        {{ form.value | json }}
+    </div>
+</form>

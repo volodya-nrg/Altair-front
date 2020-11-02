@@ -1,0 +1,50 @@
+<header>
+    <div class="container">
+        <div class="header">
+            <div class="header_child">
+                <div class="header_flexbox">
+                    <div>
+                        <app-top-menu-cats-tree></app-top-menu-cats-tree>
+                    </div>
+                    <div>
+                        <a class="header_logo" routerLink="/main" title="Сайт бесплатных объявлений">
+                            <img class="header_logo_img-desktop" src="/assets/images/logo-desktop.png"
+                                 alt="www.altair.uz"/>
+                            <img class="header_logo_img-mobile" src="/assets/images/logo-mobile.png"
+                                 alt="www.altair.uz"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="header_child">
+                <app-search></app-search>
+            </div>
+            <div class="header_child">
+                <div class="header_flexbox">
+                    <div *ngIf="isAdmin">
+                        <a href="javascript:void(0);" routerLink="/adm">Адм.</a>
+                    </div>
+                    <div>
+                        <a *ngIf="!profile" class="header_enter-desktop" href="javascript:void(0);"
+                           routerLink="/login">Вход</a>
+                        <a *ngIf="profile" class="header_profile-desktop" href="javascript:void(0);"
+                           routerLink="/profile">Профиль</a>
+                        <a *ngIf="!profile" class="header_enter-mobile" href="javascript:void(0);" routerLink="/login">
+                            <img src="/assets/images/icon-sign-in-alt-solid.svg"/>
+                        </a>
+                        <a *ngIf="profile" class="header_profile-mobile" href="javascript:void(0);"
+                           routerLink="/profile">
+                            <img src="/assets/images/icon-user-solid.svg"/>
+                        </a>
+                    </div>
+                    <div>
+                        <button class="header_add-desktop" routerLink="/ad/create">Добавить</button>
+                        <button class="header_add-mobile" routerLink="/ad/create">
+                            <img src="/assets/images/icon-plus-solid.svg"/>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

@@ -1,0 +1,90 @@
+<app-breadcrumbs></app-breadcrumbs>
+<div class="page-ad">
+    <app-preloader *ngIf="isLoading" [height]="4"></app-preloader>
+    <div>
+        <h1>{{ adFull?.title }}</h1>
+        <div class="page-ad_row">
+            <div class="page-ad_basic">
+                <div>
+                    <div class="page-ad_photo">
+                        <img *ngIf="adFull?.images && adFull.images.length"
+                             (click)="showPhotos(0)"
+                             src="/api/v1/resample/0/320/{{adFull.images[0].filepath}}"
+                             title="{{ adFull.title }}"/>
+                    </div>
+                    <div *ngIf="adFull?.images && adFull.images.length > 1" class="page-ad_mini-photos">
+                        <ng-container *ngFor="let img of adFull.images; let i = index">
+                            <span *ngIf="i" (click)="showPhotos(i)" class="page-ad_mini-photo">
+                                <img src="/api/v1/resample/56/0/{{img.filepath}}" title="{{ adFull.title }}"/>
+                            </span>
+                        </ng-container>
+                    </div>
+                    <app-modal *ngIf="isShowModalPhotos" (myClose)="isShowModalPhotos = false">
+                        <app-carousel [isByOne]="true">
+                            <div *ngFor="let img of adFull.images" class="carousel_cell page-ad_modal-photo">
+                                <img src="/api/v1/resample/900/0/{{img.filepath}}" title="{{ adFull.title }}"/>
+                            </div>
+                        </app-carousel>
+                    </app-modal>
+                </div>
+                <div>
+                    <ul class="page-ad_props">
+                        <li *ngFor="let detailExt of adFull?.detailsExt">
+                            <ng-container *ngIf="detailExt.kindPropName != 'photo' ">
+                                <ng-container *ngFor="let prop of catFull.props">
+                                    <ng-container *ngIf="prop.propID === detailExt.propID">
+                                        <span class="text-mute">{{ prop.title }}:</span>
+                                    </ng-container>
+                                </ng-container>
+
+                                {{ detailExt.valueName ? detailExt.valueName : detailExt.value }}
+                            </ng-container>
+                        </li>
+                    </ul>
+                    <div class="page-ad_price-and-show-phone">
+                        <div>
+                            <span class="text-mute">{{ catFull?.priceAlias ? catFull.priceAlias : 'Цена' }}: </span>
+                            <span *ngIf="adFull?.price" class="text-nowrap">
+                                <strong class="page-ad_price">{{ adFull.price | myCurrency}}</strong>
+                                сум
+                            </span>
+                            <strong *ngIf="adFull && adFull.price < 1" class="page-ad_price">бесплатно</strong>
+                            {{ catFull?.priceSuffix }}
+                        </div>
+                        <div *ngIf="adFull?.phoneID">
+                            <button *ngIf="!phoneNumber" class="sx-big" (click)="showPhone($event, adFull.phoneID)">
+                                Показать телефон
+                            </button>
+
+                            <div *ngIf="phoneNumber" class="page-ad_phone-number">
+                                <div class="page-ad_phone-number_number">
+                                    {{ phoneNumber }}
+                                </div>
+                                <small class="text-mute">Скажите что нашли это объявление на Altair.uz</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-ad_row">
+            <h2>Описание</h2>
+            <div class="page-ad_description">
+                {{ adFull?.description }}
+            </div>
+        </div>
+        <div *ngIf="youTubeLink" class="page-ad_row">
+            <h2>Видео</h2>
+            <div class="page-ad_youtube">
+                <iframe [src]="youTubeLink"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="page-ad_row align-right">
+            <span class="text-mute">Созданно:</span> {{ adFull?.createdAt | customDate: 'full' }} /
+            <span class="text-mute">Изменено:</span> {{ adFull?.updatedAt | customDate: 'full' }}
+        </div>
+    </div>
+</div>

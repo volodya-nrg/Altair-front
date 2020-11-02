@@ -1,0 +1,23 @@
+<div class="dynamic-props">
+    <div class="dynamic-props_header">
+        <div>
+            <select #select>
+                <option value="0"></option>
+                <option *ngFor="let x of propsReserv" [value]="x.propID" [disabled]="isSelected(x.propID)">
+                    {{ x.title }}
+                    {{ x.privateComment ? ' (' + x.privateComment + ')' : '' }}
+                </option>
+            </select>
+        </div>
+        <div>
+            <button (click)="addItem()" type="button">+</button>
+        </div>
+    </div>
+    <div class="dynamic-props_body">
+        <app-dynamic-prop *ngFor="let p of propsAssignedFormArray.controls; let i = index"
+                          [index]="i"
+                          [propAssigned]="p"
+                          (removed)="propsAssignedFormArray.removeAt($event)">
+        </app-dynamic-prop>
+    </div>
+</div>
